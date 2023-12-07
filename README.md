@@ -28,4 +28,4 @@ Le projet consiste en le développement d'une base de données pour une salle de
 
 ## Modélisation relationnel
 
-![Schéma relationnel](URL_de_l_image "Titre facultatif")
+![Schéma relationnel](https://github.com/Theodrosrun/bdr-projet/blob/main/docs/modelisation_relationnel.png)
