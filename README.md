@@ -22,6 +22,14 @@ Le projet consiste en le développement d'une base de données pour une salle de
 
 ---
 
+## Exécution de scripts
+
+Des scripts pré-définis sont disponibles pour créer le schéma, le remplir, le vider ou le supprimer.
+
+![Exécution des scriptsl](https://github.com/Theodrosrun/bdr-projet/blob/main/docs/tutorial/run_configuration.png)
+
+---
+
 ## Modélisation relationnel
 
 ![Schéma relationnel](https://github.com/Theodrosrun/bdr-projet/blob/main/docs/modelisation_relationnel.png)
