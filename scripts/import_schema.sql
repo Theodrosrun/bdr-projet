@@ -48,8 +48,8 @@ CREATE TABLE Administrateur (
 
 CREATE TABLE Membre (
     membre_id INT PRIMARY KEY,
-    compte_id VARCHAR(255) NOT NULL UNIQUE
-    -- TODO progression
+    compte_id VARCHAR(255) NOT NULL UNIQUE,
+    progression_id INT NOT NULL
 );
 
 CREATE TABLE Visiteur (
@@ -168,7 +168,7 @@ CREATE TABLE Facture (
 CREATE TABLE Progression (
     progression_id INT NOT NULL PRIMARY KEY,
     date DATE,
-    poids DOUBLE PRECISION, -- TODO: Check precision
+    poids NUMERIC(5, 2),
     membre_id INT NOT NULL
 );
 
@@ -274,3 +274,8 @@ ADD FOREIGN KEY (abo_id) REFERENCES Abonnement(abo_id);
 
 ALTER TABLE Facture
 ADD FOREIGN KEY (contrat_id) REFERENCES Contrat(contrat_id);
+
+--- Progression ---
+
+ALTER TABLE Membre
+ADD FOREIGN KEY (progression_id) REFERENCES Progression(progression_id);
