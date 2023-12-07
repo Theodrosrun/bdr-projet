@@ -1,0 +1,850 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="15.1">
+  <zoom_level>7</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>420</x>
+      <y>0</y>
+      <w>126</w>
+      <h>147</h>
+    </coordinates>
+    <panel_attributes>Personne
+--
+nom
+prénom
+dateNaissance
+adresseMail
+numéroTéléphone
+adresse
+  numéro
+  rue
+  ville
+  NPA
+  pays</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>385</x>
+      <y>399</y>
+      <w>112</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>Instructeur
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>217</x>
+      <y>294</y>
+      <w>126</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>Employé
+--
+_ID_
+IBAN</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>224</x>
+      <y>399</y>
+      <w>112</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>Administrateur
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>273</x>
+      <y>343</y>
+      <w>21</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;80.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>119</x>
+      <y>343</y>
+      <w>175</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>230.0;10.0;230.0;60.0;10.0;60.0;10.0;80.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>63</x>
+      <y>399</y>
+      <w>112</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>Personel administratif
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>203</x>
+      <y>462</y>
+      <w>154</w>
+      <h>42</h>
+    </coordinates>
+    <panel_attributes>L'administrateur est unique dans 
+un Fitness. Il reçoit tout comme 
+les employés un salaire.
+bg=yellow</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>476</x>
+      <y>140</y>
+      <w>266</w>
+      <h>273</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;60.0;360.0;60.0;360.0;370.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>273</x>
+      <y>140</y>
+      <w>224</w>
+      <h>168</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>300.0;10.0;300.0;60.0;10.0;60.0;10.0;220.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>273</x>
+      <y>343</y>
+      <w>182</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;60.0;240.0;60.0;240.0;80.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>665</x>
+      <y>399</y>
+      <w>126</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>Membre
+--
+_ID_
+IBAN
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>14</x>
+      <y>245</y>
+      <w>259</w>
+      <h>21</h>
+    </coordinates>
+    <panel_attributes>Tous les employés ont accès au fitness et aux cours.
+bg=yellow</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>385</x>
+      <y>840</y>
+      <w>119</w>
+      <h>77</h>
+    </coordinates>
+    <panel_attributes>Cours
+--
+_ID_
+jour
+heure
+description
+récurrence</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>203</x>
+      <y>840</y>
+      <w>126</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>Salle
+-
+capacitéMax
+surface</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>203</x>
+      <y>602</y>
+      <w>140</w>
+      <h>91</h>
+    </coordinates>
+    <panel_attributes>MyAmazingFitness
+-
+_ID_
+adresse
+  numéro
+  rue
+  ville
+  NPA</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>322</x>
+      <y>868</y>
+      <w>77</w>
+      <h>35</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=*
+m2=1
+&lt; a lieu</panel_attributes>
+    <additional_attributes>90.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>0</x>
+      <y>840</y>
+      <w>119</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>Machine
+--
+_ID_
+Etat</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>189</x>
+      <y>917</y>
+      <w>154</w>
+      <h>28</h>
+    </coordinates>
+    <panel_attributes>CI: Une salle ne peut pas avoir 
+plusieurs cours en même temps
+bg=blue</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>112</x>
+      <y>868</y>
+      <w>105</w>
+      <h>35</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=0..1
+m2=*
+&lt; dispose</panel_attributes>
+    <additional_attributes>130.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>399</x>
+      <y>448</y>
+      <w>63</w>
+      <h>406</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=*
+m2=1
+donne v
+</panel_attributes>
+    <additional_attributes>10.0;560.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>189</x>
+      <y>553</y>
+      <w>168</w>
+      <h>42</h>
+    </coordinates>
+    <panel_attributes>Notre Fitness a potentiellement
+plusieurs emplacements et se trouve
+en suisse.
+bg=yellow</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>497</x>
+      <y>672</y>
+      <w>679</w>
+      <h>231</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=0..1
+m2=1
+&lt; donne accès</panel_attributes>
+    <additional_attributes>10.0;300.0;940.0;300.0;940.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>945</x>
+      <y>322</y>
+      <w>168</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>Progression
+--
+_ID_
+date
+poids</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1078</x>
+      <y>616</y>
+      <w>161</w>
+      <h>63</h>
+    </coordinates>
+    <panel_attributes>Abonnement
+--
+_nom_
+_durée_
+prix
+disponibilité</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>945</x>
+      <y>280</y>
+      <w>168</w>
+      <h>35</h>
+    </coordinates>
+    <panel_attributes>Le membre peut ajouter et suivre à 
+son souhait sa progression.
+bg=yellow</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>952</x>
+      <y>462</y>
+      <w>175</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>Contrat
+--
+_ID_
+dateDébut
+dateFin
+fréquencePaiement</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>784</x>
+      <y>434</y>
+      <w>182</w>
+      <h>98</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1= 1..*
+m2= 1
+possède &gt;</panel_attributes>
+    <additional_attributes>240.0;110.0;90.0;110.0;90.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>854</x>
+      <y>616</y>
+      <w>154</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>Facture
+--
+montant
+dateEchéance
+datePaiement 
+moyenPaiement
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1071</x>
+      <y>525</y>
+      <w>119</w>
+      <h>105</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1= 1..*
+m2= *
+délivre v</panel_attributes>
+    <additional_attributes>120.0;130.0;120.0;70.0;10.0;70.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>917</x>
+      <y>546</y>
+      <w>112</w>
+      <h>84</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1= 1..*
+m2= 1
+est constitué v</panel_attributes>
+    <additional_attributes>20.0;100.0;20.0;40.0;130.0;40.0;130.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>14</x>
+      <y>182</y>
+      <w>196</w>
+      <h>42</h>
+    </coordinates>
+    <panel_attributes>CI: les dates doivent être cohérentes.
+Les heures de début doivent précéder
+les dates de fin.
+bg=blue</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>784</x>
+      <y>350</y>
+      <w>175</w>
+      <h>91</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1= *
+m2= 1
+suit &gt;</panel_attributes>
+    <additional_attributes>230.0;10.0;90.0;10.0;90.0;100.0;10.0;100.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>7</x>
+      <y>308</y>
+      <w>224</w>
+      <h>343</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1= 1
+m2= 1..*
+travaille v</panel_attributes>
+    <additional_attributes>280.0;460.0;10.0;460.0;10.0;10.0;300.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>385</x>
+      <y>924</y>
+      <w>119</w>
+      <h>28</h>
+    </coordinates>
+    <panel_attributes>CI: L'inscription ne peut 
+s'effectuer qu'en avance.
+bg=blue</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>959</x>
+      <y>434</y>
+      <w>161</w>
+      <h>21</h>
+    </coordinates>
+    <panel_attributes>CI: Le contrat est immuable.
+bg=blue</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>259</x>
+      <y>707</y>
+      <w>70</w>
+      <h>147</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=1..*
+m2=1
+dispose v
+</panel_attributes>
+    <additional_attributes>10.0;190.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>336</x>
+      <y>448</y>
+      <w>413</w>
+      <h>238</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=*
+m2=*
+&lt; s'entraîne</panel_attributes>
+    <additional_attributes>10.0;310.0;560.0;310.0;560.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>693</x>
+      <y>560</y>
+      <w>49</w>
+      <h>21</h>
+    </coordinates>
+    <panel_attributes>lt=.</panel_attributes>
+    <additional_attributes>10.0;10.0;50.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>609</x>
+      <y>546</y>
+      <w>91</w>
+      <h>42</h>
+    </coordinates>
+    <panel_attributes>Passage
+--
+date
+Heure
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>560</x>
+      <y>896</y>
+      <w>273</w>
+      <h>35</h>
+    </coordinates>
+    <panel_attributes>Les abonnements sans cours associés sont ceux qui donne 
+uniquement accès à la salle de musculation.
+bg=yellow</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>525</x>
+      <y>399</y>
+      <w>112</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>Visiteur
+--
+_ID_
+visiteEffectuee
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>476</x>
+      <y>140</y>
+      <w>119</w>
+      <h>273</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;60.0;150.0;60.0;150.0;370.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>336</x>
+      <y>448</y>
+      <w>266</w>
+      <h>210</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=1
+m2=*
+&lt; a accès</panel_attributes>
+    <additional_attributes>10.0;270.0;350.0;270.0;350.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>427</x>
+      <y>728</y>
+      <w>98</w>
+      <h>42</h>
+    </coordinates>
+    <panel_attributes>TypeCours
+--
+_nom_</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>469</x>
+      <y>448</y>
+      <w>98</w>
+      <h>294</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=1..*
+m2=*
+est spécialisé v</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;400.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>469</x>
+      <y>763</y>
+      <w>84</w>
+      <h>91</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=1
+m2=*
+est de type ^</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;110.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>189</x>
+      <y>357</y>
+      <w>77</w>
+      <h>21</h>
+    </coordinates>
+    <panel_attributes>halign=center
+{total, disjoint}
+bg=pink</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>371</x>
+      <y>154</y>
+      <w>98</w>
+      <h>21</h>
+    </coordinates>
+    <panel_attributes>halign=center
+{total, chevauchant}
+bg=pink</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>364</x>
+      <y>350</y>
+      <w>154</w>
+      <h>28</h>
+    </coordinates>
+    <panel_attributes>CI: Un instructeur peut donner un cours
+seulement si il est spécialisé.
+bg=blue</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>819</x>
+      <y>693</y>
+      <w>224</w>
+      <h>77</h>
+    </coordinates>
+    <panel_attributes>CI: Il n'est pas possible de souscrire à 
+un nouvel abonnement si la facture n'a
+pas été payée avant la date d'échéance.
+
+CI: La somme des factures doit être égale à 
+la somme du prix des abonnements délivrés.
+
+bg=blue</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>0</x>
+      <y>966</y>
+      <w>119</w>
+      <h>42</h>
+    </coordinates>
+    <panel_attributes>TypeMachine
+--
+_type_</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>49</x>
+      <y>903</y>
+      <w>84</w>
+      <h>77</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=*
+m2=1
+est de type v</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;90.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>224</x>
+      <y>693</y>
+      <w>91</w>
+      <h>21</h>
+    </coordinates>
+    <panel_attributes>numéro</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>959</x>
+      <y>532</y>
+      <w>91</w>
+      <h>21</h>
+    </coordinates>
+    <panel_attributes>numéro</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>819</x>
+      <y>777</y>
+      <w>224</w>
+      <h>77</h>
+    </coordinates>
+    <panel_attributes>La date d'échéance est calculée à partir 
+du début du contrat avec un délai de 1 mois 
+et renouvelée pour chaque mois.
+
+Le status du paiement est déduit à travers
+la date de paiement.
+bg=yellow</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>434</x>
+      <y>238</y>
+      <w>112</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>Compte
+--
+_ID_
+motDePasse
+dateDeCréation</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>539</x>
+      <y>252</y>
+      <w>189</w>
+      <h>161</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1= 1
+m2= 1
+&lt; possède </panel_attributes>
+    <additional_attributes>230.0;210.0;230.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>301</x>
+      <y>252</y>
+      <w>147</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1= 1
+m2= 1
+possède &gt;</panel_attributes>
+    <additional_attributes>10.0;60.0;10.0;20.0;190.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>406</x>
+      <y>196</y>
+      <w>168</w>
+      <h>35</h>
+    </coordinates>
+    <panel_attributes>Une personne ne doit pas créer 
+plus qu'un compte.
+bg=yellow</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>140</x>
+      <y>511</y>
+      <w>259</w>
+      <h>28</h>
+    </coordinates>
+    <panel_attributes>CI: l'administrateur est unique pour toutes les salles 
+de fitness. Il est  situé dans le fitness principal.
+bg=blue</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>
