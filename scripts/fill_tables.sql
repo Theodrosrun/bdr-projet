@@ -30,25 +30,7 @@ VALUES (1, 1, true),
        (2, 1, false),
        (3, 1, true),
        (4, 1, false),
-       (5, 1, true),
-       (6, 1, false),
-       (7, 1, true),
-       (8, 1, false),
-       (9, 1, true),
-       (10, 1, true);
-
--- Insertions dans la table Employe
-INSERT INTO Employe (employe_id, fitness_id, compte_id, salaire)
-VALUES (11, 1, 'employe1_username', 5000.00),
-       (12, 1, 'employe2_username', 4800.00),
-       (13, 1, 'employe3_username', 5200.00),
-       (14, 1, 'employe4_username', 5100.00),
-       (15, 1, 'employe5_username', 4900.00),
-       (16, 1, 'employe6_username', 5300.00),
-       (17, 1, 'employe7_username', 5400.00),
-       (18, 1, 'employe8_username', 4700.00),
-       (19, 1, 'employe9_username', 4800.00),
-       (20, 1, 'employe10_username', 5500.00);
+       (5, 1, true);
 
 -- Insertions dans la table Compte
 INSERT INTO Compte (username, motDePasse, dateDeCreation, IBAN)
@@ -65,18 +47,54 @@ VALUES ('employe1_username', 'password1', '2023-01-01', 'IBAN123'),
 
 
 
+-- Insertions dans la table Employe
+INSERT INTO Employe (employe_id, fitness_id, compte_id, salaire)
+VALUES (11, 1, 'employe1_username', 5000.00),
+       (12, 1, 'employe2_username', 4800.00),
+       (13, 1, 'employe3_username', 5200.00),
+       (14, 1, 'employe4_username', 5100.00),
+       (15, 1, 'employe5_username', 4900.00);
+
+INSERT INTO Membre (membre_id, compte_id)
+VALUES (6,  'employe6_username'),
+       (7,  'employe7_username'),
+       (8,  'employe8_username'),
+       (9,  'employe9_username'),
+       (10, 'employe10_username');
+
+
+DROP SEQUENCE IF EXISTS passage_id_sequence;
 -- Création de la séquence pour générer des valeurs uniques pour passage_id
 CREATE SEQUENCE passage_id_sequence START 1;
 -- Insertions dans la table Passage basées sur les conditions de visiteEffectuee dans la table Visiteur
 INSERT INTO Passage (passage_id, membre_id, fitness_id, timestamp)
-SELECT nextval('passage_id_sequence'), v.visiteur_id, v.fitness_id, CURRENT_TIMESTAMP
-FROM Visiteur v
-WHERE v.visiteEffectuee = true;
+SELECT nextval('passage_id_sequence'), m.membre_id, 1, CURRENT_TIMESTAMP
+FROM Membre m;
 
 
 -- Insertion dans la table Instructeur, héritant de la table Employe
 INSERT INTO Instructeur (instructeur_id)
 VALUES (11);
+
+-- Insertion dans la table TypeCours
+INSERT INTO TypeCours (nom)
+VALUES ('Yoga'),
+       ('Pilates'),
+       ('Cardio');
+
+INSERT INTO Salle (salle_id, fitness_id, capaciteMax, surface)
+VALUES
+    ('Salle A', 1, 20, '30m²'),
+    ('Salle B', 1, 15, '25m²'),
+    ('Salle C', 1, 25, '40m²');
+
+
+INSERT INTO Abonnement (abo_id, prix, disponibilite)
+VALUES
+    ('Basic', 150.00, true),
+    ('Intermediate', 50, true),
+    ('Advanced', 50.00, true);
+
 
 -- Insertions dans la table Cours
 INSERT INTO Cours (cours_id, jour, heure, description, recurrence, instructeur_id, typeCours, fitness_id, salle_id, abo_id)

@@ -147,7 +147,7 @@ CREATE TABLE ContratAbonnement (
 
 CREATE TABLE Abonnement (
     abo_id VARCHAR(255),
-    prix DECIMAL(4,2) NOT NULL,
+    prix DECIMAL(6,2) NOT NULL,
     disponibilite BOOLEAN DEFAULT TRUE,
     PRIMARY KEY(abo_id)
 );
@@ -155,7 +155,7 @@ CREATE TABLE Abonnement (
 CREATE TABLE Facture (
     facture_id INT NOT NULL,
     contrat_id INT NOT NULL,
-    montant DECIMAL(6,2) NOT NULL,
+    montant DECIMAL(8,2) NOT NULL,
     dateEcheance DATE NOT NULL,
     datePaiement DATE NOT NULL,
     moyenPaiement VARCHAR(255) NOT NULL,
@@ -167,7 +167,7 @@ CREATE TABLE Facture (
 CREATE TABLE Progression (
     progression_id INT NOT NULL PRIMARY KEY,
     date DATE,
-    poids NUMERIC(5, 2),
+    poids NUMERIC(7, 2),
     membre_id INT NOT NULL
 );
 
