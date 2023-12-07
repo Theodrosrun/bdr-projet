@@ -8,7 +8,7 @@ Le projet consiste en le développement d'une base de données pour une salle de
 
 <br>
 
-## Configuration de connexions
+## Configuration de connexion
 
 ### Configuration pour l'utilisateur BDR :
 - **Host** : localhost
