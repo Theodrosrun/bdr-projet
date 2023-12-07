@@ -55,6 +55,14 @@ VALUES (11, 1, 'employe1_username', 5000.00),
        (14, 1, 'employe4_username', 5100.00),
        (15, 1, 'employe5_username', 4900.00);
 
+
+INSERT INTO Administrateur (administrateur_id)
+VALUES (13); -- Remplacez par l'ID de l'administrateur souhaité
+
+INSERT INTO PersonnelAdministratif (padministratif_id)
+VALUES (14),(15); -- Remplacez par l'ID du personnel administratif souhaité
+
+
 INSERT INTO Membre (membre_id, compte_id)
 VALUES (6,  'employe6_username'),
        (7,  'employe7_username'),
@@ -105,4 +113,46 @@ VALUES
 
 
 
+INSERT INTO TypeMachine (type_machine)
+VALUES
+    ('Tapis de course'),
+    ('Vélo elliptique'),
+    ('Rameur');
 
+
+INSERT INTO Machine (machine_id, fitness_id, salle_id, etat, type_machine)
+VALUES
+    (1, 1, 'Salle A', 'neuf', 'Tapis de course'),
+    (2, 1, 'Salle B', 'usagé', 'Vélo elliptique'),
+    (3, 1, 'Salle C', 'abîmé', 'Rameur'); -- Ajoutez autant de lignes que nécessaire
+
+INSERT INTO Progression (progression_id, date, poids, membre_id)
+VALUES
+    (1, '2023-12-01', 75.5, 2),
+    (2, '2023-12-02', 72.3, 7),
+    (3, '2023-12-03', 80.0, 8);
+
+INSERT INTO InstructeurTypeCours (instructeur_id, typeCours)
+VALUES
+    (11, 'Yoga'),
+    (11, 'Pilates'),
+    (11, 'Cardio');
+
+INSERT INTO Contrat (contrat_id, membre_id, dateDebut, dateFin, frequencePaiement)
+VALUES
+    (1, 6, '2023-01-01', '2023-12-31', 1),
+    (2, 7, '2023-02-15', '2023-12-15', 1),
+    (3, 8, '2023-03-10', '2023-09-10', 3);
+
+
+INSERT INTO ContratAbonnement (contrat_id, abo_id)
+VALUES
+    (1, 'Basic'),
+    (2, 'Intermediate'),
+    (3, 'Advanced');
+
+INSERT INTO Facture (facture_id, contrat_id, montant, dateEcheance, datePaiement, moyenPaiement)
+VALUES
+    (1, 1, 500.00, '2024-02-01', '2023-02-15', 'Carte bancaire'),
+    (2, 2, 300.00, '2024-03-01', '2023-03-15', 'Virement'),
+    (3, 3, 200.00, '2024-04-01', '2023-04-10', 'Chèque');

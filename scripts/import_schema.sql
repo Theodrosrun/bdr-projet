@@ -167,7 +167,7 @@ CREATE TABLE Facture (
 CREATE TABLE Progression (
     progression_id INT NOT NULL PRIMARY KEY,
     date DATE,
-    poids NUMERIC(7, 2),
+    poids NUMERIC(4, 1),
     membre_id INT NOT NULL
 );
 
