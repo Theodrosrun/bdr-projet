@@ -2,11 +2,7 @@
 
 Le projet consiste en le développement d'une base de données pour une salle de fitness, conçue pour enrichir l'expérience des utilisateurs et optimiser la gestion administrative, offrant des fonctionnalités telles que la réservation de cours, le suivi des paiements et la gestion des membres.
 
-<br>
-
 ---
-
-<br>
 
 ## Configuration de connexion
 
@@ -24,11 +20,7 @@ Le projet consiste en le développement d'une base de données pour une salle de
 - **Password** : root
 - **Database** : postgres
 
-<br>
-
 ---
-
-<br>
 
 ## Modélisation relationnel
 
