@@ -90,9 +90,7 @@ CREATE TABLE Cours (
     typeCours VARCHAR(255) NOT NULL,
     fitness_id INT NOT NULL,
     salle_id VARCHAR(255) NOT NULL,
-    abo_nom VARCHAR(255) NOT NULL,
-    abo_duree INT NOT NULL,
-    UNIQUE(abo_nom, abo_duree)
+    abo_id VARCHAR(255) NOT NULL UNIQUE,
 );
 
 CREATE TABLE TypeCours (
@@ -144,17 +142,15 @@ CREATE TABLE Contrat (
 -- Relation M:N --> il faut créer une table associative
 CREATE TABLE ContratAbonnement (
     contrat_id INT NOT NULL,
-    abo_nom VARCHAR(255) NOT NULL,
-    abo_duree INT NOT NULL,
-    PRIMARY KEY (contrat_id, abo_nom, abo_duree)
+    abo_id VARCHAR(255) NOT NULL,
+    PRIMARY KEY (contrat_id, abo_id)
 );
 
 CREATE TABLE Abonnement (
-    abo_nom VARCHAR(255),
-    abo_duree INT,
+    abo_id VARCHAR(255),
     prix DECIMAL(4,2) NOT NULL,
     disponibilite BOOLEAN DEFAULT TRUE,
-    PRIMARY KEY(abo_nom, abo_duree)
+    PRIMARY KEY(abo_id)
 );
 
 CREATE TABLE Facture (
@@ -238,7 +234,7 @@ ALTER TABLE Cours
 ADD FOREIGN KEY (fitness_id, salle_id) REFERENCES Salle(fitness_id, salle_id);
 
 ALTER TABLE Cours
-ADD FOREIGN KEY (abo_nom, abo_duree) REFERENCES Abonnement(abo_nom, abo_duree);
+ADD FOREIGN KEY (abo_id) REFERENCES Abonnement(abo_id);
 
 --- InstructeurTypeCours ---
 
@@ -272,7 +268,7 @@ ALTER TABLE ContratAbonnement
 ADD FOREIGN KEY (contrat_id) REFERENCES Contrat(contrat_id);
 
 ALTER TABLE ContratAbonnement
-ADD FOREIGN KEY (abo_nom, abo_duree) REFERENCES Abonnement(abo_nom, abo_duree);
+ADD FOREIGN KEY (abo_id) REFERENCES Abonnement(abo_id);
 
 --- Facture ---
 
