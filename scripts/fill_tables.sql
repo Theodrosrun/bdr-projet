@@ -124,11 +124,11 @@ INSERT INTO Machine (machine_id, fitness_id, salle_id, etat, type_machine)
 VALUES
     (1, 1, 'Salle A', 'neuf', 'Tapis de course'),
     (2, 1, 'Salle B', 'usagé', 'Vélo elliptique'),
-    (3, 1, 'Salle C', 'abîmé', 'Rameur'); -- Ajoutez autant de lignes que nécessaire
+    (3, 1, 'Salle C', 'abîmé', 'Rameur');
 
 INSERT INTO Progression (progression_id, date, poids, membre_id)
 VALUES
-    (1, '2023-12-01', 75.5, 2),
+    (1, '2023-12-01', 75.5, 6),
     (2, '2023-12-02', 72.3, 7),
     (3, '2023-12-03', 80.0, 8);
 
@@ -155,4 +155,5 @@ INSERT INTO Facture (facture_id, contrat_id, montant, dateEcheance, datePaiement
 VALUES
     (1, 1, 500.00, '2024-02-01', '2023-02-15', 'Carte bancaire'),
     (2, 2, 300.00, '2024-03-01', '2023-03-15', 'Virement'),
-    (3, 3, 200.00, '2024-04-01', '2023-04-10', 'Chèque');
+    (3, 3, 200.00, '2024-04-01', NULL, 'Chèque');
+
