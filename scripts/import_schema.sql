@@ -90,7 +90,7 @@ CREATE TABLE Cours (
     typeCours VARCHAR(255) NOT NULL,
     fitness_id INT NOT NULL,
     salle_id VARCHAR(255) NOT NULL,
-    abo_id VARCHAR(255) NOT NULL UNIQUE,
+    abo_id VARCHAR(255) NOT NULL UNIQUE
 );
 
 CREATE TABLE TypeCours (
