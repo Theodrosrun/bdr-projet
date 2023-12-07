@@ -6,6 +6,8 @@ Le projet consiste en le développement d'une base de données pour une salle de
 
 ---
 
+<br>
+
 ## Configuration de connexions
 
 ### Configuration pour l'utilisateur BDR :
@@ -25,6 +27,8 @@ Le projet consiste en le développement d'une base de données pour une salle de
 <br>
 
 ---
+
+<br>
 
 ## Modélisation relationnel
 
