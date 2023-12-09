@@ -5,5 +5,6 @@
     <file url="file://$PROJECT_DIR$/scripts/empty_tables.sql" dialect="PostgreSQL" />
     <file url="file://$PROJECT_DIR$/scripts/fill_tables.sql" dialect="PostgreSQL" />
     <file url="file://$PROJECT_DIR$/scripts/import_schema.sql" dialect="PostgreSQL" />
+    <file url="file://$PROJECT_DIR$/scripts/val_xp.sql" dialect="PostgreSQL" />
   </component>
 </project>
