@@ -32,7 +32,6 @@ VALUES (1, 1, true),
        (4, 1, false),
        (5, 1, true);
 
--- Insertions dans la table Compte
 INSERT INTO Compte (username, motDePasse, dateDeCreation, IBAN)
 VALUES ('employe1_username', 'password1', '2023-01-01', 'IBAN123'),
        ('employe2_username', 'password2', '2023-01-02', 'IBAN456'),
@@ -45,9 +44,6 @@ VALUES ('employe1_username', 'password1', '2023-01-01', 'IBAN123'),
        ('employe9_username', 'password9', '2023-01-09', 'IBAN116'),
        ('employe10_username', 'password10', '2023-01-10', 'IBAN117');
 
-
-
--- Insertions dans la table Employe
 INSERT INTO Employe (employe_id, fitness_id, compte_id, salaire)
 VALUES (11, 1, 'employe1_username', 5000.00),
        (12, 1, 'employe2_username', 4800.00),
@@ -55,13 +51,11 @@ VALUES (11, 1, 'employe1_username', 5000.00),
        (14, 1, 'employe4_username', 5100.00),
        (15, 1, 'employe5_username', 4900.00);
 
-
 INSERT INTO Administrateur (administrateur_id)
 VALUES (13); -- Remplacez par l'ID de l'administrateur souhaité
 
 INSERT INTO PersonnelAdministratif (padministratif_id)
 VALUES (14),(15); -- Remplacez par l'ID du personnel administratif souhaité
-
 
 INSERT INTO Membre (membre_id, compte_id)
 VALUES (6,  'employe6_username'),
@@ -70,21 +64,17 @@ VALUES (6,  'employe6_username'),
        (9,  'employe9_username'),
        (10, 'employe10_username');
 
-
-DROP SEQUENCE IF EXISTS passage_id_sequence;
 -- Création de la séquence pour générer des valeurs uniques pour passage_id
+DROP SEQUENCE IF EXISTS passage_id_sequence;
 CREATE SEQUENCE passage_id_sequence START 1;
 -- Insertions dans la table Passage basées sur les conditions de visiteEffectuee dans la table Visiteur
 INSERT INTO Passage (passage_id, membre_id, fitness_id, timestamp)
 SELECT nextval('passage_id_sequence'), m.membre_id, 1, CURRENT_TIMESTAMP
 FROM Membre m;
 
-
--- Insertion dans la table Instructeur, héritant de la table Employe
 INSERT INTO Instructeur (instructeur_id)
 VALUES (11);
 
--- Insertion dans la table TypeCours
 INSERT INTO TypeCours (nom)
 VALUES ('Yoga'),
        ('Pilates'),
@@ -96,29 +86,23 @@ VALUES
     ('Salle B', 1, 15, '25m²'),
     ('Salle C', 1, 25, '40m²');
 
-
 INSERT INTO Abonnement (abo_id, prix, disponibilite)
 VALUES
     ('Basic', 150.00, true),
     ('Intermediate', 50, true),
     ('Advanced', 50.00, true);
 
-
--- Insertions dans la table Cours
 INSERT INTO Cours (cours_id, jour, heure, description, recurrence, instructeur_id, typeCours, fitness_id, salle_id, abo_id)
 VALUES
     (1, '2023-12-01', '09:00:00', 'Yoga class', 7, 11, 'Yoga', 1, 'Salle A', 'Basic'),
     (2, '2023-12-02', '14:00:00', 'Pilates session', 7, 11, 'Pilates', 1, 'Salle B', 'Intermediate'),
     (3, '2023-12-03', '10:00:00', 'Cardio workout', 7, 11, 'Cardio', 1, 'Salle C', 'Advanced');
 
-
-
 INSERT INTO TypeMachine (type_machine)
 VALUES
     ('Tapis de course'),
     ('Vélo elliptique'),
     ('Rameur');
-
 
 INSERT INTO Machine (machine_id, fitness_id, salle_id, etat, type_machine)
 VALUES
@@ -143,7 +127,6 @@ VALUES
     (1, 6, '2023-01-01', '2023-12-31', 1),
     (2, 7, '2023-02-15', '2023-12-15', 1),
     (3, 8, '2023-03-10', '2023-09-10', 3);
-
 
 INSERT INTO ContratAbonnement (contrat_id, abo_id)
 VALUES
