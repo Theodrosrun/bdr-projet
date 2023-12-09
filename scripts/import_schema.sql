@@ -6,6 +6,8 @@ SET search_path = my_amazing_fitness;
 
 ----------------------------------------------
 
+-- Table
+
 CREATE TABLE MyAmazingFitness (
     fitness_id INT PRIMARY KEY,
     numero INT NOT NULL,
@@ -164,6 +166,8 @@ CREATE TABLE SuppressionLog (
 
 ----------------------------------------------
 
+-- Foreign key
+
 ALTER TABLE Employe
 ADD FOREIGN KEY (employe_id) REFERENCES Personne(id);
 
@@ -244,6 +248,8 @@ ADD FOREIGN KEY (membre_id) REFERENCES Membre(membre_id);
 
 ----------------------------------------------
 
+-- View
+
 DROP VIEW IF EXISTS VueFacturesPayees;
 
 CREATE VIEW VueFacturesPayees
@@ -269,6 +275,8 @@ LEFT JOIN Facture f ON c.contrat_id = f.contrat_id
 GROUP BY c.membre_id;
 
 ----------------------------------------------
+
+-- Trigger
 
 CREATE OR REPLACE FUNCTION log_suppression()
 RETURNS TRIGGER AS
