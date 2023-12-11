@@ -1,7 +1,8 @@
 SET search_path = my_amazing_fitness;
 
 INSERT INTO MyAmazingFitness (fitness_id, numero, rue, ville, NPA)
-VALUES (1, 123, 'Rue de la Paix', 'Villeville', 12345);
+VALUES (1, 123, 'Rue de la Paix', 'Villeville', 12345),
+       (2, 456, 'Avenue du Bonheur', 'Bonville', 54321);
 
 INSERT INTO Personne (id, nom, prenom, dateNaissance, adresseMail, numeroTelephone, numero, rue, ville, NPA, pays)
 VALUES (1, 'Doe', 'John', '1990-05-20', 'john.doe@example.com', '+123456789', 123, 'Rue des Lilas', 'Villefort', 54321, 'Paysland'),
@@ -23,14 +24,21 @@ VALUES (1, 'Doe', 'John', '1990-05-20', 'john.doe@example.com', '+123456789', 12
        (17, 'Smith', 'Michael', '1990-07-04', 'michael.smith@example.com', '+1122998877', 505, 'Avenue des Arbres', 'Arbreville', 67890, 'Treeland'),
        (18, 'Garcia', 'Julia', '1999-03-18', 'julia.garcia@example.com', '+8877665544', 606, 'Rue des Champs', 'Champbourg', 98765, 'Fieldland'),
        (19, 'Brown', 'Daniel', '1989-10-30', 'daniel.brown@example.com', '+1122445566', 707, 'Boulevard de la Rivière', 'Rivièrebourg', 43210, 'Riverland'),
-       (20, 'Jones', 'Sophia', '1995-08-15', 'sophia.jones@example.com', '+3366998855', 808, 'Place de Lavoie', 'Égliseville', 13579, 'Churchland');
+       (20, 'Jones', 'Sophia', '1995-08-15', 'sophia.jones@example.com', '+3366998855', 808, 'Place de Lavoie', 'Égliseville', 13579, 'Churchland'),
+       (21, 'Lefebvre', 'Marie', '1998-12-21', 'marie.lefebvre@example.com', '+3366001122', 909, 'Avenue du Lac', 'Lacville', 12345, 'LakeLand'),
+       (22, 'Wang', 'Jason', '1993-05-08', 'jason.wang@example.com', '+4477889966', 1010, 'Rue de la Cascade', 'Cascadeville', 67890, 'WaterfallLand'),
+       (23, 'Mueller', 'Laura', '1996-09-17', 'laura.mueller@example.com', '+1122334455', 1111, 'Boulevard des Roses', 'Rosebourg', 34567, 'Roseland'),
+       (24, 'Rossi', 'Giuseppe', '1990-03-25', 'giuseppe.rossi@example.com', '+9988776655', 1212, 'Chemin de la Montagne', 'Montagneville', 98765, 'MountainLand'),
+       (25, 'Cohen', 'David', '1985-11-12', 'david.cohen@example.com', '+1122998877', 1313, 'Avenue du Ciel', 'Cielville', 54321, 'SkyLand');
 
 INSERT INTO Visiteur (visiteur_id, fitness_id, visiteEffectuee)
 VALUES (1, 1, true),
        (2, 1, false),
        (3, 1, true),
        (4, 1, false),
-       (5, 1, true);
+       (5, 1, true),
+       (21, 2, false);
+
 
 INSERT INTO Compte (username, motDePasse, dateDeCreation, IBAN)
 VALUES ('employe1_username', 'password1', '2023-01-01', 'IBAN123'),
@@ -38,31 +46,39 @@ VALUES ('employe1_username', 'password1', '2023-01-01', 'IBAN123'),
        ('employe3_username', 'password3', '2023-01-03', 'IBAN789'),
        ('employe4_username', 'password4', '2023-01-04', 'IBAN101'),
        ('employe5_username', 'password5', '2023-01-05', 'IBAN112'),
-       ('employe6_username', 'password6', '2023-01-06', 'IBAN113'),
-       ('employe7_username', 'password7', '2023-01-07', 'IBAN114'),
-       ('employe8_username', 'password8', '2023-01-08', 'IBAN115'),
-       ('employe9_username', 'password9', '2023-01-09', 'IBAN116'),
-       ('employe10_username', 'password10', '2023-01-10', 'IBAN117');
+       ('membre6_username', 'password6', '2023-01-06', 'IBAN113'),
+       ('membre7_username', 'password7', '2023-01-07', 'IBAN114'),
+       ('membre8_username', 'password8', '2023-01-08', 'IBAN115'),
+       ('membre9_username', 'password9', '2023-01-09', 'IBAN116'),
+       ('membre10_username', 'password10', '2023-01-10', 'IBAN117'),
+       ('employe22_username', 'password22', '2023-01-09', 'IBAN122'),
+       ('employe23_username', 'password23', '2023-01-09', 'IBAN123'),
+       ('membre24_username', 'password24', '2023-01-09', 'IBAN124'),
+       ('membre25_username', 'password25', '2023-01-09', 'IBAN125');
 
 INSERT INTO Employe (employe_id, fitness_id, compte_id, salaire)
 VALUES (11, 1, 'employe1_username', 5000.00),
        (12, 1, 'employe2_username', 4800.00),
        (13, 1, 'employe3_username', 5200.00),
        (14, 1, 'employe4_username', 5100.00),
-       (15, 1, 'employe5_username', 4900.00);
+       (15, 1, 'employe5_username', 4900.00),
+       (22, 2, 'employe22_username', 10000.00),
+       (23, 2, 'employe23_username', 9500.00);
 
 INSERT INTO Administrateur (administrateur_id)
-VALUES (13); -- Remplacez par l'ID de l'administrateur souhaité
+VALUES (13), (22);
 
 INSERT INTO PersonnelAdministratif (padministratif_id)
-VALUES (14),(15); -- Remplacez par l'ID du personnel administratif souhaité
+VALUES (14), (15);
 
 INSERT INTO Membre (membre_id, compte_id)
-VALUES (6,  'employe6_username'),
-       (7,  'employe7_username'),
-       (8,  'employe8_username'),
-       (9,  'employe9_username'),
-       (10, 'employe10_username');
+VALUES (6,  'membre6_username'),
+       (7,  'membre7_username'),
+       (8,  'membre8_username'),
+       (9,  'membre9_username'),
+       (10, 'membre10_username'),
+       (24, 'membre24_username'),
+       (25, 'membre25_username');
 
 -- Création de la séquence pour générer des valeurs uniques pour passage_id
 DROP SEQUENCE IF EXISTS passage_id_sequence;
@@ -84,7 +100,9 @@ INSERT INTO Salle (salle_id, fitness_id, capaciteMax, surface)
 VALUES
     ('Salle A', 1, 20, '30m²'),
     ('Salle B', 1, 15, '25m²'),
-    ('Salle C', 1, 25, '40m²');
+    ('Salle C', 1, 25, '40m²'),
+    ('Salle A', 2, 100, '100m²'),
+    ('Salle B', 2, 100, '100m²');
 
 INSERT INTO Abonnement (abo_id, prix, disponibilite)
 VALUES
@@ -102,13 +120,15 @@ INSERT INTO TypeMachine (type_machine)
 VALUES
     ('Tapis de course'),
     ('Vélo elliptique'),
-    ('Rameur');
+    ('Rameur'),
+    ('Escalator');
 
 INSERT INTO Machine (machine_id, fitness_id, salle_id, etat, type_machine)
 VALUES
     (1, 1, 'Salle A', 'neuf', 'Tapis de course'),
     (2, 1, 'Salle B', 'usagé', 'Vélo elliptique'),
-    (3, 1, 'Salle C', 'abîmé', 'Rameur');
+    (3, 2, 'Salle A', 'neuf', 'Escalator'),
+    (4, 1, 'Salle C', 'abîmé', 'Rameur');
 
 INSERT INTO Progression (progression_id, date, poids, membre_id)
 VALUES
