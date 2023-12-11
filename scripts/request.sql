@@ -1,4 +1,4 @@
--- SELECT * FROM Membre WHERE nom = 'Doe';
+SELECT * FROM Membre WHERE nom = 'Doe';
 
 SELECT * FROM Employe WHERE salaire > 5000;
 
