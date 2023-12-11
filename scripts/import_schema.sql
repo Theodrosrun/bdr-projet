@@ -146,7 +146,7 @@ CREATE TABLE Facture (
     contrat_id INT NOT NULL,
     montant DECIMAL(8,2) NOT NULL,
     dateEcheance DATE NOT NULL,
-    datePaiement DATE, -- Valentin a enlevé NOT NULL - on doit le laisser ?
+    datePaiement DATE,
     moyenPaiement VARCHAR(255) NOT NULL,
     PRIMARY KEY (facture_id, contrat_id)
 );
