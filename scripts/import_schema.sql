@@ -259,10 +259,10 @@ SELECT c.membre_id,
        SUM(CASE WHEN f.datePaiement IS NOT NULL THEN f.montant
            ELSE 0 END) AS montant_paye,
        CASE WHEN SUM(CASE WHEN f.datePaiement IS NOT NULL THEN f.montant
-           ELSE 0 END) = f.montant THEN true ELSE false END AS toutes_factures_payees
+           ELSE 0 END) = SUM(f.montant) THEN true ELSE false END AS toutes_factures_payees
 FROM contrat c
 LEFT JOIN facture f ON c.contrat_id = f.contrat_id
-GROUP BY c.membre_id, f.montant;
+GROUP BY c.membre_id;
 
 SELECT * FROM VueFacturesPayees;
 
