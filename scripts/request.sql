@@ -1,4 +1,9 @@
-SELECT * FROM Membre WHERE nom = 'Doe';
+SELECT E.*,
+       P.nom,
+       P.prenom
+FROM Employe E
+    JOIN Personne P ON E.employe_id = P.id
+WHERE P.nom = 'NomRecherché';
 
 SELECT * FROM Employe WHERE salaire > 5000;
 
