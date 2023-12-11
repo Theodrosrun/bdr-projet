@@ -4,7 +4,7 @@ SELECT P.nom,
        P.prenom
 FROM Employe E
     JOIN Personne P ON E.employe_id = P.id
-WHERE P.nom = 'Doe';
+WHERE P.nom = 'Baker';
 
 SELECT * FROM Employe WHERE salaire > 5000;
 
