@@ -152,7 +152,7 @@ CREATE TABLE Facture (
 );
 
 CREATE TABLE Progression (
-    progression_id INT NOT NULL PRIMARY KEY,
+    progression_id SERIAL PRIMARY KEY,
     date DATE,
     poids NUMERIC(4, 1),
     membre_id INT NOT NULL
