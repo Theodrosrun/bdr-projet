@@ -22,13 +22,13 @@ SELECT *
 FROM facture
 WHERE montant > 50;
 
-SELECT c.description,
-       c.heure,
-       c.jour,
-       p.prenom
-FROM Cours c
-    JOIN Instructeur i ON c.instructeur_id = i.instructeur_id
-    JOIN Personne p ON p.id = i.instructeur_id;
+SELECT C.description,
+       C.heure,
+       C.jour,
+       P.prenom
+FROM Cours C
+    JOIN Instructeur I ON C.instructeur_id = I.instructeur_id
+    JOIN Personne P ON P.id = I.instructeur_id;
 
 SELECT *
 FROM Progression
