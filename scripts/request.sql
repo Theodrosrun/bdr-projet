@@ -35,7 +35,6 @@ FROM Progression
 WHERE membre_id = 6;
 
 BEGIN;
-
 UPDATE Contrat
 SET frequencePaiement = 2 -- Nouvelle fréquence de paiement
 WHERE contrat_id = 1; -- Remplace 1 par l'identifiant du contrat que tu souhaites modifier
@@ -43,5 +42,4 @@ WHERE contrat_id = 1; -- Remplace 1 par l'identifiant du contrat que tu souhaite
 UPDATE facture
 SET montant = 150.00 -- Nouveau montant de paiement
 WHERE contrat_id = 1; -- Remplace 1 par l'identifiant du contrat que tu souhaites modifier
-
 COMMIT;
