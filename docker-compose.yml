@@ -5,6 +5,8 @@ networks:
     driver: bridge
 
 services:
+
+  # postgresql
   postgresql:
     image: 'bitnami/postgresql:16'
     environment:
@@ -19,6 +21,7 @@ services:
     networks:
       - bdr-net
 
+  # tomcat
   tomcat:
     image: 'tomcat:latest'
     depends_on:
