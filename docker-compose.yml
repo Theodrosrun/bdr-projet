@@ -29,7 +29,7 @@ services:
     ports:
       - "8080:8080"
     volumes:
-      - ./target/myamazingfitness.war:/usr/local/tomcat/webapps/myamazingfitness.war
+      - ./target/myamazingfitness-1.0-SNAPSHOT.war:/usr/local/tomcat/webapps/myamazingfitness-1.0-SNAPSHOT.war
     networks:
       - bdr-net
 
