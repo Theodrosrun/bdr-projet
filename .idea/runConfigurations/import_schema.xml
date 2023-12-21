@@ -1,8 +1,0 @@
-<component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="import_schema" type="DatabaseScript">
-    <script-file value="$PROJECT_DIR$/scripts/import_schema.sql" />
-    <script-mode>FILE</script-mode>
-    <data-source id="5fa0e047-9d09-481c-9f16-ee0d205efbc6" namespace="database/&quot;bdr&quot;/schema/&quot;my_amazing_fitness&quot;" />
-    <method v="2" />
-  </configuration>
-</component>
