@@ -17,7 +17,7 @@ services:
     ports:
       - 5432:5432
     volumes:
-      - .:/data:ro
+      - postgresql_data:/bitnami/postgresql
     networks:
       - bdr-net
 
@@ -29,6 +29,9 @@ services:
     ports:
       - "8080:8080"
     volumes:
-      - ./path/to/your-app.war:/usr/local/tomcat/webapps/your-app.war
+      - ./target/nomDeVotreApplication.war:/usr/local/tomcat/webapps/nomDeVotreApplication.war
     networks:
       - bdr-net
+
+volumes:
+  postgresql_data:
