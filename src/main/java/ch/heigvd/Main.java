@@ -21,7 +21,7 @@ public class Main {
 
             // Création d'une requête
             Statement stmt = conn.createStatement();
-            String query = "SELECT 1;"; // Exemple de requête simple
+            String query = "SELECT 1;";
 
             // Exécution de la requête
             ResultSet rs = stmt.executeQuery(query);

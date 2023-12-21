@@ -22,10 +22,6 @@ Le projet consiste en le développement d'une base de données pour une salle de
 
 ---
 
-## Lancer l'application
-
----
-
 ## Configuration de connexion
 
 ### Configuration pour l'utilisateur BDR :
@@ -41,6 +37,10 @@ Le projet consiste en le développement d'une base de données pour une salle de
 - Database : postgres
 - **User : postgres**
 - **Password : root**
+
+---
+
+## Lancer l'application
 
 ---
 
