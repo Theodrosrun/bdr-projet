@@ -5,9 +5,10 @@ Le projet consiste en le développement d'une base de données pour une salle de
 ---
 
 ## Environnement
-
-- Java Temurin 17 (Kit de développement Java)
+ 
+- Intellij IDEA (Environnement de développement)
 - Docker (Conteneurisation)
+- Java Temurin 17 (Kit de développement Java)
 - Tomcat 10.1.17 (Serveur d'application web)
 
 ---
