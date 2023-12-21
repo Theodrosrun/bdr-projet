@@ -4,22 +4,29 @@ Le projet consiste en le développement d'une base de données pour une salle de
 
 ---
 
+## Exéctuer l'application
+
+- Java Temurin 17 (Kit de développement Java)
+- Tomcat 10.1.17 (Serveur d'application web)
+
+---
+
 ## Configuration de connexion
 
 ### Configuration pour l'utilisateur BDR :
-- **Host** : localhost
-- **Port** : 5432
-- **User** : bdr
-- **Password** : bdr
-- **Database** : bdr
+- Host : localhost
+- Port : 5432
+- Database : bdr
+- **User : bdr**
+- **Password : bdr**
 
 ### Configuration pour le super-utilisateur :
-- **Host** : localhost
-- **Port** : 5432
-- **User** : postgres
-- **Password** : root
-- **Database** : postgres
-
+- Host : localhost
+- Port : 5432
+- Database : postgres
+- **User : postgres**
+- **Password : root**
+- 
 ---
 
 ## Exécution de scripts
