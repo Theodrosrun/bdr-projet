@@ -23,7 +23,7 @@ services:
 
   # tomcat
   tomcat:
-    image: 'tomcat:latest'
+    image: 'tomcat:10.1.17-jdk17-temurin'
     depends_on:
       - postgresql
     ports:
