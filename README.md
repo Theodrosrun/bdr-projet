@@ -7,6 +7,7 @@ Le projet consiste en le développement d'une base de données pour une salle de
 ## Environnement
 
 - Java Temurin 17 (Kit de développement Java)
+- Docker (Conteneurisation)
 - Tomcat 10.1.17 (Serveur d'application web)
 
 ---
@@ -26,7 +27,7 @@ Le projet consiste en le développement d'une base de données pour une salle de
 - Database : postgres
 - **User : postgres**
 - **Password : root**
-- 
+
 ---
 
 ## Exécution de scripts
