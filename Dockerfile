@@ -1,4 +1,7 @@
-FROM ubuntu:latest
-LABEL authors="TheodrosMulugeta"
+FROM tomcat:latest
 
-ENTRYPOINT ["top", "-b"]
+COPY path/to/your-app.war /usr/local/tomcat/webapps/
+
+EXPOSE 8080
+
+CMD ["catalina.sh", "run"]
