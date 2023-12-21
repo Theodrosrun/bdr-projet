@@ -13,6 +13,17 @@ Le projet consiste en le développement d'une base de données pour une salle de
 
 ---
 
+## Dépendances
+
+#### 1. Pilote JDBC PostgreSQL (Connection/intéraction avec base de données)
+
+- **postgresql**
+    - Group ID: `org.postgresql`
+    - Artifact ID: `postgresql`
+    - Version: `42.3.1`
+
+---
+
 ## Lancer l'application
 
 ---
