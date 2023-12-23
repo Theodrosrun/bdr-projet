@@ -5,7 +5,6 @@ networks:
     driver: bridge
 
 services:
-
   # postgresql
   postgresql:
     image: 'bitnami/postgresql:16'
