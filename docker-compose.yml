@@ -1,5 +1,5 @@
 # Step 1: docker build -t myamazingfitness:v1.0 .
-# Step 2: http://localhost:10000/
+# Step 2: http://localhost:8080/
 # Sources: https://www.softwareyoga.com/docker-tomact-tutorial/
 
 version: '3.8'
@@ -29,7 +29,7 @@ services:
   tomcat:
     image: 'myamazingfitness:v1.0'
     ports:
-      - '10000:8080'
+      - '8080:8080'
     networks:
       - bdr-net
 
