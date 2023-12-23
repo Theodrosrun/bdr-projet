@@ -1,5 +1,5 @@
 # Step 1: docker build -t myamazingfitness:v1.0 .
-# Step 2: http://localhost:8080/
+# Step 2: http://localhost:8080/myamazingfitness-1.0-SNAPSHOT/database
 # Sources: https://www.softwareyoga.com/docker-tomact-tutorial/
 
 version: '3.8'
