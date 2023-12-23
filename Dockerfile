@@ -1,7 +1,7 @@
 # https://www.softwareyoga.com/docker-tomact-tutorial/
-# docker build -t myamazingfitness:v1.0 .
-# docker run -p 10000:8080 myamazingfitness:v1.0
-# http://localhost:10000/
+# 1. docker build -t myamazingfitness:v1.0 .
+# 2. docker run -p 10000:8080 myamazingfitness:v1.0
+# 3. http://localhost:10000/
 
 FROM tomcat:8.0-alpine
 
