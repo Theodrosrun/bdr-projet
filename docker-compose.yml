@@ -1,3 +1,7 @@
+# Step 1: docker build -t myamazingfitness:v1.0 .
+# Step 2: http://localhost:10000/
+# Sources: https://www.softwareyoga.com/docker-tomact-tutorial/
+
 version: '3.8'
 
 networks:
@@ -5,6 +9,7 @@ networks:
     driver: bridge
 
 services:
+
   # postgresql
   postgresql:
     image: 'bitnami/postgresql:16'
@@ -22,13 +27,9 @@ services:
 
   # tomcat
   tomcat:
-    image: 'tomcat:10.1.17-jdk17-temurin'
-    depends_on:
-      - postgresql
+    image: 'myamazingfitness:v1.0'
     ports:
-      - "8080:8080"
-    volumes:
-      - ./target/myamazingfitness-1.0-SNAPSHOT.war:/usr/local/tomcat/webapps/myamazingfitness-1.0-SNAPSHOT.war
+      - '10000:8080'
     networks:
       - bdr-net
 
