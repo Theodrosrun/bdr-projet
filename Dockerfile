@@ -1,4 +1,4 @@
-FROM tomcat:8.0-alpine
+FROM tomcat:9-jdk17-openjdk
 
 ADD target/myamazingfitness-1.0-SNAPSHOT.war /usr/local/tomcat/webapps/
 
