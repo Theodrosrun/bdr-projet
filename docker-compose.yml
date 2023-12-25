@@ -19,7 +19,7 @@ services:
       - POSTGRESQL_DATABASE=bdr
       - POSTGRESQL_POSTGRES_PASSWORD=root
     ports:
-      - 5432:5432
+      - '5432:5432'
     volumes:
       - postgresql_data:/bitnami/postgresql
     networks:
