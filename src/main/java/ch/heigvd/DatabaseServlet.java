@@ -16,22 +16,22 @@ public class DatabaseServlet extends HttpServlet {
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
 
-        try {
-            Connection conn = DriverManager.getConnection("jdbc:postgresql://postgresql:5432/bdr", "bdr", "bdr");
+        String user = "bdr";
+        String password = "bdr";
+        String url = "jdbc:postgresql://postgresql:5432/bdr";
+        try (Connection conn = DriverManager.getConnection(url, user, password)) {
 
-            DatabaseUtils.executeSqlScript(conn, "scripts/import_schema.sql");
+            // DatabaseUtils.executeSqlScript(conn, "scripts/import_schema.sql");
 
-            Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT 1;");
-
-            if (rs.next()) {
-                out.println("<p>Connexion et requête réussies : " + rs.getInt(1) + "</p>");
+            try (Statement stmt = conn.createStatement();
+                 ResultSet rs = stmt.executeQuery("SELECT 1;")) {
+                if (rs.next()) {
+                    out.println("<p>Connexion et requête réussies : " + rs.getInt(1) + "</p>");
+                }
             }
 
-            rs.close();
-            stmt.close();
-            conn.close();
-
+        } catch (SQLException e) {
+            out.println("<p>Erreur SQL : " + e.getMessage() + "</p>");
         } catch (Exception e) {
             out.println("<p>Erreur : " + e.getMessage() + "</p>");
         }
@@ -42,7 +42,7 @@ public class DatabaseServlet extends HttpServlet {
         try {
             Class.forName("org.postgresql.Driver");
         } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Erreur lors du chargement du pilote PostgreSQL", e);
         }
     }
 }
