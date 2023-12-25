@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="import_schema" type="DatabaseScript">
-    <script-file value="$PROJECT_DIR$/scripts/import_schema.sql" />
+    <script-file value="$PROJECT_DIR$/src/main/resources/import_schema.sql" />
     <script-mode>FILE</script-mode>
     <data-source id="638504ff-a13a-44b0-b73b-66eaca79f69d" namespace="database/&quot;bdr&quot;/schema/&quot;public&quot;" />
     <method v="2" />
