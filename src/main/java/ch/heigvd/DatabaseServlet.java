@@ -18,6 +18,9 @@ public class DatabaseServlet extends HttpServlet {
 
         try {
             Connection conn = DriverManager.getConnection("jdbc:postgresql://postgresql:5432/bdr", "bdr", "bdr");
+
+            DatabaseUtils.executeSqlScript(conn, "scripts/import_schema.sql");
+
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT 1;");
 
