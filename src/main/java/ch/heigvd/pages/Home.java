@@ -22,7 +22,9 @@ public class Home extends HttpServlet {
         pageBuilder.add(Experts.doGet());
         pageBuilder.add(Plans.doGet("MEMBERSHIP PLANS", new GeneralController().getCurrentAbosMuscu(), true));
         pageBuilder.add(Plans.doGet("TRAINING PLANS", new GeneralController().getCurrentAbosCours(), true));
-        pageBuilder.add(Register.doGet());
+        pageBuilder.add(RegisterForm.doGet());
+        pageBuilder.add(TimeTable.doGet());
+        pageBuilder.add(HistogramChart.doGet());
         pageBuilder.add(FooterBanner.doGet());
         pageBuilder.close();
     }

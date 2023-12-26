@@ -29,6 +29,8 @@ public class Head {
                     <link rel="stylesheet" href="css/magnific-popup.css" type="text/css">
                     <link rel="stylesheet" href="css/slicknav.min.css" type="text/css">
                     <link rel="stylesheet" href="css/style.css" type="text/css">
+                    <!-- Css Charts -->
+                    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/charts.css/dist/charts.min.css">
                 </head>
                 """.formatted(CHARSET, DESCRIPTION, TITLE, pageName);
     }
