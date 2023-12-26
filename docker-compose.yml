@@ -25,13 +25,13 @@ services:
     networks:
       - bdr-net
 
-  # tomcat
-  tomcat:
-    image: 'myamazingfitness:v1.0'
-    ports:
-      - '8080:8080'
-    networks:
-      - bdr-net
+#  # tomcat
+#  tomcat:
+#    image: 'myamazingfitness:v1.0'
+#    ports:
+#      - '8080:8080'
+#    networks:
+#      - bdr-net
 
 volumes:
   postgresql_data:
