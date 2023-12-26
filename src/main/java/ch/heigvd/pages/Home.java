@@ -1,6 +1,7 @@
-package ch.heigvd.pages.home;
+package ch.heigvd.pages;
 
-import ch.heigvd.components.PageBuilder;
+import ch.heigvd.components.*;
+import ch.heigvd.utils.controller.GeneralController;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -19,9 +20,10 @@ public class Home extends HttpServlet {
         pageBuilder.add(Services.doGet());
         pageBuilder.add(Classes.doGet());
         pageBuilder.add(Experts.doGet());
-        pageBuilder.add(Plans.doGet());
+        pageBuilder.add(Plans.doGet("MEMBERSHIP PLANS", new GeneralController().getCurrentAbosMuscu(), true));
+        pageBuilder.add(Plans.doGet("TRAINING PLANS", new GeneralController().getCurrentAbosCours(), true));
         pageBuilder.add(Register.doGet());
-        pageBuilder.add(HomeFooter.doGet());
+        pageBuilder.add(FooterBanner.doGet());
         pageBuilder.close();
     }
 }

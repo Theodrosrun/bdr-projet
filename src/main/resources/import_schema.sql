@@ -1,4 +1,3 @@
--- Note: Most of VARCHAR(255) are not necessary, we will see if we can reduce them later
 DROP SCHEMA IF EXISTS my_amazing_fitness CASCADE;
 CREATE SCHEMA my_amazing_fitness;
 COMMENT ON SCHEMA my_amazing_fitness IS 'my_amazing_fitness database';
@@ -64,10 +63,10 @@ CREATE TABLE Compte (
 );
 
 CREATE TABLE Passage (
-    passage_id INT PRIMARY KEY,
+    passage_id SERIAL PRIMARY KEY,
     membre_id INT NOT NULL,
     fitness_id INT NOT NULL,
-    timestamp TIMESTAMP NOT NULL DEFAULT now()
+    timestamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE Instructeur (
@@ -75,7 +74,7 @@ CREATE TABLE Instructeur (
 );
 
 CREATE TABLE Cours (
-    cours_id INT PRIMARY KEY,
+    cours_id SERIAL PRIMARY KEY,
     jour DATE NOT NULL,
     heure TIME NOT NULL,
     description VARCHAR(255),
@@ -108,7 +107,7 @@ CREATE TABLE Salle (
 );
 
 CREATE TABLE Machine (
-    machine_id INT PRIMARY KEY,
+    machine_id SERIAL PRIMARY KEY,
     fitness_id INT NOT NULL,
     salle_id VARCHAR(255),
     etat VARCHAR(255), -- neuf, usagé, abîmé, endommagé
@@ -120,7 +119,7 @@ CREATE TABLE TypeMachine (
 );
 
 CREATE TABLE Contrat (
-    contrat_id INT PRIMARY KEY,
+    contrat_id SERIAL PRIMARY KEY,
     membre_id INT NOT NULL,
     dateDebut DATE NOT NULL,
     dateFin DATE NOT NULL,
@@ -134,9 +133,14 @@ CREATE TABLE ContratAbonnement (
     PRIMARY KEY (contrat_id, abo_id)
 );
 
+CREATE TABLE TypeAbonnement (
+    nom VARCHAR(255) PRIMARY KEY
+);
+
 CREATE TABLE Abonnement (
     abo_id VARCHAR(255),
     prix DECIMAL(6,2) NOT NULL,
+    typeAbonnement VARCHAR(255) NOT NULL,
     disponibilite BOOLEAN DEFAULT TRUE,
     PRIMARY KEY(abo_id)
 );
@@ -240,6 +244,9 @@ ADD FOREIGN KEY (contrat_id) REFERENCES Contrat(contrat_id);
 ALTER TABLE ContratAbonnement
 ADD FOREIGN KEY (abo_id) REFERENCES Abonnement(abo_id);
 
+ALTER TABLE Abonnement
+ADD FOREIGN KEY (typeAbonnement) REFERENCES TypeAbonnement(nom);
+
 ALTER TABLE Facture
 ADD FOREIGN KEY (contrat_id) REFERENCES Contrat(contrat_id);
 
@@ -274,6 +281,7 @@ FROM Contrat c
 LEFT JOIN Facture f ON c.contrat_id = f.contrat_id
 GROUP BY c.membre_id;
 
+
 ----------------------------------------------
 
 -- Trigger
@@ -305,3 +313,10 @@ CREATE TRIGGER suppression_trigger_employe AFTER DELETE
 ON Employe
 FOR EACH ROW
 EXECUTE FUNCTION log_suppression();
+
+--- Deletion:
+-- 1. Check les cascades
+--- Triggers to add:
+-- 1. L'instructeur doit être expert dans le type de cours qu'il donne
+--- Vues:
+-- 1. Le nombre de personnes par heure dans le fitness (à faire avec les passages)

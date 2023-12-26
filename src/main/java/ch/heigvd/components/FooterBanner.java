@@ -1,6 +1,6 @@
-package ch.heigvd.pages.home;
+package ch.heigvd.components;
 
-public class HomeFooter {
+public class FooterBanner {
     public static String doGet() {
         return """
                     <section class="footer-banner">

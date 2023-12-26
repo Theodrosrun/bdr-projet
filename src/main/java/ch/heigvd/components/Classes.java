@@ -1,4 +1,4 @@
-package ch.heigvd.pages.home;
+package ch.heigvd.components;
 
 public class Classes {
     public static String doGet(){
