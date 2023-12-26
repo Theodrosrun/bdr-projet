@@ -1,4 +1,4 @@
-package ch.heigvd.pages.home;
+package ch.heigvd.components;
 
 public class Experts {
     public static String doGet(){

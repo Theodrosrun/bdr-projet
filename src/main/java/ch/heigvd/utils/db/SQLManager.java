@@ -11,10 +11,15 @@ import java.util.HashMap;
 import java.util.List;
 
 @Getter
-public class SQLManagement {
+public class SQLManager {
 
     private final Connection connection;
-    public SQLManagement(String user, String password, String url, String schema) {
+    public SQLManager(String user, String password, String url, String schema) {
+        try {
+            Class.forName("org.postgresql.Driver");
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException("Erreur lors du chargement du driver", e);
+        }
         try {
             connection = DriverManager.getConnection(
                     url + "?user=" + user + "&password=" + password + "&currentSchema=" + schema
@@ -24,28 +29,32 @@ public class SQLManagement {
         }
     }
 
-    public ResultSet getTable(String table) {
-        return executeQuery(createSelectQuery(table, List.of("*"), null, null));
+    public ResultSet select(String table) {
+        return executeQuery(createSelectQuery(table, List.of("*"), null, null, null));
     }
 
-    public ResultSet getTable(String table, String where) {
-        return executeQuery(createSelectQuery(table, List.of("*"), where, null));
+    public ResultSet select(String table, String where) {
+        return executeQuery(createSelectQuery(table, List.of("*"), null, where, null));
     }
 
-    public ResultSet getTable(String table, String where, String orderBy) {
-        return executeQuery(createSelectQuery(table, List.of("*"), where, orderBy));
+    public ResultSet select(String table, String where, String orderBy) {
+        return executeQuery(createSelectQuery(table, List.of("*"), null, where, orderBy));
     }
 
-    public ResultSet getTable(String table, String... columns) {
-        return executeQuery(createSelectQuery(table, List.of(columns), null, null));
+    public ResultSet select(String table, String... columns) {
+        return executeQuery(createSelectQuery(table, List.of(columns), null, null, null));
     }
 
-    public ResultSet getTable(String table, String where, String... columns) {
-        return executeQuery(createSelectQuery(table, List.of(columns), where, null));
+    public ResultSet select(String table, String where, String... columns) {
+        return executeQuery(createSelectQuery(table, List.of(columns), null, where, null));
     }
 
-    public ResultSet getTable(String table, String where, String orderBy, String... columns) {
-        return executeQuery(createSelectQuery(table, List.of(columns), where, orderBy));
+    public ResultSet select(String table, String where, String orderBy, String... columns) {
+        return executeQuery(createSelectQuery(table, List.of(columns), null, where, orderBy));
+    }
+
+    public ResultSet select(String table, List<String> columns) {
+        return executeQuery(createSelectQuery(table, columns, null, null, null));
     }
 
     public void close() {
@@ -56,7 +65,12 @@ public class SQLManagement {
         }
     }
 
-    private String createSelectQuery(String table, List<String> columns, String where, String orderBy) {
+    private String createSelectQuery(String table,
+                                     List<String> columns,
+                                     List<String> innerJoin,
+                                     String where,
+                                     String orderBy
+    ) {
         StringBuilder query = new StringBuilder("SELECT ");
         for (String column : columns) {
             query.append(column).append(", ");
