@@ -357,26 +357,22 @@ CREATE OR REPLACE FUNCTION create_account()
 AS
 $$
 DECLARE
-    username_suffix INTEGER;
+    username_suffix INTEGER := 1;
     new_username TEXT;
     new_compte_id TEXT;
     personne_nom TEXT;
     personne_prenom TEXT;
 BEGIN
-    -- Utilisez une sous-requête pour obtenir les noms et prénoms de la table Personne
-    SELECT COUNT(*) INTO username_suffix FROM Compte WHERE username = personne_nom || '_' || personne_prenom;
     SELECT nom, prenom INTO personne_nom, personne_prenom FROM Personne WHERE id = NEW.id;
-    IF username_suffix > 0 THEN
-        new_username := lower(CONCAT(personne_nom, '_', personne_prenom, '_', username_suffix));
-    ELSE
-        new_username := lower(CONCAT(personne_nom, '_', personne_prenom));
-    END IF;
+    new_username := lower(CONCAT(personne_nom, '_', personne_prenom));
+    WHILE EXISTS (SELECT 1 FROM Compte WHERE username = new_username) LOOP
+            new_username := lower(CONCAT(personne_nom, '_', personne_prenom, username_suffix));
+            username_suffix := username_suffix + 1;
+    END LOOP;
 
     INSERT INTO Compte (username, motDePasse, dateDeCreation)
-    VALUES (new_username, 'motdepasse_par_defaut', CURRENT_DATE)
+    VALUES (new_username, new_username, CURRENT_DATE) -- Password is the same as the username
     RETURNING new_username INTO new_compte_id;
-
-    -- Mettre à jour le champ compte_id de la table Membre ou Employe
     IF TG_TABLE_NAME = 'Membre' THEN
         UPDATE Membre SET compte_id = new_compte_id WHERE id = NEW.id;
     ELSIF TG_TABLE_NAME = 'Employe' THEN
