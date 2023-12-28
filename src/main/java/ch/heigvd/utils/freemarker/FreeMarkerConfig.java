@@ -1,4 +1,4 @@
-package ch.heigvd.components;
+package ch.heigvd.utils.freemarker;
 
 import freemarker.template.Configuration;
 import freemarker.template.TemplateExceptionHandler;

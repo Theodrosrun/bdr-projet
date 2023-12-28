@@ -1,5 +1,6 @@
 package ch.heigvd.components;
 
+import ch.heigvd.utils.freemarker.FreeMarkerConfig;
 import freemarker.template.Template;
 import java.io.StringWriter;
 
