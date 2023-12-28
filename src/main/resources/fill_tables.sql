@@ -107,14 +107,14 @@ VALUES
     ('Gym'),
     ('Course');
 
-INSERT INTO Abonnement (abo_id, prix, typeAbonnement, disponibilite)
+INSERT INTO Abonnement (abo_id, prix, typeAbonnement)
 VALUES
-    ('Gym Basic', 50.00, 'Gym', true),
-    ('Gym Intermediate', 60.00, 'Gym', true),
-    ('Gym Advanced', 70.00, 'Gym', true),
-    ('Yoga', 50.00, 'Course', true),
-    ('Pilates', 60.00, 'Course', true),
-    ('Workout', 40.00, 'Course', true);
+    ('Gym Basic', 50.00, 'Gym'),
+    ('Gym Intermediate', 60.00, 'Gym'),
+    ('Gym Advanced', 70.00, 'Gym'),
+    ('Yoga', 50.00, 'Course'),
+    ('Pilates', 60.00, 'Course'),
+    ('Workout', 40.00, 'Course');
 
 INSERT INTO Cours (jour, heure, description, recurrence, instructeur_id, typeCours, fitness_id, salle_id, abo_id)
 VALUES

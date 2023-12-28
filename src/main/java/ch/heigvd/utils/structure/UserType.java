@@ -1,7 +1,10 @@
 package ch.heigvd.utils.structure;
 
 public enum UserType {
-    Admin,
+    Instructeur,
+    Administrateur,
+    PersonnelAdministratif,
+    Employe,
     Membre
 
 }
