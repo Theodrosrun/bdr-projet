@@ -363,6 +363,7 @@ DECLARE
     personne_nom TEXT;
     personne_prenom TEXT;
 BEGIN
+    RAISE NOTICE 'TG_TABLE_NAME: %', TG_TABLE_NAME;
     SELECT nom, prenom INTO personne_nom, personne_prenom FROM Personne WHERE id = NEW.id;
     new_username := lower(CONCAT(personne_nom, '_', personne_prenom));
     WHILE EXISTS (SELECT 1 FROM Compte WHERE username = new_username) LOOP
@@ -373,23 +374,18 @@ BEGIN
     INSERT INTO Compte (username, motDePasse, dateDeCreation)
     VALUES (new_username, new_username, CURRENT_DATE) -- Password is the same as the username
     RETURNING new_username INTO new_compte_id;
-    IF TG_TABLE_NAME = 'Membre' THEN
-        UPDATE Membre SET compte_id = new_compte_id WHERE id = NEW.id;
-    ELSIF TG_TABLE_NAME = 'Employe' THEN
-        UPDATE Employe SET compte_id = new_compte_id WHERE id = NEW.id;
-    END IF;
-
+    NEW.compte_id := new_compte_id;
     RETURN NEW;
 END;
 $$;
 
 CREATE TRIGGER create_account_trigger_membre
-    AFTER INSERT ON Membre
+    BEFORE INSERT ON Membre
     FOR EACH ROW
 EXECUTE FUNCTION create_account();
 
 CREATE TRIGGER create_account_trigger_employe
-    AFTER INSERT ON Employe
+    BEFORE INSERT ON Employe
     FOR EACH ROW
 EXECUTE FUNCTION create_account();
 
