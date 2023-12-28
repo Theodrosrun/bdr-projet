@@ -9,12 +9,9 @@ import java.util.Map;
 public class Classes {
     public static String doGet(List<Class> classes) {
         try {
-            Map<String, Object> data = new HashMap<>();
-            data.put("classes", classes);
-
             Template template = FreeMarkerConfig.getConfig().getTemplate("classes.ftlh");
             StringWriter out = new StringWriter();
-            template.process(data, out);
+            template.process(null, out);
             return out.toString();
         } catch (Exception e) {
             e.printStackTrace();

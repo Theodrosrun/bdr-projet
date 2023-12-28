@@ -24,7 +24,7 @@ public class Home extends HttpServlet {
         pageBuilder.add(Plans.doGet("TRAINING PLANS", new GeneralController().getCurrentAbosCours(), true));
 //        pageBuilder.add(RegisterForm.doGet());
 //        pageBuilder.add(TimeTable.doGet());
-//        pageBuilder.add(HistogramChart.doGet());
+        pageBuilder.add(HistogramChart.doGet());
         pageBuilder.add(FooterBanner.doGet());
         pageBuilder.close();
     }
