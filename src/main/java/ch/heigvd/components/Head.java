@@ -25,8 +25,7 @@ public class Head {
             data.put("title", TITLE);
             data.put("pageName", pageName);
 
-            Configuration cfg = FreeMarkerConfig.getConfig();
-            Template template = cfg.getTemplate("head.ftlh");
+            Template template = FreeMarkerConfig.getConfig().getTemplate("head.ftlh");
             StringWriter out = new StringWriter();
             template.process(data, out);
             return out.toString();
