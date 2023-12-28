@@ -22,6 +22,7 @@ CREATE TABLE Personne (
     dateNaissance DATE NOT NULL,
     adresseMail VARCHAR(255) NOT NULL,
     numeroTelephone VARCHAR(255),
+    IBAN VARCHAR(255),
     numero INT NOT NULL,
     rue VARCHAR(255) NOT NULL,
     ville VARCHAR(255) NOT NULL,
@@ -30,9 +31,9 @@ CREATE TABLE Personne (
 );
 
 CREATE TABLE Employe (
-    employe_id INT PRIMARY KEY,
+    id INT PRIMARY KEY,
     fitness_id INT NOT NULL,
-    compte_id VARCHAR(255) NOT NULL UNIQUE,
+    compte_id VARCHAR(255) UNIQUE, -- Trigger will create the account and set the compte_id and not null
     salaire DECIMAL(8,2) NOT NULL
 );
 
@@ -45,8 +46,8 @@ CREATE TABLE Administrateur (
 );
 
 CREATE TABLE Membre (
-    membre_id INT PRIMARY KEY,
-    compte_id VARCHAR(255) NOT NULL UNIQUE
+    id INT PRIMARY KEY,
+    compte_id VARCHAR(255) UNIQUE -- Trigger will create the account and set the compte_id and not null
 );
 
 CREATE TABLE Visiteur (
@@ -58,8 +59,7 @@ CREATE TABLE Visiteur (
 CREATE TABLE Compte (
     username VARCHAR(255) PRIMARY KEY,
     motDePasse VARCHAR(255) NOT NULL,
-    dateDeCreation DATE NOT NULL,
-    IBAN VARCHAR(255)
+    dateDeCreation DATE NOT NULL DEFAULT CURRENT_DATE
 );
 
 CREATE TABLE Passage (
@@ -174,7 +174,7 @@ CREATE TABLE SuppressionLog (
 -- Foreign key
 
 ALTER TABLE Employe
-ADD FOREIGN KEY (employe_id) REFERENCES Personne(id);
+ADD FOREIGN KEY (id) REFERENCES Personne(id);
 
 ALTER TABLE Employe
 ADD FOREIGN KEY (fitness_id) REFERENCES MyAmazingFitness(fitness_id);
@@ -183,13 +183,13 @@ ALTER TABLE Employe
 ADD FOREIGN KEY (compte_id) REFERENCES Compte(username);
 
 ALTER TABLE PersonnelAdministratif
-ADD FOREIGN KEY (padministratif_id) REFERENCES Employe(employe_id);
+ADD FOREIGN KEY (padministratif_id) REFERENCES Employe(id);
 
 ALTER TABLE Administrateur
-ADD FOREIGN KEY (administrateur_id) REFERENCES Employe(employe_id);
+ADD FOREIGN KEY (administrateur_id) REFERENCES Employe(id);
 
 ALTER TABLE Membre
-ADD FOREIGN KEY (membre_id) REFERENCES Personne(id);
+ADD FOREIGN KEY (id) REFERENCES Personne(id);
 
 ALTER TABLE Membre
 ADD FOREIGN KEY (compte_id) REFERENCES Compte(username);
@@ -201,13 +201,13 @@ ALTER TABLE Visiteur
 ADD FOREIGN KEY (fitness_id) REFERENCES MyAmazingFitness(fitness_id);
 
 ALTER TABLE Passage
-ADD FOREIGN KEY (membre_id) REFERENCES Membre(membre_id);
+ADD FOREIGN KEY (membre_id) REFERENCES Membre(id);
 
 ALTER TABLE Passage
 ADD FOREIGN KEY (fitness_id) REFERENCES MyAmazingFitness(fitness_id);
 
 ALTER TABLE Instructeur
-ADD FOREIGN KEY (instructeur_id) REFERENCES Employe(employe_id);
+ADD FOREIGN KEY (instructeur_id) REFERENCES Employe(id);
 
 ALTER TABLE Cours
 ADD FOREIGN KEY (instructeur_id) REFERENCES Instructeur(instructeur_id);
@@ -237,7 +237,7 @@ ALTER TABLE Machine
 ADD FOREIGN KEY (type_machine) REFERENCES TypeMachine(type_machine);
 
 ALTER TABLE Contrat
-ADD FOREIGN KEY (membre_id) REFERENCES Membre(membre_id);
+ADD FOREIGN KEY (membre_id) REFERENCES Membre(id);
 
 ALTER TABLE ContratAbonnement
 ADD FOREIGN KEY (contrat_id) REFERENCES Contrat(contrat_id);
@@ -252,7 +252,7 @@ ALTER TABLE Facture
 ADD FOREIGN KEY (contrat_id) REFERENCES Contrat(contrat_id);
 
 ALTER TABLE Progression
-ADD FOREIGN KEY (membre_id) REFERENCES Membre(membre_id);
+ADD FOREIGN KEY (membre_id) REFERENCES Membre(id);
 
 ----------------------------------------------
 
@@ -267,19 +267,19 @@ SELECT
     c.motDePasse,
     p.id,
     CASE
-        WHEN m.membre_id IS NOT NULL THEN 'Membre'
+        WHEN m.id IS NOT NULL THEN 'Membre'
         WHEN pa.padministratif_id IS NOT NULL THEN 'PersonnelAdministratif'
         WHEN a.administrateur_id IS NOT NULL THEN 'Administrateur'
         WHEN i.instructeur_id IS NOT NULL THEN 'Instructeur'
-        WHEN e.employe_id IS NOT NULL THEN 'Employe'
+        WHEN e.id IS NOT NULL THEN 'Employe'
     END AS userType
     FROM Compte c
 LEFT JOIN Membre m ON c.username = m.compte_id
 LEFT JOIN Employe e ON c.username = e.compte_id
-LEFT JOIN PersonnelAdministratif pa ON e.employe_id = pa.padministratif_id
-LEFT JOIN Administrateur a ON e.employe_id = a.administrateur_id
-LEFT JOIN Instructeur i ON e.employe_id = i.instructeur_id
-INNER JOIN Personne p ON m.membre_id = p.id OR e.employe_id = p.id;
+LEFT JOIN PersonnelAdministratif pa ON e.id = pa.padministratif_id
+LEFT JOIN Administrateur a ON e.id = a.administrateur_id
+LEFT JOIN Instructeur i ON e.id = i.instructeur_id
+INNER JOIN Personne p ON m.id = p.id OR e.id = p.id;
 
 -- View of all courses that are happening this week
 -- Seen that our hypothetical fitness center does not have a registration system to courses a table 'CoursOccurrence' is not needed
@@ -301,6 +301,26 @@ FROM Cours c
 WHERE c.jour + (interval '7 days' * ((current_date - c.jour) / c.recurrence)) <= current_date
   AND c.jour + (interval '7 days' * (((current_date - c.jour) / c.recurrence) + 1)) > current_date
 ORDER BY c.cours_id;
+
+-- View of members and their contracts and memberships
+
+DROP VIEW IF EXISTS MembreAbonnementView;
+CREATE VIEW MembreAbonnementView AS
+SELECT
+    m.id,
+    m.compte_id,
+    c.contrat_id,
+    c.dateDebut,
+    c.dateFin,
+    c.frequencePaiement,
+    a.abo_id,
+    a.prix,
+    a.typeAbonnement
+    FROM Membre m
+INNER JOIN Contrat c ON m.id = c.membre_id
+INNER JOIN ContratAbonnement ca ON c.contrat_id = ca.contrat_id
+INNER JOIN Abonnement a ON ca.abo_id = a.abo_id;
+
 
 DROP VIEW IF EXISTS VueFacturesPayees;
 CREATE VIEW VueFacturesPayees
@@ -329,6 +349,55 @@ GROUP BY c.membre_id;
 ----------------------------------------------
 
 -- Trigger
+
+-- Trigger creation of a new account when a new member or employee is created
+CREATE OR REPLACE FUNCTION create_account()
+    RETURNS TRIGGER
+    LANGUAGE plpgsql
+AS
+$$
+DECLARE
+    username_suffix INTEGER;
+    new_username TEXT;
+    new_compte_id TEXT;
+    personne_nom TEXT;
+    personne_prenom TEXT;
+BEGIN
+    -- Utilisez une sous-requête pour obtenir les noms et prénoms de la table Personne
+    SELECT COUNT(*) INTO username_suffix FROM Compte WHERE username = personne_nom || '_' || personne_prenom;
+    SELECT nom, prenom INTO personne_nom, personne_prenom FROM Personne WHERE id = NEW.id;
+    IF username_suffix > 0 THEN
+        new_username := lower(CONCAT(personne_nom, '_', personne_prenom, '_', username_suffix));
+    ELSE
+        new_username := lower(CONCAT(personne_nom, '_', personne_prenom));
+    END IF;
+
+    INSERT INTO Compte (username, motDePasse, dateDeCreation)
+    VALUES (new_username, 'motdepasse_par_defaut', CURRENT_DATE)
+    RETURNING new_username INTO new_compte_id;
+
+    -- Mettre à jour le champ compte_id de la table Membre ou Employe
+    IF TG_TABLE_NAME = 'Membre' THEN
+        UPDATE Membre SET compte_id = new_compte_id WHERE id = NEW.id;
+    ELSIF TG_TABLE_NAME = 'Employe' THEN
+        UPDATE Employe SET compte_id = new_compte_id WHERE id = NEW.id;
+    END IF;
+
+    RETURN NEW;
+END;
+$$;
+
+CREATE TRIGGER create_account_trigger_membre
+    AFTER INSERT ON Membre
+    FOR EACH ROW
+EXECUTE FUNCTION create_account();
+
+CREATE TRIGGER create_account_trigger_employe
+    AFTER INSERT ON Employe
+    FOR EACH ROW
+EXECUTE FUNCTION create_account();
+
+
 
 CREATE OR REPLACE FUNCTION log_suppression()
 RETURNS TRIGGER AS
@@ -363,5 +432,7 @@ EXECUTE FUNCTION log_suppression();
 -- 2. We cannot delete a course if there are people registered to it. A view to check the number of people registered to a course and a trigger to check if the number is 0 before deleting the course.
 --- Triggers to add:
 -- 1. L'instructeur doit être expert dans le type de cours qu'il donne
+-- 2. Lorsqu'on ajoute un membre ou un employé, on doit ajouter un compte avec un username et un mot de passe nomfamile_prenom
+-- 3. Lorsqu'on crée un contrat, on doit créer le nombre de factures correspondant à la fréquence de paiement
 --- Vues:
 -- 1. Le nombre de personnes par heure dans le fitness (à faire avec les passages)

@@ -2,7 +2,9 @@ package ch.heigvd.pages.account;
 
 import ch.heigvd.components.AccountComponent;
 import ch.heigvd.components.PageBuilder;
+import ch.heigvd.components.Plans;
 import ch.heigvd.components.Title;
+import ch.heigvd.utils.controller.GeneralController;
 import ch.heigvd.utils.structure.Account;
 import ch.heigvd.utils.web.CookieManager;
 import jakarta.servlet.ServletException;
@@ -28,6 +30,10 @@ public class MyAccount extends HttpServlet {
         PageBuilder pageBuilder = new PageBuilder(account.getUsername(), resp.getWriter());
         pageBuilder.add(Title.doGet("My account"));
         pageBuilder.add(AccountComponent.doGet(account));
+        pageBuilder.add(
+                Plans.doGet("My subscriptions",
+                        new GeneralController().getSubscriptions(account.getId()),
+                        false));
         pageBuilder.close();
     }
 }
