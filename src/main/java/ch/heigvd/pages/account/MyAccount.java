@@ -15,6 +15,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
 
 @WebServlet(name = "MyAccount", value = "/myaccount")
 public class MyAccount extends HttpServlet {
@@ -30,10 +32,13 @@ public class MyAccount extends HttpServlet {
         PageBuilder pageBuilder = new PageBuilder(account.getUsername(), resp.getWriter());
         pageBuilder.add(Title.doGet("My account"));
         pageBuilder.add(AccountComponent.doGet(account));
-        pageBuilder.add(
-                Plans.doGet("My subscriptions",
-                        new GeneralController().getSubscriptions(account.getId()),
-                        false));
+        List<HashMap<String, String>> subscriptions = new GeneralController().getSubscriptions(account.getId());
+        if (!subscriptions.isEmpty()) {
+            pageBuilder.add(
+                    Plans.doGet("My subscriptions",
+                            new GeneralController().getSubscriptions(account.getId()),
+                            false));
+        }
         pageBuilder.close();
     }
 }

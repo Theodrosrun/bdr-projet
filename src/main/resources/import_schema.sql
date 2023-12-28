@@ -307,7 +307,7 @@ ORDER BY c.cours_id;
 DROP VIEW IF EXISTS MembreAbonnementView;
 CREATE VIEW MembreAbonnementView AS
 SELECT
-    m.id,
+    m.id AS membre_id,
     m.compte_id,
     c.contrat_id,
     c.dateDebut,
