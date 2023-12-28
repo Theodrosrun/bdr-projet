@@ -2,12 +2,9 @@ package ch.heigvd.components;
 
 import freemarker.template.Template;
 import java.io.StringWriter;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class Classes {
-    public static String doGet(List<Class> classes) {
+    public static String doGet() {
         try {
             Template template = FreeMarkerConfig.getConfig().getTemplate("classes.ftlh");
             StringWriter out = new StringWriter();

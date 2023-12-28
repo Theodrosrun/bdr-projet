@@ -1,15 +1,18 @@
 package ch.heigvd.components;
 
+import freemarker.template.Template;
+import java.io.StringWriter;
+
 public class JSScripts {
     public static String doGet() {
-        return """
-                    <script src="js/jquery-3.3.1.min.js"></script>
-                    <script src="js/bootstrap.min.js"></script>
-                    <script src="js/jquery.magnific-popup.min.js"></script>
-                    <script src="js/mixitup.min.js"></script>
-                    <script src="js/jquery.slicknav.js"></script>
-                    <script src="js/owl.carousel.min.js"></script>
-                    <script src="js/main.js"></script>
-                """;
+        try {
+            Template template = FreeMarkerConfig.getConfig().getTemplate("jssScripts.ftlh");
+            StringWriter out = new StringWriter();
+            template.process(null, out);
+            return out.toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Erreur lors de la génération du contenu : " + e.getMessage();
+        }
     }
 }

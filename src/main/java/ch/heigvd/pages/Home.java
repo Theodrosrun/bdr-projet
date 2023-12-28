@@ -17,13 +17,13 @@ public class Home extends HttpServlet {
         PageBuilder pageBuilder = new PageBuilder("Home", resp.getWriter());
         pageBuilder.add(Slider.doGet());
         pageBuilder.add(AboutUs.doGet());
-//        pageBuilder.add(Services.doGet());
-//        pageBuilder.add(Classes.doGet());
-//        pageBuilder.add(Experts.doGet());
+        pageBuilder.add(Services.doGet());
+        pageBuilder.add(Classes.doGet());
+        pageBuilder.add(Experts.doGet());
         pageBuilder.add(Plans.doGet("MEMBERSHIP PLANS", new GeneralController().getCurrentAbosMuscu(), true));
         pageBuilder.add(Plans.doGet("TRAINING PLANS", new GeneralController().getCurrentAbosCours(), true));
-//        pageBuilder.add(RegisterForm.doGet());
-//        pageBuilder.add(TimeTable.doGet());
+        pageBuilder.add(RegisterForm.doGet());
+        pageBuilder.add(TimeTable.doGet());
         pageBuilder.add(HistogramChart.doGet());
         pageBuilder.add(FooterBanner.doGet());
         pageBuilder.close();

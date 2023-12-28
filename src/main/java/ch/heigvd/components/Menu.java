@@ -1,31 +1,18 @@
 package ch.heigvd.components;
 
+import freemarker.template.Template;
+import java.io.StringWriter;
+
 public class Menu {
-    public static String doGet(){
-        return """
-                    <header class="header-section">
-                        <div class="container">
-                            <div class="logo">
-                                <a href="./index.html">
-                                    <img src="img/logo.png" alt="">
-                                </a>
-                            </div>
-                            <div class="nav-menu">
-                                <nav class="mainmenu mobile-menu">
-                                    <ul>
-                                        <li class="active"><a href="./index.html">Home</a></li>
-                                        <li><a href="./about-us.html">About</a></li>
-                                        <li><a href="./classes.html">Classes</a></li>
-                                        <li><a href="./blog.html">Blog</a></li>
-                                        <li><a href="./gallery.html">Gallery</a></li>
-                                        <li><a href="./contact.html">Contacts</a></li>
-                                    </ul>
-                                </nav>
-                                <a href="./register" class="primary-btn signup-btn">Sign Up Today</a>
-                            </div>
-                            <div id="mobile-menu-wrap"></div>
-                        </div>
-                    </header>
-                """;
+    public static String doGet() {
+        try {
+            Template template = FreeMarkerConfig.getConfig().getTemplate("menu.ftlh");
+            StringWriter out = new StringWriter();
+            template.process(null, out);
+            return out.toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Erreur lors de la génération du contenu : " + e.getMessage();
+        }
     }
 }

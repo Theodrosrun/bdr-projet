@@ -1,7 +1,6 @@
 package ch.heigvd.components;
 
 import freemarker.template.Template;
-
 import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.List;
