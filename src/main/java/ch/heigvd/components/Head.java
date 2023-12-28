@@ -1,5 +1,12 @@
 package ch.heigvd.components;
 
+import ch.heigvd.utils.freemarker.FreeMarkerConfig;
+import freemarker.template.Configuration;
+import freemarker.template.Template;
+import java.io.StringWriter;
+import java.util.HashMap;
+import java.util.Map;
+
 public class Head {
     private final String pageName;
     private static final String TITLE = "My Amazing Fitness";
@@ -9,29 +16,23 @@ public class Head {
     public Head(String pageName) {
         this.pageName = pageName;
     }
+
     public String doGet() {
-        return """
-                <head>
-                    <meta charset="%s">
-                    <meta name="description" content="%s">
-                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-                    <title>%s | %s</title>
-                                
-                    <!-- Google Font -->
-                    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900&display=swap"
-                        rel="stylesheet">
-                                
-                    <!-- Css Styles -->
-                    <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css">
-                    <link rel="stylesheet" href="css/font-awesome.min.css" type="text/css">
-                    <link rel="stylesheet" href="css/owl.carousel.min.css" type="text/css">
-                    <link rel="stylesheet" href="css/magnific-popup.css" type="text/css">
-                    <link rel="stylesheet" href="css/slicknav.min.css" type="text/css">
-                    <link rel="stylesheet" href="css/style.css" type="text/css">
-                    <!-- Css Charts -->
-                    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/charts.css/dist/charts.min.css">
-                </head>
-                """.formatted(CHARSET, DESCRIPTION, TITLE, pageName);
+        try {
+            Map<String, Object> data = new HashMap<>();
+            data.put("charset", CHARSET);
+            data.put("description", DESCRIPTION);
+            data.put("title", TITLE);
+            data.put("pageName", pageName);
+
+            Configuration cfg = FreeMarkerConfig.getConfig();
+            Template template = cfg.getTemplate("head.ftlh");
+            StringWriter out = new StringWriter();
+            template.process(data, out);
+            return out.toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Erreur lors de la génération du contenu : " + e.getMessage();
+        }
     }
 }

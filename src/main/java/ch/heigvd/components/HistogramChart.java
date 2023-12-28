@@ -1,62 +1,19 @@
 package ch.heigvd.components;
 
+import ch.heigvd.utils.freemarker.FreeMarkerConfig;
+import freemarker.template.Template;
+import java.io.StringWriter;
+
 public class HistogramChart {
     public static String doGet() {
-        return """
-                                <section class="histogram spad">
-                                  <div class="row">
-                                    <div class="col-lg-12">
-                                      <div class="section-title">
-                                        <h2>Frequency</h2>
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <div class="row">
-                                    <div class="container">
-                                      <div id="column-example-9">
-                                        <table class="charts-css column show-labels show-primary-axis show-10-secondary-axes">
-                                          <caption> Column Example #9 </caption>
-                                          <thead>
-                                            <tr>
-                                              <th scope="col"> Year </th>
-                                              <th scope="col"> Progress </th>
-                                            </tr>
-                                          </thead>
-                                          <tbody>
-                                            <tr>
-                                              <th scope="row"> Monday </th>
-                                              <td style="--size: 0.2;"></td>
-                                            </tr>
-                                            <tr>
-                                              <th scope="row"> Tuesday </th>
-                                              <td style="--size: 0.8;"></td>
-                                            </tr>
-                                            <tr>
-                                              <th scope="row"> Wednesday </th>
-                                              <td style="--size: 0.4;"></td>
-                                            </tr>
-                                            <tr>
-                                              <th scope="row"> Thursday </th>
-                                              <td style="--size: 0.6;"></td>
-                                            </tr>
-                                            <tr>
-                                              <th scope="row"> Friday </th>
-                                              <td style="--size: 0.2;"></td>
-                                            </tr>
-                                            <tr>
-                                              <th scope="row"> Saturday </th>
-                                              <td style="--size: 0.8;"></td>
-                                            </tr>
-                                            <tr>
-                                              <th scope="row"> Sunday </th>
-                                              <td style="--size: 0.4;"></td>
-                                            </tr>
-                                          </tbody>
-                                        </table>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </section>
-                """;
+        try {
+            Template template = FreeMarkerConfig.getConfig().getTemplate("histogram_chart.ftlh");
+            StringWriter out = new StringWriter();
+            template.process(null, out);
+            return out.toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Erreur lors de la génération du contenu : " + e.getMessage();
+        }
     }
 }
