@@ -1,22 +1,21 @@
 package ch.heigvd.components;
 
+import freemarker.template.Configuration;
+import freemarker.template.Template;
+import java.io.StringWriter;
+
 public class Slider {
-    public static String doGet(){
-        return """
-                    <section class="hero-section set-bg" data-setbg="img/hero-bg.jpg">
-                        <div class="container">
-                            <div class="row">
-                                <div class="col-lg-8">
-                                    <div class="hero-text">
-                                        <span>FITNESS ELEMENTS</span>
-                                        <h1>BMI CALCULATOR</h1>
-                                        <p>Gutim comes packed with the user-friendly BMI Calculator<br /> shortcode which lets</p>
-                                        <a href="#" class="primary-btn">Read More</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-                """;
+    public static String doGet() {
+        try {
+            Configuration cfg = FreeMarkerConfig.getConfig();
+            Template template = cfg.getTemplate("slider.ftlh");
+
+            StringWriter out = new StringWriter();
+            template.process(null, out);
+            return out.toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Erreur lors de la génération du contenu : " + e.getMessage();
+        }
     }
 }
