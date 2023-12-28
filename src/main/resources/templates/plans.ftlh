@@ -16,13 +16,13 @@
                             <div class="triangle"></div>
                         </div>
                         <h2 class="mi-price">${plan.prix}<span>/month</span></h2>
-                        <ul>
-                            <li>
-                                <p>Duration</p>
-                                <span>1/6/12 months</span>
-                            </li>
-                        </ul>
-                        <#if withButton>
+                        <#if withInfo>
+                            <ul>
+                                <li>
+                                    <p>Duration</p>
+                                    <span>1/6/12 months</span>
+                                </li>
+                            </ul>
                             <a href="#" class="primary-btn membership-btn">Start Now</a>
                         </#if>
                     </div>
