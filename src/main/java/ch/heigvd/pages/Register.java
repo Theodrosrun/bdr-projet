@@ -19,10 +19,12 @@ public class Register extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Cookie usernameCookie =  CookieManager.getCookie(req, "username");
         Cookie passwordCookie = CookieManager.getCookie(req, "password");
-        Account account = Account.from(usernameCookie.getValue(), passwordCookie.getValue());
-        if (account != null) {
-            resp.sendRedirect("/myaccount");
-            return;
+        if(usernameCookie != null && passwordCookie != null){
+            Account account = Account.from(usernameCookie.getValue(), passwordCookie.getValue());
+            if (account != null) {
+                resp.sendRedirect("/myaccount");
+                return;
+            }
         }
         PageBuilder pageBuilder = new PageBuilder("Register", resp.getWriter());
         pageBuilder.add(RegisterForm.doGet());
