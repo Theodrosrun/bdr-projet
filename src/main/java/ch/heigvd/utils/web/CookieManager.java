@@ -1,10 +1,27 @@
 package ch.heigvd.utils.web;
 
+import ch.heigvd.utils.structure.Account;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 public class CookieManager {
+
+    public static boolean mustLogin(HttpServletRequest req) {
+        Cookie usernameCookie =  CookieManager.getCookie(req, "username");
+        Cookie passwordCookie = CookieManager.getCookie(req, "password");
+        return usernameCookie == null || passwordCookie == null;
+    }
+
+    public static boolean isLogged(HttpServletRequest req) {
+        Cookie usernameCookie =  CookieManager.getCookie(req, "username");
+        Cookie passwordCookie = CookieManager.getCookie(req, "password");
+        if(usernameCookie != null && passwordCookie != null){
+            Account account = Account.from(usernameCookie.getValue(), passwordCookie.getValue());
+            return account != null;
+        }
+        return false;
+    }
 
     public static void setCookie(HttpServletResponse resp, HttpServletRequest req, String name, String value) {
         Cookie cookie = new Cookie(name, value);

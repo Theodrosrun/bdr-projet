@@ -22,6 +22,11 @@ public class GeneralController {
         return accounts.isEmpty() ? null : accounts.get(0);
     }
 
+    public List<HashMap<String, String>> getSubscriptions(int memberId) {
+        return SQLManager.toList(sqlManager.select(View.MembreAbonnementView.name(),
+                "membre_id = '" + memberId + "'"));
+    }
+
     public HashMap<String, String> getMember(String userName) {
         List<HashMap<String, String>> members = SQLManager.toList(sqlManager.select(Table.Membre.name(),
                 "compte_id = '" + userName + "'"));
