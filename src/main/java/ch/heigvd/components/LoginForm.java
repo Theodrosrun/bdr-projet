@@ -11,15 +11,15 @@ public class LoginForm {
                                         <div class="section-title">
                                             <h2>Sign in</h2>
                                         </div>
-                                        <form action="#" class="register-form">
+                                        <form action="/login" class="register-form" method="post">
                                             <div class="row">
                                                 <div class="col-lg-6">
                                                     <label for="name">Your username</label>
-                                                    <input type="text" id="username">
+                                                    <input type="text" id="username" name="username">
                                                 </div>
                                                 <div class="col-lg-6">
                                                     <label for="email">Your password</label>
-                                                    <input type="password" id="password">
+                                                    <input type="password" id="password" name="password">
                                                 </div>
                                             </div>
                                             <button type="submit" class="register-btn">Login</button>
