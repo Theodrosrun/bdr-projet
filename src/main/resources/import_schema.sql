@@ -363,14 +363,12 @@ DECLARE
     personne_nom TEXT;
     personne_prenom TEXT;
 BEGIN
-    RAISE NOTICE 'TG_TABLE_NAME: %', TG_TABLE_NAME;
     SELECT nom, prenom INTO personne_nom, personne_prenom FROM Personne WHERE id = NEW.id;
     new_username := lower(CONCAT(personne_nom, '_', personne_prenom));
     WHILE EXISTS (SELECT 1 FROM Compte WHERE username = new_username) LOOP
             new_username := lower(CONCAT(personne_nom, '_', personne_prenom, username_suffix));
             username_suffix := username_suffix + 1;
     END LOOP;
-
     INSERT INTO Compte (username, motDePasse, dateDeCreation)
     VALUES (new_username, new_username, CURRENT_DATE) -- Password is the same as the username
     RETURNING new_username INTO new_compte_id;
