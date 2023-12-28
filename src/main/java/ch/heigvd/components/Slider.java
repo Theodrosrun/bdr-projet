@@ -7,9 +7,7 @@ import java.io.StringWriter;
 public class Slider {
     public static String doGet() {
         try {
-            Configuration cfg = FreeMarkerConfig.getConfig();
-            Template template = cfg.getTemplate("slider.ftlh");
-
+            Template template = FreeMarkerConfig.getConfig().getTemplate("slider.ftlh");
             StringWriter out = new StringWriter();
             template.process(null, out);
             return out.toString();
