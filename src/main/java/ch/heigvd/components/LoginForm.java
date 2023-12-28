@@ -6,7 +6,7 @@ import java.io.StringWriter;
 public class LoginForm {
     public static String doGet() {
         try {
-            Template template = FreeMarkerConfig.getConfig().getTemplate("loginForm.ftlh");
+            Template template = FreeMarkerConfig.getConfig().getTemplate("login_form.ftlh");
             StringWriter out = new StringWriter();
             template.process(null, out);
             return out.toString();
@@ -15,5 +15,4 @@ public class LoginForm {
             return "Erreur lors de la génération du contenu : " + e.getMessage();
         }
     }
-
 }

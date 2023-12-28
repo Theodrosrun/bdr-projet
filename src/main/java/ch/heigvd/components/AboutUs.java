@@ -6,7 +6,7 @@ import java.io.StringWriter;
 public class AboutUs {
     public static String doGet() {
         try {
-            Template template = FreeMarkerConfig.getConfig().getTemplate("about.ftlh");
+            Template template = FreeMarkerConfig.getConfig().getTemplate("about_us.ftlh");
             StringWriter out = new StringWriter();
             template.process(null, out);
             return out.toString();

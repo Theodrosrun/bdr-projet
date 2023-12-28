@@ -6,7 +6,7 @@ import java.io.StringWriter;
 public class HistogramChart {
     public static String doGet() {
         try {
-            Template template = FreeMarkerConfig.getConfig().getTemplate("histogramChart.ftlh");
+            Template template = FreeMarkerConfig.getConfig().getTemplate("histogram_chart.ftlh");
             StringWriter out = new StringWriter();
             template.process(null, out);
             return out.toString();

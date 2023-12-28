@@ -6,7 +6,7 @@ import java.io.StringWriter;
 public class FooterBanner {
     public static String doGet() {
         try {
-            Template template = FreeMarkerConfig.getConfig().getTemplate("footerBanner.ftlh");
+            Template template = FreeMarkerConfig.getConfig().getTemplate("footer_banner.ftlh");
             StringWriter out = new StringWriter();
             template.process(null, out);
             return out.toString();
