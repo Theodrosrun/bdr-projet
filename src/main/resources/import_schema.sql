@@ -77,6 +77,7 @@ CREATE TABLE Cours (
     cours_id SERIAL PRIMARY KEY,
     jour DATE NOT NULL,
     heure TIME NOT NULL,
+    duree INT NOT NULL,
     description VARCHAR(255),
     recurrence INT NOT NULL,
     instructeur_id INT NOT NULL,
@@ -257,8 +258,51 @@ ADD FOREIGN KEY (membre_id) REFERENCES Membre(membre_id);
 
 -- View
 
-DROP VIEW IF EXISTS VueFacturesPayees;
+-- View All accounts with their type
+DROP VIEW IF EXISTS AccountView;
+CREATE VIEW AccountView
+AS
+SELECT
+    c.username,
+    c.motDePasse,
+    p.id,
+    CASE
+        WHEN m.membre_id IS NOT NULL THEN 'Membre'
+        WHEN pa.padministratif_id IS NOT NULL THEN 'PersonnelAdministratif'
+        WHEN a.administrateur_id IS NOT NULL THEN 'Administrateur'
+        WHEN i.instructeur_id IS NOT NULL THEN 'Instructeur'
+        WHEN e.employe_id IS NOT NULL THEN 'Employe'
+    END AS userType
+    FROM Compte c
+LEFT JOIN Membre m ON c.username = m.compte_id
+LEFT JOIN Employe e ON c.username = e.compte_id
+LEFT JOIN PersonnelAdministratif pa ON e.employe_id = pa.padministratif_id
+LEFT JOIN Administrateur a ON e.employe_id = a.administrateur_id
+LEFT JOIN Instructeur i ON e.employe_id = i.instructeur_id
+INNER JOIN Personne p ON m.membre_id = p.id OR e.employe_id = p.id;
 
+-- View of all courses that are happening this week
+-- Seen that our hypothetical fitness center does not have a registration system to courses a table 'CoursOccurrence' is not needed
+-- But we need a view to see all the courses that are happening this week
+DROP VIEW IF EXISTS CourseWeekView;
+CREATE VIEW CourseWeekView AS
+SELECT
+    c.cours_id,
+    DATE(c.jour + (interval '7 days' * ((current_date - c.jour) / c.recurrence))) AS jour,
+    c.heure,
+    c.description,
+    c.recurrence,
+    c.instructeur_id,
+    c.typecours,
+    c.fitness_id,
+    c.salle_id,
+    c.abo_id
+FROM Cours c
+WHERE c.jour + (interval '7 days' * ((current_date - c.jour) / c.recurrence)) <= current_date
+  AND c.jour + (interval '7 days' * (((current_date - c.jour) / c.recurrence) + 1)) > current_date
+ORDER BY c.cours_id;
+
+DROP VIEW IF EXISTS VueFacturesPayees;
 CREATE VIEW VueFacturesPayees
 AS
 SELECT c.membre_id,
@@ -316,6 +360,7 @@ EXECUTE FUNCTION log_suppression();
 
 --- Deletion:
 -- 1. Check les cascades
+-- 2. We cannot delete a course if there are people registered to it. A view to check the number of people registered to a course and a trigger to check if the number is 0 before deleting the course.
 --- Triggers to add:
 -- 1. L'instructeur doit être expert dans le type de cours qu'il donne
 --- Vues:

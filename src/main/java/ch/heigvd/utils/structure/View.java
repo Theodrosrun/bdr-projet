@@ -1,2 +1,5 @@
-package ch.heigvd.utils.structure;public enum View {
+package ch.heigvd.utils.structure;
+
+public enum View {
+    AccountView
 }

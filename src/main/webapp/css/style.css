@@ -786,8 +786,6 @@ ul, ol {
 
 .register-section {
 	background: #f5f4f4;
-	padding-top: 235px;
-	margin-top: -135px;
 }
 .register-section.classes-page {
 	background: #ffffff;
@@ -1724,7 +1722,7 @@ ul, ol {
 		margin-bottom: 40px;
 	}
 	.register-section {
-		padding-top: 195px;
+		padding-top: 300px;
 	}
 	.register-pic {
 		margin-left: 0;
