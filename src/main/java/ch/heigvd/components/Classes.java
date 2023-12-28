@@ -1,6 +1,5 @@
 package ch.heigvd.components;
 
-import freemarker.template.Configuration;
 import freemarker.template.Template;
 import java.io.StringWriter;
 import java.util.HashMap;
@@ -10,17 +9,12 @@ import java.util.Map;
 public class Classes {
     public static String doGet(List<Class> classes) {
         try {
-            // Configuration de FreeMarker
-            Configuration cfg = FreeMarkerConfig.getConfig();
+            Map<String, Object> data = new HashMap<>();
+            data.put("classes", classes);
 
-            // Préparer les données pour le template
-            Map<String, Object> templateData = new HashMap<>();
-            templateData.put("classes", classes);
-
-            // Charger le template et générer le HTML
-            Template template = cfg.getTemplate("html/about.ftlh");
+            Template template = FreeMarkerConfig.getConfig().getTemplate("classes.ftlh");
             StringWriter out = new StringWriter();
-            template.process(templateData, out);
+            template.process(data, out);
             return out.toString();
         } catch (Exception e) {
             e.printStackTrace();
