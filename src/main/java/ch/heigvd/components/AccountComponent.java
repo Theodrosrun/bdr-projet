@@ -12,8 +12,7 @@ public class AccountComponent {
         try {
             Map<String, Object> data = new HashMap<>();
             data.put("account", account);
-
-            Template template = FreeMarkerConfig.getConfig().getTemplate("accountComponent.ftlh");
+            Template template = FreeMarkerConfig.getConfig().getTemplate("account_component.ftlh");
             StringWriter out = new StringWriter();
             template.process(data, out);
             return out.toString();
