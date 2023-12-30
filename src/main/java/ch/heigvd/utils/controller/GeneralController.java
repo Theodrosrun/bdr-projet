@@ -33,6 +33,27 @@ public class GeneralController {
                 "membre_id = '" + memberId + "'"));
     }
 
+    public List<HashMap<String, String>> getBills(int memberId, String ... columns) {
+        return SQLManager.toList(sqlManager.select(View.MembreFactureView.name(),
+                "membre_id = '" + memberId + "'",
+                columns));
+    }
+
+    public List<HashMap<String, String>> getMembersUnpaid() {
+        return SQLManager.toList(sqlManager.select(View.MembreFactureView.name(),
+                "payment_id IS NULL AND date_echeance < CURRENT_DATE"));
+    }
+
+    public List<HashMap<String, String>> getMemberCourses(int memberId, String ... columns) {
+        return SQLManager.toList(sqlManager.select(View.MemberCourseWeekView.name(),
+                "membre_id = '" + memberId + "'", columns));
+    }
+
+    public List<HashMap<String, String>> getInstructorWeekCourses(int memberId, String ... columns) {
+        return SQLManager.toList(sqlManager.select(View.CourseWeekView.name(),
+                "instructeur_id = '" + memberId + "'", columns));
+    }
+
     public HashMap<String, String> getMember(String userName) {
         List<HashMap<String, String>> members = SQLManager.toList(sqlManager.select(Table.Membre.name(),
                 "compte_id = '" + userName + "'"));
@@ -70,11 +91,17 @@ public class GeneralController {
 
     public List<HashMap<String, String>> getCurrentAbosMuscu() {
         return SQLManager.toList(sqlManager.select(Table.Abonnement.name(),
-                "typeAbonnement = 'Gym' AND disponibilite = true"));
+                "type_abonnement = 'Gym' AND disponibilite = true"));
     }
 
     public List<HashMap<String, String>> getCurrentAbosCours() {
         return SQLManager.toList(sqlManager.select(Table.Abonnement.name(),
-                "typeAbonnement = 'Course' AND disponibilite = true"));
+                "type_abonnement = 'Course' AND disponibilite = true"));
+    }
+
+    public HashMap<String, String> getPayingMethods(int payingMethodId) {
+        List<HashMap<String, String>> methods = SQLManager.toList(sqlManager.select(Table.MoyenPaiement.name(),
+                "moyen_paiement_id = '" + payingMethodId + "'"));
+        return methods.isEmpty() ? null : methods.get(0);
     }
 }

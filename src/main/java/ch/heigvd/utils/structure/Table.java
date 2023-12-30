@@ -23,7 +23,8 @@ public enum Table {
     Abonnement,
     Facture,
     Progression,
-    SuppressionLog;
+    SuppressionLog,
+    MoyenPaiement
 }
 
 
