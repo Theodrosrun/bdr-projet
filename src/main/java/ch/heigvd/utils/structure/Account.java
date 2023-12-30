@@ -36,7 +36,7 @@ public class Account {
         }
         this.email = info.get("adressemail");
         this.phoneNumber = info.get("numerotelephone");
-        this.addressNumberStreet = info.get("rue") + " " + info.get("numero");
+        this.addressNumberStreet = info.get("adresse");
         this.addressCity = info.get("ville");
         this.addressNPA = info.get("npa");
         this.addressCountry = info.get("pays");

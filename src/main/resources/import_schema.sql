@@ -305,7 +305,7 @@ SELECT
     p.dateNaissance,
     p.adresseMail,
     p.numeroTelephone,
-    p.numero || ' ' || p.rue AS adresse,
+    p.rue || ' ' || p.numero AS adresse,
     p.ville,
     p.NPA,
     p.pays,
