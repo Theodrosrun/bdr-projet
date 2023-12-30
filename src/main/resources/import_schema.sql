@@ -22,7 +22,6 @@ CREATE TABLE Personne (
     dateNaissance DATE NOT NULL,
     adresseMail VARCHAR(255) NOT NULL,
     numeroTelephone VARCHAR(255),
-    IBAN VARCHAR(255),
     numero INT NOT NULL,
     rue VARCHAR(255) NOT NULL,
     ville VARCHAR(255) NOT NULL,
@@ -53,13 +52,14 @@ CREATE TABLE Membre (
 CREATE TABLE Visiteur (
     visiteur_id INT PRIMARY KEY,
     fitness_id INT NOT NULL,
-    visiteEffectuee BOOLEAN DEFAULT FALSE
+    visite_effectuee BOOLEAN DEFAULT FALSE
 );
 
 CREATE TABLE Compte (
     username VARCHAR(255) PRIMARY KEY,
-    motDePasse VARCHAR(255) NOT NULL,
-    dateDeCreation DATE NOT NULL DEFAULT CURRENT_DATE
+    mot_de_passe VARCHAR(255) NOT NULL,
+    moyen_paiement_pref_id INT,
+    date_de_creation DATE NOT NULL DEFAULT CURRENT_DATE
 );
 
 CREATE TABLE Passage (
@@ -94,15 +94,15 @@ CREATE TABLE TypeCours (
 -- Relation M:N --> il faut créer une table associative
 CREATE TABLE InstructeurTypeCours (
     instructeur_id INT NOT NULL,
-    typeCours VARCHAR(255) NOT NULL,
-    PRIMARY KEY (instructeur_id, typeCours)
+    type_cours VARCHAR(255) NOT NULL,
+    PRIMARY KEY (instructeur_id, type_cours)
 );
 
 CREATE TABLE Salle (
     -- car il y a des lettres dans les noms de salles
     salle_id VARCHAR(255) NOT NULL,
     fitness_id INT NOT NULL,
-    capaciteMax INT NOT NULL,
+    capacite_max INT NOT NULL,
     surface VARCHAR(255),
     PRIMARY KEY(salle_id, fitness_id)
 );
@@ -122,9 +122,9 @@ CREATE TABLE TypeMachine (
 CREATE TABLE Contrat (
     contrat_id SERIAL PRIMARY KEY,
     membre_id INT NOT NULL,
-    dateDebut DATE NOT NULL,
-    dateFin DATE NOT NULL,
-    frequencePaiement INT NOT NULL DEFAULT 1 -- le nombre de mois pour payer
+    date_debut DATE NOT NULL,
+    date_fin DATE NOT NULL,
+    frequence_paiement INT NOT NULL DEFAULT 1 -- le nombre de mois pour payer
 );
 
 -- Relation M:N --> il faut créer une table associative
@@ -141,7 +141,7 @@ CREATE TABLE TypeAbonnement (
 CREATE TABLE Abonnement (
     abo_id VARCHAR(255),
     prix DECIMAL(6,2) NOT NULL,
-    typeAbonnement VARCHAR(255) NOT NULL,
+    type_abonnement VARCHAR(255) NOT NULL,
     disponibilite BOOLEAN DEFAULT TRUE,
     PRIMARY KEY(abo_id)
 );
@@ -150,7 +150,7 @@ CREATE TABLE Facture (
     facture_id SERIAL,
     contrat_id INT NOT NULL,
     montant DECIMAL(8,2) NOT NULL,
-    dateEcheance DATE NOT NULL,
+    date_echeance DATE NOT NULL,
     payment_id INT DEFAULT NULL,
     PRIMARY KEY (facture_id, contrat_id)
 );
@@ -159,8 +159,19 @@ CREATE TABLE Payement (
     payement_id SERIAL PRIMARY KEY,
     facture_id INT NOT NULL,
     contrat_id INT NOT NULL,
-    datePayement DATE NOT NULL,
-    moyenPaiement VARCHAR(255) NOT NULL
+    date_payement DATE NOT NULL,
+    moyen_paiement_id INT NOT NULL
+);
+
+CREATE TABLE MoyenPaiement (
+    moyen_paiement_id SERIAL PRIMARY KEY,
+    type_moyen_paiement VARCHAR(255) NOT NULL,
+    compte_id VARCHAR(255) NOT NULL,
+    info VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE TypeMoyenPaiement (
+    nom VARCHAR(255) PRIMARY KEY
 );
 
 CREATE TABLE Progression (
@@ -232,7 +243,7 @@ ALTER TABLE InstructeurTypeCours
 ADD FOREIGN KEY (instructeur_id) REFERENCES Instructeur(instructeur_id);
 
 ALTER TABLE InstructeurTypeCours
-ADD FOREIGN KEY (typeCours) REFERENCES TypeCours(nom);
+ADD FOREIGN KEY (type_cours) REFERENCES TypeCours(nom);
 
 ALTER TABLE Salle
 ADD FOREIGN KEY (fitness_id) REFERENCES MyAmazingFitness(fitness_id);
@@ -253,7 +264,7 @@ ALTER TABLE ContratAbonnement
 ADD FOREIGN KEY (abo_id) REFERENCES Abonnement(abo_id);
 
 ALTER TABLE Abonnement
-ADD FOREIGN KEY (typeAbonnement) REFERENCES TypeAbonnement(nom);
+ADD FOREIGN KEY (type_abonnement) REFERENCES TypeAbonnement(nom);
 
 ALTER TABLE Facture
 ADD FOREIGN KEY (contrat_id) REFERENCES Contrat(contrat_id);
@@ -261,8 +272,20 @@ ADD FOREIGN KEY (contrat_id) REFERENCES Contrat(contrat_id);
 ALTER TABLE Payement
 ADD FOREIGN KEY (facture_id, contrat_id) REFERENCES Facture(facture_id, contrat_id);
 
+ALTER TABLE Payement
+ADD FOREIGN KEY (moyen_paiement_id) REFERENCES MoyenPaiement(moyen_paiement_id);
+
+ALTER TABLE MoyenPaiement
+ADD FOREIGN KEY (type_moyen_paiement) REFERENCES TypeMoyenPaiement(nom);
+
+ALTER TABLE MoyenPaiement
+ADD FOREIGN KEY (compte_id) REFERENCES Compte(username);
+
 ALTER TABLE Progression
 ADD FOREIGN KEY (membre_id) REFERENCES Membre(id);
+
+ALTER TABLE Compte
+ADD FOREIGN KEY (moyen_paiement_pref_id) REFERENCES MoyenPaiement(moyen_paiement_id);
 
 ----------------------------------------------
 
@@ -274,8 +297,18 @@ CREATE VIEW AccountView
 AS
 SELECT
     c.username,
-    c.motDePasse,
+    c.mot_de_passe,
+    c.moyen_paiement_pref_id,
     p.id,
+    p.nom,
+    p.prenom,
+    p.dateNaissance,
+    p.adresseMail,
+    p.numeroTelephone,
+    p.numero || ' ' || p.rue AS adresse,
+    p.ville,
+    p.NPA,
+    p.pays,
     CASE
         WHEN m.id IS NOT NULL THEN 'Membre'
         WHEN pa.padministratif_id IS NOT NULL THEN 'PersonnelAdministratif'
@@ -298,7 +331,7 @@ DROP VIEW IF EXISTS CourseWeekView;
 CREATE VIEW CourseWeekView AS
 SELECT
     c.cours_id,
-    DATE(c.jour + (interval '7 days' * ((current_date - c.jour) / c.recurrence))) AS jour,
+    DATE(current_date + ((current_date - c.jour) % c.recurrence)) AS jour,
     c.heure,
     c.description,
     c.recurrence,
@@ -308,9 +341,28 @@ SELECT
     c.salle_id,
     c.abo_id
 FROM Cours c
-WHERE c.jour + (interval '7 days' * ((current_date - c.jour) / c.recurrence)) <= current_date
-  AND c.jour + (interval '7 days' * (((current_date - c.jour) / c.recurrence) + 1)) > current_date
-ORDER BY c.cours_id;
+ORDER BY jour;
+
+DROP VIEW IF EXISTS MemberCourseWeekView;
+CREATE VIEW MemberCourseWeekView AS
+SELECT
+    c.cours_id,
+    DATE(current_date + ((current_date - c.jour) % c.recurrence)) AS jour,
+    c.heure,
+    c.description,
+    c.recurrence,
+    c.instructeur_id,
+    c.typecours,
+    c.fitness_id,
+    c.salle_id,
+    c.abo_id,
+    m.id AS membre_id,
+    m.compte_id
+FROM Cours c
+INNER JOIN ContratAbonnement ca ON c.abo_id = ca.abo_id
+INNER JOIN Contrat co ON ca.contrat_id = co.contrat_id
+INNER JOIN Membre m ON co.membre_id = m.id
+ORDER BY jour;
 
 -- View of members and their contracts and memberships
 
@@ -320,16 +372,54 @@ SELECT
     m.id AS membre_id,
     m.compte_id,
     c.contrat_id,
-    c.dateDebut,
-    c.dateFin,
-    c.frequencePaiement,
+    c.date_debut,
+    c.date_fin,
+    c.frequence_paiement,
     a.abo_id,
     a.prix,
-    a.typeAbonnement
+    a.type_abonnement
     FROM Membre m
 INNER JOIN Contrat c ON m.id = c.membre_id
 INNER JOIN ContratAbonnement ca ON c.contrat_id = ca.contrat_id
 INNER JOIN Abonnement a ON ca.abo_id = a.abo_id;
+
+-- View instructors and their courses
+DROP VIEW IF EXISTS InstructeurCoursView;
+CREATE VIEW InstructeurCoursView AS
+SELECT
+    i.instructeur_id,
+    c.cours_id,
+    c.jour,
+    c.heure,
+    c.duree,
+    c.description,
+    c.recurrence,
+    c.typeCours,
+    c.fitness_id,
+    c.salle_id,
+    c.abo_id
+FROM Instructeur i
+INNER JOIN Cours c ON i.instructeur_id = c.instructeur_id;
+
+
+DROP VIEW IF EXISTS MembreFactureView;
+CREATE VIEW MembreFactureView AS
+SELECT
+    m.id AS membre_id,
+    m.compte_id,
+    ab.abo_id,
+    c.contrat_id,
+    f.facture_id,
+    f.montant,
+    f.date_echeance,
+    f.payment_id
+FROM Membre m
+INNER JOIN Contrat c ON m.id = c.membre_id
+INNER JOIN ContratAbonnement a ON c.contrat_id = a.contrat_id
+INNER JOIN Abonnement ab ON a.abo_id = ab.abo_id
+INNER JOIN Facture f ON c.contrat_id = f.contrat_id
+ORDER BY f.date_echeance;
+
 
 
 
@@ -356,7 +446,7 @@ BEGIN
             new_username := lower(CONCAT(personne_nom, '_', personne_prenom, username_suffix));
             username_suffix := username_suffix + 1;
     END LOOP;
-    INSERT INTO Compte (username, motDePasse, dateDeCreation)
+    INSERT INTO Compte (username, mot_de_passe, date_de_creation)
     VALUES (new_username, new_username, CURRENT_DATE) -- Password is the same as the username
     RETURNING new_username INTO new_compte_id;
     NEW.compte_id := new_compte_id;
@@ -381,13 +471,13 @@ AS
 $$
 DECLARE
     i INT := 0;
-    frequence INT := (SELECT frequencePaiement FROM Contrat WHERE contrat_id = NEW.contrat_id);
-    dateDebut DATE := (SELECT dateDebut FROM Contrat WHERE contrat_id = NEW.contrat_id);
+    frequence INT := (SELECT frequence_paiement FROM Contrat WHERE contrat_id = NEW.contrat_id);
+    dateDebut DATE := (SELECT date_debut FROM Contrat WHERE contrat_id = NEW.contrat_id);
     abo_prix DECIMAL(8,2) := (SELECT prix FROM Abonnement WHERE abo_id = NEW.abo_id);
     montant_facture DECIMAL(8,2) := FLOOR((abo_prix / frequence) / 0.05) * 0.05;
     BEGIN
         WHILE i < frequence LOOP
-            INSERT INTO Facture (contrat_id, montant, dateEcheance)
+            INSERT INTO Facture (contrat_id, montant, date_echeance)
             VALUES (NEW.contrat_id, montant_facture, dateDebut + (interval '1 month' * i));
             i := i + 1;
         END LOOP;
@@ -437,5 +527,8 @@ EXECUTE FUNCTION log_suppression();
 -- 1. L'instructeur doit être expert dans le type de cours qu'il donne
 -- 2. Lorsqu'on ajoute un membre ou un employé, on doit ajouter un compte avec un username et un mot de passe nomfamile_prenom
 -- 3. Lorsqu'on crée un contrat, on doit créer le nombre de factures correspondant à la fréquence de paiement
+-- 4. A chaque fois qu'il y a une entité avec debut et fin, on doit vérifier que la date de fin est après la date de début
 --- Vues:
 -- 1. Le nombre de personnes par heure dans le fitness (à faire avec les passages)
+
+--- TODO: Ajouter comme contrainte dans l'UML: Un employé doit avoir un moyen de paiement préféré (type et info)
