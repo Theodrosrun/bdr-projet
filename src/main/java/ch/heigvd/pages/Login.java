@@ -20,7 +20,7 @@ public class Login extends HttpServlet {
             resp.sendRedirect("/myaccount");
             return;
         }
-        PageBuilder pageBuilder = new PageBuilder("Login", resp.getWriter());
+        PageBuilder pageBuilder = new PageBuilder("Login", req, resp);
         pageBuilder.add(LoginForm.doGet());
         if (req.getParameter("error") != null) {
             pageBuilder.add("<div class=\"text-center mt-4\">\n" +

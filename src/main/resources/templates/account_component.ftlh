@@ -54,7 +54,7 @@
             </div>
             <div class="col-lg-4">
                 <div class="register-pic">
-                    <img src="img/register-pic.jpg" alt="Register">
+                    <img src="img/account/${account.username}.png" alt="Register">
                 </div>
             </div>
         </div>

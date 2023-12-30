@@ -29,7 +29,7 @@ public class MyAccount extends HttpServlet {
         Cookie usernameCookie =  CookieManager.getCookie(req, "username");
         Cookie passwordCookie = CookieManager.getCookie(req, "password");
         Account account = Account.from(usernameCookie.getValue(), passwordCookie.getValue());
-        PageBuilder pageBuilder = new PageBuilder(account.getUsername(), resp.getWriter());
+        PageBuilder pageBuilder = new PageBuilder(account.getUsername(), req, resp);
         pageBuilder.add(Title.doGet("My account"));
         pageBuilder.add(AccountComponent.doGet(account));
         List<HashMap<String, String>> subscriptions = new GeneralController().getSubscriptions(account.getId());

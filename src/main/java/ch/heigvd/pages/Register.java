@@ -21,8 +21,8 @@ public class Register extends HttpServlet {
             resp.sendRedirect("/myaccount");
             return;
         }
-        PageBuilder pageBuilder = new PageBuilder("Register", resp.getWriter());
-        pageBuilder.add(RegisterForm.doGet());
+        PageBuilder pageBuilder = new PageBuilder("Register", req, resp);
+        pageBuilder.add(RegisterForm.doGet(req));
         pageBuilder.add("<div class=\"text-center mt-4\">\n" +
                 "                <p class=\"text-gray-500 text-sm\">\n" +
                 "                    Already have an account?\n" +

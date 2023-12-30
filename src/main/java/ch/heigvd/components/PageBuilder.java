@@ -1,30 +1,43 @@
 package ch.heigvd.components;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
+import java.io.IOException;
 import java.io.PrintWriter;
 
 public class PageBuilder {
     private final String pageName;
-    private final PrintWriter out;
-    public PageBuilder(String pageName, PrintWriter out) {
+    private final HttpServletRequest req;
+    private final HttpServletResponse resp;
+    public PageBuilder(String pageName, HttpServletRequest req, HttpServletResponse resp) {
         this.pageName = pageName;
-        this.out = out;
-        open();
+        this.req = req;
+        this.resp = resp;
+        try {
+            open();
+        } catch (IOException ignored) {
+
+        }
     }
 
-    private void open(){
+    private void open() throws IOException {
+        PrintWriter out = resp.getWriter();
         out.println("<!DOCTYPE html>");
         out.println("<html lang=\"fr\">");
         out.println(new Head(pageName).doGet());
         out.println("<body>");
         out.println(Preloader.doGet());
-        out.println(Menu.doGet());
+        out.println(Menu.doGet(req));
     }
 
-    public void add(String content) {
+    public void add(String content) throws IOException {
+        PrintWriter out = resp.getWriter();
         out.println(content);
     }
 
-    public void close() {
+    public void close() throws IOException {
+        PrintWriter out = resp.getWriter();
         out.println(JSScripts.doGet());
         out.println(Footer.doGet());
         out.println("</body>");

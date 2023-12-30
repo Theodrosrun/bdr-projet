@@ -112,12 +112,12 @@ VALUES
     ('Rameur'),
     ('Escalator');
 
-INSERT INTO Machine (machine_id, fitness_id, salle_id, etat, type_machine)
+INSERT INTO Machine (fitness_id, salle_id, etat, type_machine)
 VALUES
-    (1, 1, 'Salle A', 'neuf', 'Tapis de course'),
-    (2, 1, 'Salle B', 'usagé', 'Vélo elliptique'),
-    (3, 2, 'Salle A', 'neuf', 'Escalator'),
-    (4, 1, 'Salle C', 'abîmé', 'Rameur');
+    (1, 'Salle A', 'neuf', 'Tapis de course'),
+    (1, 'Salle B', 'usagé', 'Vélo elliptique'),
+    (2, 'Salle A', 'neuf', 'Escalator'),
+    (1, 'Salle C', 'abîmé', 'Rameur');
 
 INSERT INTO Progression (progression_id, date, poids, membre_id)
 VALUES
@@ -142,9 +142,3 @@ VALUES
     (1, 'Gym Basic'),
     (2, 'Gym Intermediate'),
     (3, 'Gym Advanced');
-
-INSERT INTO Facture (facture_id, contrat_id, montant, dateEcheance, datePaiement, moyenPaiement)
-VALUES
-    (1, 1, 500.00, '2024-02-01', '2023-02-15', 'Carte bancaire'),
-    (2, 2, 300.00, '2024-03-01', '2023-03-15', 'Virement'),
-    (3, 3, 200.00, '2024-04-01', NULL, 'Chèque');
