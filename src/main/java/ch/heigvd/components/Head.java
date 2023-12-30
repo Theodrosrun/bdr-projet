@@ -1,7 +1,12 @@
 package ch.heigvd.components;
 
 import ch.heigvd.utils.freemarker.FreeMarkerConfig;
+import ch.heigvd.utils.structure.Account;
+import ch.heigvd.utils.web.CookieManager;
 import freemarker.template.Template;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+
 import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Map;

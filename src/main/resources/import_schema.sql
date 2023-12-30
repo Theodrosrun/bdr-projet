@@ -147,13 +147,20 @@ CREATE TABLE Abonnement (
 );
 
 CREATE TABLE Facture (
-    facture_id INT NOT NULL,
+    facture_id SERIAL,
     contrat_id INT NOT NULL,
     montant DECIMAL(8,2) NOT NULL,
     dateEcheance DATE NOT NULL,
-    datePaiement DATE,
-    moyenPaiement VARCHAR(255) NOT NULL,
+    payment_id INT DEFAULT NULL,
     PRIMARY KEY (facture_id, contrat_id)
+);
+
+CREATE TABLE Payement (
+    payement_id SERIAL PRIMARY KEY,
+    facture_id INT NOT NULL,
+    contrat_id INT NOT NULL,
+    datePayement DATE NOT NULL,
+    moyenPaiement VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE Progression (
@@ -251,6 +258,9 @@ ADD FOREIGN KEY (typeAbonnement) REFERENCES TypeAbonnement(nom);
 ALTER TABLE Facture
 ADD FOREIGN KEY (contrat_id) REFERENCES Contrat(contrat_id);
 
+ALTER TABLE Payement
+ADD FOREIGN KEY (facture_id, contrat_id) REFERENCES Facture(facture_id, contrat_id);
+
 ALTER TABLE Progression
 ADD FOREIGN KEY (membre_id) REFERENCES Membre(id);
 
@@ -322,29 +332,6 @@ INNER JOIN ContratAbonnement ca ON c.contrat_id = ca.contrat_id
 INNER JOIN Abonnement a ON ca.abo_id = a.abo_id;
 
 
-DROP VIEW IF EXISTS VueFacturesPayees;
-CREATE VIEW VueFacturesPayees
-AS
-SELECT c.membre_id,
-       SUM(f.montant) AS montant_total_factures,
-       SUM(CASE WHEN f.datePaiement IS NOT NULL THEN f.montant
-           ELSE 0 END) AS montant_paye,
-       CASE WHEN SUM(CASE WHEN f.datePaiement IS NOT NULL THEN f.montant
-           ELSE 0 END) = SUM(f.montant) THEN true ELSE false END AS toutes_factures_payees
-FROM contrat c
-LEFT JOIN facture f ON c.contrat_id = f.contrat_id
-GROUP BY c.membre_id;
-
-SELECT * FROM VueFacturesPayees;
-
-
-CREATE VIEW VueMontantPaye AS
-SELECT c.membre_id,
-       SUM(CASE WHEN f.datePaiement IS NOT NULL THEN f.montant ELSE 0 END) AS montant_paye
-FROM Contrat c
-LEFT JOIN Facture f ON c.contrat_id = f.contrat_id
-GROUP BY c.membre_id;
-
 
 ----------------------------------------------
 
@@ -387,6 +374,32 @@ CREATE TRIGGER create_account_trigger_employe
     FOR EACH ROW
 EXECUTE FUNCTION create_account();
 
+CREATE OR REPLACE FUNCTION create_factures()
+    RETURNS TRIGGER
+    LANGUAGE plpgsql
+AS
+$$
+DECLARE
+    i INT := 0;
+    frequence INT := (SELECT frequencePaiement FROM Contrat WHERE contrat_id = NEW.contrat_id);
+    dateDebut DATE := (SELECT dateDebut FROM Contrat WHERE contrat_id = NEW.contrat_id);
+    abo_prix DECIMAL(8,2) := (SELECT prix FROM Abonnement WHERE abo_id = NEW.abo_id);
+    montant_facture DECIMAL(8,2) := FLOOR((abo_prix / frequence) / 0.05) * 0.05;
+    BEGIN
+        WHILE i < frequence LOOP
+            INSERT INTO Facture (contrat_id, montant, dateEcheance)
+            VALUES (NEW.contrat_id, montant_facture, dateDebut + (interval '1 month' * i));
+            i := i + 1;
+        END LOOP;
+        RETURN NEW;
+    END;
+$$;
+
+CREATE TRIGGER create_factures_trigger
+    AFTER INSERT ON ContratAbonnement
+    FOR EACH ROW
+EXECUTE FUNCTION create_factures();
+
 
 
 CREATE OR REPLACE FUNCTION log_suppression()
@@ -400,7 +413,7 @@ BEGIN
     END IF;
 
     INSERT INTO SuppressionLog (user_id, type, date_suppression)
-    VALUES (CASE WHEN entity_type = 'Membre' THEN OLD.membre_id ELSE OLD.employe_id END, entity_type, CURRENT_TIMESTAMP);
+    VALUES (CASE WHEN entity_type = 'Membre' THEN OLD.id ELSE OLD.id END, entity_type, CURRENT_TIMESTAMP);
 
     RETURN OLD;
 END;

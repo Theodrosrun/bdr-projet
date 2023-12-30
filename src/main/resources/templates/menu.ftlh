@@ -8,15 +8,22 @@
         <div class="nav-menu">
             <nav class="mainmenu mobile-menu">
                 <ul>
-                    <li class="active"><a href="./index.html">Home</a></li>
+                    <li class="active"><a href="./home">Home</a></li>
                     <li><a href="./about-us.html">About</a></li>
                     <li><a href="./classes.html">Classes</a></li>
                     <li><a href="./blog.html">Blog</a></li>
                     <li><a href="./gallery.html">Gallery</a></li>
                     <li><a href="./contact.html">Contacts</a></li>
+                    <#if isConnected>
+                        <li><a href="./logout">Logout</a></li>
+                    </#if>
                 </ul>
             </nav>
-            <a href="./register" class="primary-btn signup-btn">Sign Up Today</a>
+            <#if isConnected>
+                <a href="./myaccount" class="primary-btn signup-btn">MyAccount</a>
+            <#else>
+                <a href="./register" class="primary-btn signup-btn">Sign Up</a>
+            </#if>
         </div>
         <div id="mobile-menu-wrap"></div>
     </div>

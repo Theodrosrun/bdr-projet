@@ -16,18 +16,27 @@ public class CookieManager {
     public static boolean isLogged(HttpServletRequest req) {
         Cookie usernameCookie =  CookieManager.getCookie(req, "username");
         Cookie passwordCookie = CookieManager.getCookie(req, "password");
-        if(usernameCookie != null && passwordCookie != null){
-            Account account = Account.from(usernameCookie.getValue(), passwordCookie.getValue());
-            return account != null;
-        }
-        return false;
+        return usernameCookie != null && passwordCookie != null;
     }
 
-    public static void setCookie(HttpServletResponse resp, HttpServletRequest req, String name, String value) {
+    public static void setCookie(HttpServletResponse resp, HttpServletRequest req, String name, String value, int maxAge) {
         Cookie cookie = new Cookie(name, value);
         cookie.setPath("/");
         cookie.setDomain(req.getServerName());
         cookie.setMaxAge(600);
+        cookie.setHttpOnly(true);
+        resp.addCookie(cookie);
+    }
+
+    public static void setCookie(HttpServletResponse resp, HttpServletRequest req, String name, String value) {
+        setCookie(resp, req, name, value, 600);
+    }
+
+    public static void deleteCookie(HttpServletResponse resp, HttpServletRequest req, String name) {
+        Cookie cookie = new Cookie(name, "");
+        cookie.setPath("/");
+        cookie.setDomain(req.getServerName());
+        cookie.setMaxAge(0);
         cookie.setHttpOnly(true);
         resp.addCookie(cookie);
     }
