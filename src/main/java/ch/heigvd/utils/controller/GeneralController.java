@@ -86,19 +86,19 @@ public class GeneralController {
      * @return les informations liées à l'identifiant
      */
     public List<HashMap<String, String>> getMemberCourses(int memberId, String ... columns) {
-        // la liste de tous les cours par semaine des membres sur la vue MemberCourseWeekView ??????????
+        // la liste de tous les cours de la semaine des membres sur la vue MemberCourseWeekView
         return SQLManager.toList(sqlManager.select(View.MemberCourseWeekView.name(),
                 "membre_id = '" + memberId + "'", columns));
     }
 
     /***
      * Récupération des informations (columns) sur les cours relatifs à l'identifiant de l'instructeur (clause WHERE)
-     * @param memberId identifiant du membre
+     * @param memberId identifiant de l'instructeur
      * @param columns colonnes dont on souhaite connaître les informations
      * @return les informations liées à l'identifiant
      */
     public List<HashMap<String, String>> getInstructorWeekCourses(int memberId, String ... columns) {
-        // la liste de tous les cours par semaine des membres sur la vue CourseWeekView ??????????
+        // la liste de tous les cours de la semaine des instructeurs sur la vue CourseWeekView
         return SQLManager.toList(sqlManager.select(View.CourseWeekView.name(),
                 "instructeur_id = '" + memberId + "'", columns));
     }

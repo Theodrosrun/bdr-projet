@@ -331,7 +331,15 @@ DROP VIEW IF EXISTS CourseWeekView;
 CREATE VIEW CourseWeekView AS
 SELECT
     c.cours_id,
-    DATE(current_date + ((current_date - c.jour) % c.recurrence)) AS jour,
+    CASE EXTRACT(DOW FROM (c.jour))
+        WHEN 0 THEN 'dimanche'
+        WHEN 1 THEN 'lundi'
+        WHEN 2 THEN 'mardi'
+        WHEN 3 THEN 'mercredi'
+        WHEN 4 THEN 'jeudi'
+        WHEN 5 THEN 'vendredi'
+        WHEN 6 THEN 'samedi'
+        END AS jour,
     c.heure,
     c.description,
     c.recurrence,
@@ -347,7 +355,15 @@ DROP VIEW IF EXISTS MemberCourseWeekView;
 CREATE VIEW MemberCourseWeekView AS
 SELECT
     c.cours_id,
-    DATE(current_date + ((current_date - c.jour) % c.recurrence)) AS jour,
+    CASE EXTRACT(DOW FROM (c.jour))
+        WHEN 0 THEN 'dimanche'
+        WHEN 1 THEN 'lundi'
+        WHEN 2 THEN 'mardi'
+        WHEN 3 THEN 'mercredi'
+        WHEN 4 THEN 'jeudi'
+        WHEN 5 THEN 'vendredi'
+        WHEN 6 THEN 'samedi'
+        END AS jour,
     c.heure,
     c.description,
     c.recurrence,
