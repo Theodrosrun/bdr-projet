@@ -125,7 +125,8 @@ public class SQLManager {
     }
 
     /***
-     * elle crée une HashMap
+     * Cette méthode crée une liste de HashMaps où chaque HashMap représente une ligne de données
+     * avec un ensemble de colonnes (clé-valeur pour chaque colonne).
      * @param rs résultat de la requête de la fonction executeQuery()
      * @return une structure de deux éléments où les clés sont les noms des colonnes et les valeurs sont les valeurs
      * correspondantes de chaque colonne dans cette ligne.
