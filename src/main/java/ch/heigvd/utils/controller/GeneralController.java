@@ -7,7 +7,13 @@ import ch.heigvd.utils.structure.View;
 import java.util.HashMap;
 import java.util.List;
 
+/***
+ * Classe permettant de s'associer à la la BDD
+ */
 public class GeneralController {
+    /***
+     * Indicatifs de provenance de la BDD
+     */
     private final SQLManager sqlManager = new SQLManager(
             "bdr",
             "bdr",
@@ -16,12 +22,22 @@ public class GeneralController {
 
     public GeneralController() {}
 
+    /***
+     * Récupération des informations liées au compte d'utilisateur du pseudo renseigné
+     * @param userName nom d'utilisateur renseigné
+     * @return
+     */
     public HashMap<String, String> getAccount(String userName) {
         List<HashMap<String, String>> accounts = SQLManager.toList(sqlManager.select(View.AccountView.name(),
                 "username = '" + userName + "'"));
         return accounts.isEmpty() ? null : accounts.get(0);
     }
 
+    /***
+     * Récupération des informations liées aux personnes
+     * @param personId
+     * @return
+     */
     public HashMap<String, String> getPerson(int personId) {
         List<HashMap<String, String>> persons = SQLManager.toList(sqlManager.select(Table.Personne.name(),
                 "id = '" + personId + "'"));

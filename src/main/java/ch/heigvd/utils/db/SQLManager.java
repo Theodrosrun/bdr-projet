@@ -14,6 +14,14 @@ import java.util.List;
 public class SQLManager {
 
     private final Connection connection;
+
+    /***
+     * Constructeur
+     * @param user utlisateur
+     * @param password mot de passe
+     * @param url URL
+     * @param schema schéma
+     */
     public SQLManager(String user, String password, String url, String schema) {
         try {
             Class.forName("org.postgresql.Driver");
@@ -29,6 +37,11 @@ public class SQLManager {
         }
     }
 
+    /***
+     * Surchage de l'utilisation de select
+     * @param table table donnée
+     * @return résultat du SELECT
+     */
     public ResultSet select(String table) {
         return executeQuery(createSelectQuery(table, List.of("*"), null, null, null));
     }
@@ -57,6 +70,9 @@ public class SQLManager {
         return executeQuery(createSelectQuery(table, columns, null, null, null));
     }
 
+    /***
+     * Fermeture de la connexion à la BDD
+     */
     public void close() {
         try {
             connection.close();
@@ -65,6 +81,15 @@ public class SQLManager {
         }
     }
 
+    /***
+     * Requête SQL à la BDD plus complexe
+     * @param table table
+     * @param columns colonnes désirées
+     * @param innerJoin optionnellement la combinaison de tables
+     * @param where condition
+     * @param orderBy triage
+     * @return résultat de la requête sous forme de String
+     */
     private String createSelectQuery(String table,
                                      List<String> columns,
                                      List<String> innerJoin,
@@ -86,6 +111,11 @@ public class SQLManager {
         return query.toString();
     }
 
+    /***
+     * Exécution d'une requête
+     * @param query string formé grâce à la fonction createSelectQuery()
+     * @return un ResultSet
+     */
     private ResultSet executeQuery(String query) {
         try {
             return connection.createStatement().executeQuery(query);
@@ -94,6 +124,12 @@ public class SQLManager {
         }
     }
 
+    /***
+     * elle crée une HashMap
+     * @param rs résultat de la requête de la fonction executeQuery()
+     * @return une structure de deux éléments où les clés sont les noms des colonnes et les valeurs sont les valeurs
+     * correspondantes de chaque colonne dans cette ligne.
+     */
     public static List<HashMap<String, String>> toList(ResultSet rs) {
         List<HashMap<String, String>> list = new ArrayList<>();
         try (rs) {

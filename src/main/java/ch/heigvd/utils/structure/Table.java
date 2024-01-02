@@ -1,5 +1,8 @@
 package ch.heigvd.utils.structure;
 
+/***
+ * Listing de toutes les tables du schéma UML
+ */
 public enum Table {
     MyAmazingFitness,
     Personne,

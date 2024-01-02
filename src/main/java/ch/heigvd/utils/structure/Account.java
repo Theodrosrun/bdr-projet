@@ -6,6 +6,10 @@ import lombok.Getter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+
+/***
+ * Classe représentant toutes informations relatives à l'utilisateur
+ */
 @Getter
 public class Account {
     private final int id;
@@ -22,6 +26,10 @@ public class Account {
     private final Integer payingMethodId;
     private final UserType userType;
 
+    /***
+     * Constructeur
+     * @param info une structure de deux éléments (association : clef - information)
+     */
     private Account(HashMap<String, String> info) {
         this.id = Integer.parseInt(info.get("id"));
         this.username = info.get("username");
@@ -47,6 +55,13 @@ public class Account {
         }
     }
 
+
+    /***
+     * comparaison du compte associé
+     * @param username nom d'utilisateur
+     * @param password mdp
+     * @return création d'une nouvelle instance de la classe Compte
+     */
     public static Account from(String username, String password) {
         HashMap<String, String> information = new GeneralController().getAccount(username);
         if (information == null || !information.get("mot_de_passe").equals(password)) {
