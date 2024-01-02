@@ -11,6 +11,12 @@ import java.io.IOException;
 
 @WebServlet(name = "Home", value = "/home")
 public class Home extends HttpServlet {
+
+    /***
+     * Cette méthode est utilisée pour gérer les requêtes HTTP de type GET.
+     * Elle permet au servlet de récupérer des informations à partir de l'URL.
+     * Affichage universel
+     */
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         PageBuilder pageBuilder = new PageBuilder("Home", req, resp);

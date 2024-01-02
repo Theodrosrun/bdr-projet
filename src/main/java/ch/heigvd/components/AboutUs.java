@@ -5,6 +5,12 @@ import freemarker.template.Template;
 import java.io.StringWriter;
 
 public class AboutUs {
+
+    /***
+     * Cette méthode est utilisée pour gérer les requêtes HTTP de type GET.
+     * Cela permet une réutilisation efficace du code et facilite la gestion des mises à jour de l'interface utilisateur.
+     * @return un string
+     */
     public static String doGet() {
         try {
             Template template = FreeMarkerConfig.getConfig().getTemplate("about_us.ftlh");

@@ -15,7 +15,8 @@
                     <li><a href="./gallery.html">Gallery</a></li>
                     <li><a href="./contact.html">Contacts</a></li>
                     <#if isConnected>
-                        <li><a href="./logout">Logout</a></li>
+                        <!-- Lien Logout -->
+                        <li><a href="/logout" class="highlighted-link">Logout</a></li>
                     </#if>
                 </ul>
             </nav>

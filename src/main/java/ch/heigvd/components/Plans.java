@@ -11,9 +11,9 @@ public class Plans {
     public static String doGet(String title, List<HashMap<String, String>> plans, boolean withInfo) {
         try {
             Map<String, Object> data = new HashMap<>();
-            data.put("title", title);
-            data.put("plans", plans);
-            data.put("withInfo", withInfo);
+            data.put("title", title);       // titre de l'onglet
+            data.put("plans", plans);       // Liste d'informations
+            data.put("withInfo", withInfo); // informations supplémentaires à afficher
 
             Template template = FreeMarkerConfig.getConfig().getTemplate("plans.ftlh");
             StringWriter out = new StringWriter();

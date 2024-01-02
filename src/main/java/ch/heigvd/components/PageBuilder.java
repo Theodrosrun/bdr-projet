@@ -21,6 +21,10 @@ public class PageBuilder {
         }
     }
 
+    /***
+     * Fonction executée lors du constructeur de la page web
+     * @throws IOException exception
+     */
     private void open() throws IOException {
         PrintWriter out = resp.getWriter();
         out.println("<!DOCTYPE html>");
@@ -28,7 +32,7 @@ public class PageBuilder {
         out.println(new Head(pageName).doGet());
         out.println("<body>");
         out.println(Preloader.doGet());
-        out.println(Menu.doGet(req));
+        out.println(Menu.doGet(req)); // logout est inséré ici
     }
 
     public void add(String content) throws IOException {
