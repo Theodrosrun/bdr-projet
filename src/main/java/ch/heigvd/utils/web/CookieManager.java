@@ -1,17 +1,13 @@
 package ch.heigvd.utils.web;
 
-import ch.heigvd.utils.structure.Account;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-/***
- * Pour l'instant, on vérifie juste que le nom d'utilisateur et le mot de passe est différent de null
- */
 public class CookieManager {
 
     /***
-     * Fonction qui sert à savoir si l'utilisateur possède un cookie ou non (la différence est || avec isLogged)
+     * Fonction qui sert à savoir si l'utilisateur possède un cookie valide ou non (la différence est || avec isLogged)
      *
      * @param req l'objet HttpServletRequest représentant la requête HTTP actuelle
      * @return si l'utilisateur possède un cookie ou non
@@ -45,9 +41,9 @@ public class CookieManager {
      */
     public static void setCookie(HttpServletResponse resp, HttpServletRequest req, String name, String value, int maxAge) {
         Cookie cookie = new Cookie(name, value);
-        cookie.setPath("/");
+        cookie.setPath("/"); // En définissant le chemin du cookie sur "/", il est accessible sur toutes les pages du site.
         cookie.setDomain(req.getServerName());
-        cookie.setMaxAge(600);
+        cookie.setMaxAge(600); // 10 minutes
         cookie.setHttpOnly(true);
         resp.addCookie(cookie);
     }

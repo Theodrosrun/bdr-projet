@@ -43,11 +43,18 @@ public class Login extends HttpServlet {
         pageBuilder.close();
     }
 
+    /***
+     * Cette méthode est utilisée pour gérer les requêtes HTTP de type POST.
+     * Pour qu'elle marche, il faut mettre les réelles informations présentes dans la table Compte
+     *
+     * @param req an {@link HttpServletRequest} object that contains the request the client has made of the servlet
+     * @param resp an {@link HttpServletResponse} object that contains the response the servlet sends to the client
+     */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String username = req.getParameter("username").trim();
         String password = req.getParameter("password").trim();
-        Account account = Account.from(username, password);
+        Account account = Account.from(username, password); // comparaison avec le compte associé
         if (account == null) {
             resp.sendRedirect("/login?error=1");
             return;
