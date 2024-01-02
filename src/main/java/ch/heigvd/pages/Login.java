@@ -13,7 +13,6 @@ import java.io.IOException;
 
 /***
  * Variable isConnected dans menu.ftlh ?
- * Utilisation de la classe CookieManager ?
  */
 @WebServlet(name = "Login", value = "/login")
 public class Login extends HttpServlet {

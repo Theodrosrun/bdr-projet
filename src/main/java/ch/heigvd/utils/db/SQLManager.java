@@ -147,4 +147,36 @@ public class SQLManager {
         return list;
     }
 
+
+    /***
+     * Fonction servant à insérer des nouveaux attributs dans une table
+     * @param table table en question
+     * @param columns colonnes à renseigner
+     * @param values attributs
+     */
+    public void insert(String table, List<String> columns, List<String> values) {
+        StringBuilder queryBuilder = new StringBuilder("INSERT INTO ").append(table).append(" (");
+
+        for (String column : columns) {
+            queryBuilder.append(column).append(", ");
+        }
+
+        queryBuilder.delete(queryBuilder.length() - 2, queryBuilder.length());
+        queryBuilder.append(") VALUES (");
+
+        for (String value : values) {
+            queryBuilder.append(value).append(", ");
+        }
+
+        queryBuilder.delete(queryBuilder.length() - 2, queryBuilder.length());
+        queryBuilder.append(")");
+
+        String query = queryBuilder.toString();
+
+        try {
+            connection.createStatement().executeQuery(query);
+        } catch (SQLException e) {
+            throw new RuntimeException("Erreur lors de l'insertion des données dans la table", e);
+        }
+    }
 }
