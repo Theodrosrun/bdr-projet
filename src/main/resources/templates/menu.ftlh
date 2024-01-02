@@ -23,7 +23,7 @@
             <#if isConnected>
                 <a href="./myaccount" class="primary-btn signup-btn">MyAccount</a>
             <#else>
-                <a href="./register" class="primary-btn signup-btn">Sign Up</a>
+                <a href="./register" class="primary-btn signup-btn">Registration</a>
             </#if>
         </div>
         <div id="mobile-menu-wrap"></div>

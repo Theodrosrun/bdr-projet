@@ -5,7 +5,6 @@ import ch.heigvd.utils.structure.Account;
 import ch.heigvd.utils.web.CookieManager;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -14,6 +13,7 @@ import java.io.IOException;
 
 /***
  * Variable isConnected dans menu.ftlh ?
+ * Utilisation de la classe CookieManager ?
  */
 @WebServlet(name = "Login", value = "/login")
 public class Login extends HttpServlet {
