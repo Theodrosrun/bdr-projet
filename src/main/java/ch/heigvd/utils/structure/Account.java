@@ -71,4 +71,20 @@ public class Account {
         }
         return new Account(information);
     }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public Integer getPayingMethodId() {
+        return payingMethodId;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public UserType getUserType() {
+        return userType;
+    }
 }
