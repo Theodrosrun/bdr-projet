@@ -291,7 +291,7 @@ ADD FOREIGN KEY (moyen_paiement_pref_id) REFERENCES MoyenPaiement(moyen_paiement
 
 -- View
 
--- View All accounts with their type
+-- View All accounts combined with the types
 DROP VIEW IF EXISTS AccountView;
 CREATE VIEW AccountView
 AS
@@ -324,6 +324,7 @@ LEFT JOIN Administrateur a ON e.id = a.administrateur_id
 LEFT JOIN Instructeur i ON e.id = i.instructeur_id
 INNER JOIN Personne p ON m.id = p.id OR e.id = p.id;
 
+-- à vérifer car j'ai modifié le sens de ce qui était écrit, je crois que c'était faux
 -- View of all courses that are happening this week
 -- Seen that our hypothetical fitness center does not have a registration system to courses a table 'CoursOccurrence' is not needed
 -- But we need a view to see all the courses that are happening this week
@@ -351,6 +352,7 @@ SELECT
 FROM Cours c
 ORDER BY jour;
 
+-- à vérifer car j'ai modifié le sens de ce qui était écrit, je crois que c'était faux
 DROP VIEW IF EXISTS MemberCourseWeekView;
 CREATE VIEW MemberCourseWeekView AS
 SELECT
@@ -381,7 +383,6 @@ INNER JOIN Membre m ON co.membre_id = m.id
 ORDER BY jour;
 
 -- View of members and their contracts and memberships
-
 DROP VIEW IF EXISTS MembreAbonnementView;
 CREATE VIEW MembreAbonnementView AS
 SELECT
