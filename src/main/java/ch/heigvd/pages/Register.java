@@ -47,7 +47,7 @@ public class Register extends HttpServlet {
     }
 
     /***
-     * Cette fonction est fausse pour l'instant ....
+     * Cette fonction ne marche pas pour l'instant .... il faut analyser plutôt comment faire un insert stupide ds la BDD
      */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -59,15 +59,14 @@ public class Register extends HttpServlet {
         String phoneNumber = req.getParameter("mobile");
         String city = req.getParameter("city");
         String street = req.getParameter("street");
-        String zipCode = req.getParameter("zipCode");
+        Integer zipCode = Integer.parseInt(req.getParameter("zipCode"));
         String country = req.getParameter("country");
         String dateOfBirth = req.getParameter("dateOfBirth");
-        String numero = req.getParameter("numero");
+        Integer numero = Integer.parseInt(req.getParameter("numero"));
 
         // Vérification si les champs requis sont vides
         if (firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() || phoneNumber.isEmpty()
-                || city.isEmpty() || street.isEmpty() || zipCode.isEmpty() || country.isEmpty()
-                || dateOfBirth.isEmpty() || numero.isEmpty()) {
+                || city.isEmpty() || street.isEmpty()  || country.isEmpty() || dateOfBirth.isEmpty() ) {
             resp.sendRedirect("/register?error=fields_empty");
             return;
         }
@@ -81,7 +80,7 @@ public class Register extends HttpServlet {
 
             // Création de la liste de colonnes et de valeurs pour l'insertion
             List<String> columns = Arrays.asList("nom", "prenom", "dateNaissance", "adresseMail", "numeroTelephone", "numero", "rue", "ville", "NPA", "pays");
-            List<String> values = Arrays.asList(firstName, lastName, dateOfBirth, email, phoneNumber, numero, street, city, zipCode, country);
+            List<Object> values = Arrays.asList(firstName, lastName, dateOfBirth, email, phoneNumber, numero, street, city, zipCode, country);
 
             sqlManager.insert(Table.Personne.name(), columns, values);
 

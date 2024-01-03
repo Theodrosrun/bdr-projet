@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+
 @Getter
 public class SQLManager {
 
@@ -167,7 +168,7 @@ public class SQLManager {
      * @param columns colonnes à renseigner
      * @param values attributs
      */
-    public void insert(String table, List<String> columns, List<String> values) {
+    public void insert(String table, List<String> columns, List<Object> values) {
         StringBuilder queryBuilder = new StringBuilder("INSERT INTO ").append(table).append(" (");
 
         for (String column : columns) {
@@ -177,8 +178,15 @@ public class SQLManager {
         queryBuilder.delete(queryBuilder.length() - 2, queryBuilder.length());
         queryBuilder.append(") VALUES (");
 
-        for (String value : values) {
-            queryBuilder.append(value).append(", ");
+        for (Object value : values) {
+            if (value instanceof Number) {
+                // Si la valeur est un nombre, on l'ajoute tel quel
+                queryBuilder.append(value);
+            } else {
+                // Sinon, on entoure la valeur de guillemets simples
+                queryBuilder.append("'").append(value).append("'");
+            }
+            queryBuilder.append(", ");
         }
 
         queryBuilder.delete(queryBuilder.length() - 2, queryBuilder.length());
@@ -187,7 +195,7 @@ public class SQLManager {
         String query = queryBuilder.toString();
 
         try {
-            connection.createStatement().executeQuery(query);
+            connection.createStatement().executeUpdate(query);
         } catch (SQLException e) {
             throw new RuntimeException("Erreur lors de l'insertion des données dans la table", e);
         }
