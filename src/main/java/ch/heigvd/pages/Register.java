@@ -85,14 +85,11 @@ public class Register extends HttpServlet {
 
             sqlManager.insert(Table.Personne.name(), columns, values);
 
-            // Redirection vers une page après la création du compte (par exemple, la page de connexion)
-            resp.sendRedirect("/home");
         } catch (Exception e) {
             // Gestion des exceptions ou des erreurs lors de l'insertion
-            e.printStackTrace(); // À adapter selon votre gestion d'erreurs
+            e.printStackTrace();
             resp.sendRedirect("/register?error=db_error");
         }
-        // Redirection vers une page après la création du compte (par exemple, la page de connexion)
         resp.sendRedirect("/home");
     }
 }

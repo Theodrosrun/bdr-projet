@@ -156,7 +156,7 @@ public class GeneralController {
     }
 
     /***
-     * Obtention de la liste de tous les abonnements à l'identifiant du membre
+     * Obtention de la liste de tous les abonnements de l'identifiant du membre
      * @param memberId identifiant du membre
      * @return la liste de tous les abonnements
      */

@@ -8,7 +8,7 @@ import java.util.Date;
 import java.util.HashMap;
 
 /***
- * Classe représentant toutes informations relatives à l'utilisateur
+ * Classe représentant toutes informations relatives à l'utilisateur (pas uniquement dans la table Compte)
  */
 @Getter
 public class Account {
