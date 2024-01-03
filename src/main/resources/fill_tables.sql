@@ -4,6 +4,9 @@ INSERT INTO MyAmazingFitness (fitness_id, numero, rue, ville, NPA)
 VALUES (1, 123, 'Rue de la Paix', 'Villeville', 12345),
        (2, 456, 'Avenue du Bonheur', 'Bonville', 54321);
 
+-- Réinitialiser la séquence pour la colonne id de la table Personne
+ALTER SEQUENCE personne_id_seq RESTART WITH 1;
+
 INSERT INTO Personne (nom, prenom, dateNaissance, adresseMail, numeroTelephone, numero, rue, ville, NPA, pays)
 VALUES ('Doe', 'John', '1990-05-20', 'john.doe@example.com', '+123456789', 123, 'Rue des Lilas', 'Villefort', 54321, 'Paysland'),
        ('Smith', 'Emma', '1985-09-12', 'emma.smith@example.com', '+987654321', 456, 'Avenue des Roses', 'Villeneuve', 98765, 'Terreville'),
@@ -131,6 +134,9 @@ VALUES
     (11, 'Pilates'),
     (11, 'Cardio');
 
+-- Réinitialiser la séquence pour la colonne id de la table Personne
+ALTER SEQUENCE contrat_contrat_id_seq RESTART WITH 1;
+
 INSERT INTO Contrat (membre_id, date_debut, date_fin, frequence_paiement)
 VALUES
     (6, '2023-01-01', '2023-12-31', 1),
@@ -153,6 +159,9 @@ VALUES
     ('Carte debit'),
     ('Paypal'),
     ('Virement bancaire');
+
+-- Réinitialiser la séquence pour la colonne id de la table Personne
+ALTER SEQUENCE moyenpaiement_moyen_paiement_id_seq RESTART WITH 1;
 
 INSERT INTO MoyenPaiement (type_moyen_paiement, compte_id, info)
 VALUES
