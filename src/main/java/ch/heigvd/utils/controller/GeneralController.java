@@ -147,6 +147,14 @@ public class GeneralController {
         return SQLManager.toList(sqlManager.select(Table.Employe.name()));
     }
 
+    /***
+     * Fonction qui pourrait être améliorée, elle remplit son rôle
+     * @return la totalité des instructeurs avec plus que seulement leur identifiant (cf la table)
+     */
+    public List<HashMap<String, String>> getInstructors() {
+        return SQLManager.toList(sqlManager.select(Table.Instructeur.name(), " INNER JOIN employe ON instructeur_id = id ", true));
+    }
+
     /**
      * Liste tous les comptes
      * @return la liste de tous les comptes

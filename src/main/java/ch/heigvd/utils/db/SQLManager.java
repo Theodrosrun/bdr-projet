@@ -71,6 +71,17 @@ public class SQLManager {
     }
 
     /***
+     * Fonction qui pourrait être factorisée mais qui ne modifie pas celle ci-dessus
+     * @param table table de base
+     * @param inner écrire l'intégralité de l'inner join sous forme de string
+     * @param utilisationInnerJoin avertir que l'on souhaite utiliser un innerjoin. Uniquement pour surchargé mais inutile
+     * @return la selection avec inner join.
+     */
+    public ResultSet select(String table, String inner, boolean utilisationInnerJoin) {
+        return executeQuery(createSelectQuery(table, List.of("*"), inner, null, null));
+    }
+
+    /***
      * Fermeture de la connexion à la BDD
      */
     public void close() {
@@ -85,14 +96,14 @@ public class SQLManager {
      * Requête SQL à la BDD plus complexe
      * @param table table
      * @param columns colonnes désirées
-     * @param innerJoin optionnellement la combinaison de tables
+     * @param innerJoin optionnellement la combinaison de tables --> pas utilisé jusqu'à mnt
      * @param where condition
      * @param orderBy triage
      * @return résultat de la requête sous forme de String
      */
     private String createSelectQuery(String table,
                                      List<String> columns,
-                                     List<String> innerJoin,
+                                     String innerJoin,
                                      String where,
                                      String orderBy
     ) {
@@ -102,6 +113,8 @@ public class SQLManager {
         }
         query.delete(query.length() - 2, query.length());
         query.append(" FROM ").append(table);
+        if (innerJoin != null)
+            query.append(innerJoin);
         if (where != null) {
             query.append(" WHERE ").append(where);
         }
