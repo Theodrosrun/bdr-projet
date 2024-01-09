@@ -9,5 +9,6 @@ public enum View {
     MembreFactureView,
     InstructeurCoursView,
     CourseWeekView,
-    MemberCourseWeekView
+    MemberCourseWeekView,
+    IntructeurTypeCoursView
 }

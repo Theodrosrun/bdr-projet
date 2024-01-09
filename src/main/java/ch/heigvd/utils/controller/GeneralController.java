@@ -117,6 +117,10 @@ public class GeneralController {
         return members.get(0);
     }
 
+    public List<HashMap<String, String>> getInstructorsWithCoursesTypes() {
+        return SQLManager.toList(sqlManager.select(View.IntructeurTypeCoursView.name()));
+    }
+
     /***
      * Récupération des informations de l'employée grâce à l'identifiant du compte
      * @param compte_id identifiant du compte

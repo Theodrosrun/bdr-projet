@@ -4,8 +4,6 @@ INSERT INTO MyAmazingFitness (fitness_id, numero, rue, ville, NPA)
 VALUES (1, 123, 'Rue de la Paix', 'Villeville', 12345),
        (2, 456, 'Avenue du Bonheur', 'Bonville', 54321);
 
--- Réinitialiser la séquence pour la colonne id de la table Personne
-ALTER SEQUENCE personne_id_seq RESTART WITH 1;
 
 INSERT INTO Personne (nom, prenom, dateNaissance, adresseMail, numeroTelephone, numero, rue, ville, NPA, pays)
 VALUES ('Doe', 'John', '1990-05-20', 'john.doe@example.com', '+123456789', 123, 'Rue des Lilas', 'Villefort', 54321, 'Paysland'),
@@ -71,7 +69,7 @@ INSERT INTO Passage (membre_id, fitness_id)
 VALUES (7, 1);
 
 INSERT INTO Instructeur (instructeur_id)
-VALUES (11);
+VALUES (11), (12), (23);
 
 INSERT INTO TypeCours (nom)
 VALUES ('Yoga'),
@@ -131,11 +129,8 @@ VALUES
 INSERT INTO InstructeurTypeCours (instructeur_id, type_cours)
 VALUES
     (11, 'Yoga'),
-    (11, 'Pilates'),
-    (11, 'Cardio');
-
--- Réinitialiser la séquence pour la colonne id de la table Personne
-ALTER SEQUENCE contrat_contrat_id_seq RESTART WITH 1;
+    (12, 'Pilates'),
+    (23, 'Cardio');
 
 INSERT INTO Contrat (membre_id, date_debut, date_fin, frequence_paiement)
 VALUES
@@ -159,9 +154,6 @@ VALUES
     ('Carte debit'),
     ('Paypal'),
     ('Virement bancaire');
-
--- Réinitialiser la séquence pour la colonne id de la table Personne
-ALTER SEQUENCE moyenpaiement_moyen_paiement_id_seq RESTART WITH 1;
 
 INSERT INTO MoyenPaiement (type_moyen_paiement, compte_id, info)
 VALUES

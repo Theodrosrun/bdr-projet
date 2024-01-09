@@ -11,7 +11,7 @@ public class Plans {
     public static String doGet(String title, List<HashMap<String, String>> plans, boolean withInfo) {
         try {
             Map<String, Object> data = new HashMap<>();
-            data.put("title", title);       // titre de l'onglet
+            data.put("title", title);       // titre du composant
             data.put("plans", plans);       // Liste d'informations
             data.put("withInfo", withInfo); // informations supplémentaires à afficher
 

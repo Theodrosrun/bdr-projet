@@ -437,6 +437,18 @@ INNER JOIN Abonnement ab ON a.abo_id = ab.abo_id
 INNER JOIN Facture f ON c.contrat_id = f.contrat_id
 ORDER BY f.date_echeance;
 
+DROP VIEW IF EXISTS IntructeurTypeCoursView;
+CREATE VIEW IntructeurTypeCoursView AS
+SELECT
+    p.prenom || ' ' || p.nom AS instructeur,
+    c.username AS compte,
+    itc.type_cours
+FROM Instructeur i
+INNER JOIN InstructeurTypeCours itc ON i.instructeur_id = itc.instructeur_id
+INNER JOIN Personne p ON i.instructeur_id = p.id
+INNER JOIN Employe e ON p.id = e.id
+INNER JOIN Compte c ON e.compte_id = c.username;
+
 
 
 
