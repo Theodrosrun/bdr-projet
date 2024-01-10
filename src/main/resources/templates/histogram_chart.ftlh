@@ -18,34 +18,12 @@
             </tr>
           </thead>
           <tbody>
+          <#list frequencies as frequency>
             <tr>
-              <th scope="row"> Monday </th>
-              <td style="--size: 0.2;"></td>
+              <th scope="row">${frequency.heure}</th>
+              <td style="--size: ${frequency.moyenne_personnes};"></td>
             </tr>
-            <tr>
-              <th scope="row"> Tuesday </th>
-              <td style="--size: 0.8;"></td>
-            </tr>
-            <tr>
-              <th scope="row"> Wednesday </th>
-              <td style="--size: 0.4;"></td>
-            </tr>
-            <tr>
-              <th scope="row"> Thursday </th>
-              <td style="--size: 0.6;"></td>
-            </tr>
-            <tr>
-              <th scope="row"> Friday </th>
-              <td style="--size: 0.2;"></td>
-            </tr>
-            <tr>
-              <th scope="row"> Saturday </th>
-              <td style="--size: 0.8;"></td>
-            </tr>
-            <tr>
-              <th scope="row"> Sunday </th>
-              <td style="--size: 0.4;"></td>
-            </tr>
+            </#list>
           </tbody>
         </table>
       </div>

@@ -12,7 +12,8 @@ CREATE TABLE MyAmazingFitness (
     numero INT NOT NULL,
     rue VARCHAR(255) NOT NULL,
     ville VARCHAR(255) NOT NULL,
-    NPA INT NOT NULL
+    NPA INT NOT NULL,
+    creation_date DATE NOT NULL DEFAULT CURRENT_DATE
 );
 
 CREATE TABLE Personne (
@@ -187,6 +188,14 @@ CREATE TABLE SuppressionLog (
     date_suppression TIMESTAMP
 );
 
+CREATE TABLE ComptagePassage (
+    fitness_id INT,
+    jour INT,
+    heure INT,
+    nombre_personnes INT,
+    PRIMARY KEY (fitness_id, jour, heure)
+);
+
 ----------------------------------------------
 
 -- Foreign key
@@ -286,6 +295,9 @@ ADD FOREIGN KEY (membre_id) REFERENCES Membre(id);
 
 ALTER TABLE Compte
 ADD FOREIGN KEY (moyen_paiement_pref_id) REFERENCES MoyenPaiement(moyen_paiement_id);
+
+ALTER TABLE ComptagePassage
+ADD FOREIGN KEY (fitness_id) REFERENCES MyAmazingFitness(fitness_id);
 
 ----------------------------------------------
 
@@ -449,14 +461,25 @@ INNER JOIN Personne p ON i.instructeur_id = p.id
 INNER JOIN Employe e ON p.id = e.id
 INNER JOIN Compte c ON e.compte_id = c.username;
 
-
-
+DROP VIEW IF EXISTS MoyennePersonnesParHeureCeJourDeSemaineView;
+CREATE VIEW MoyennePersonnesParHeureCeJourDeSemaineView AS
+SELECT
+    ft.fitness_id,
+    series.jour,
+    series.heure,
+    COALESCE(SUM(cp.nombre_personnes) / NULLIF(TRUNC(DATE_PART('day', age(CURRENT_DATE, ft.creation_date))/7), 0), 0) AS moyenne_personnes
+FROM MyAmazingFitness ft
+         CROSS JOIN (SELECT EXTRACT(DOW FROM CURRENT_DATE) AS jour, generate_series(0, 23) AS heure) AS series
+         LEFT JOIN ComptagePassage cp ON ft.fitness_id = cp.fitness_id AND series.jour = cp.jour AND series.heure = cp.heure
+GROUP BY ft.fitness_id, series.jour, series.heure, ft.creation_date, cp.nombre_personnes
+ORDER BY ft.fitness_id, series.heure;
 
 ----------------------------------------------
 
 -- Trigger
 
--- Trigger creation of a new account when a new member or employee is created
+------------------------------------- Trigger creation of a new account when a new member or employee is created
+
 CREATE OR REPLACE FUNCTION create_account()
     RETURNS TRIGGER
     LANGUAGE plpgsql
@@ -493,6 +516,8 @@ CREATE TRIGGER create_account_trigger_employe
     FOR EACH ROW
 EXECUTE FUNCTION create_account();
 
+------------------------------------- Trigger to create the factures when a new contract is created
+
 CREATE OR REPLACE FUNCTION create_factures()
     RETURNS TRIGGER
     LANGUAGE plpgsql
@@ -518,6 +543,30 @@ CREATE TRIGGER create_factures_trigger
     AFTER INSERT ON ContratAbonnement
     FOR EACH ROW
 EXECUTE FUNCTION create_factures();
+
+------------------------------------- Trigger to Increment the number of people in the fitness center
+
+CREATE OR REPLACE FUNCTION increment_comptage_passage()
+    RETURNS TRIGGER
+    LANGUAGE plpgsql
+AS
+$$
+DECLARE
+    new_fitness_id INT := (SELECT fitness_id FROM Passage WHERE passage_id = NEW.passage_id);
+    new_jour INT := EXTRACT(DOW FROM NEW.timestamp);
+    new_heure INT := EXTRACT(HOUR FROM NEW.timestamp);
+BEGIN
+    INSERT INTO ComptagePassage (fitness_id, jour, heure, nombre_personnes)
+    VALUES (new_fitness_id, new_jour, new_heure, 1)
+    ON CONFLICT (fitness_id, jour, heure) DO UPDATE SET nombre_personnes = ComptagePassage.nombre_personnes + 1;
+    RETURN NEW;
+END;
+$$;
+
+CREATE TRIGGER increment_comptage_passage_trigger
+    AFTER INSERT ON Passage
+    FOR EACH ROW
+EXECUTE FUNCTION increment_comptage_passage();
 
 
 
@@ -557,6 +606,7 @@ EXECUTE FUNCTION log_suppression();
 -- 2. Lorsqu'on ajoute un membre ou un employé, on doit ajouter un compte avec un username et un mot de passe nomfamile_prenom
 -- 3. Lorsqu'on crée un contrat, on doit créer le nombre de factures correspondant à la fréquence de paiement
 -- 4. A chaque fois qu'il y a une entité avec debut et fin, on doit vérifier que la date de fin est après la date de début
+-- 5. Seulement un membre ou employé peuvent être dans passage
 --- Vues:
 -- 1. Le nombre de personnes par heure dans le fitness (à faire avec les passages)
 

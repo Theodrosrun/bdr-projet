@@ -121,6 +121,11 @@ public class GeneralController {
         return SQLManager.toList(sqlManager.select(View.IntructeurTypeCoursView.name()));
     }
 
+    public List<HashMap<String, String>> getTodayAverageFrequency(int fitnessId) {
+        return SQLManager.toList(sqlManager.select(View.MoyennePersonnesParHeureCeJourDeSemaineView.name(),
+                "fitness_id = '" + fitnessId + "'"));
+    }
+
     /***
      * Récupération des informations de l'employée grâce à l'identifiant du compte
      * @param compte_id identifiant du compte
