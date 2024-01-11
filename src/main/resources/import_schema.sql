@@ -80,8 +80,6 @@ CREATE TABLE Cours (
     heure TIME NOT NULL,
     duree INT NOT NULL,
     description VARCHAR(255),
-    recurrence INT NOT NULL,
-    instructeur_id INT NOT NULL,
     typeCours VARCHAR(255) NOT NULL,
     fitness_id INT NOT NULL,
     salle_id VARCHAR(255) NOT NULL,
@@ -89,15 +87,11 @@ CREATE TABLE Cours (
 );
 
 CREATE TABLE TypeCours (
-    nom VARCHAR(255) PRIMARY KEY
+    nom VARCHAR(255) PRIMARY KEY,
+    instructeur_id INT NOT NULL
 );
 
 -- Relation M:N --> il faut créer une table associative
-CREATE TABLE InstructeurTypeCours (
-    instructeur_id INT NOT NULL,
-    type_cours VARCHAR(255) NOT NULL,
-    PRIMARY KEY (instructeur_id, type_cours)
-);
 
 CREATE TABLE Salle (
     -- car il y a des lettres dans les noms de salles
@@ -237,9 +231,6 @@ ALTER TABLE Instructeur
 ADD FOREIGN KEY (instructeur_id) REFERENCES Employe(id);
 
 ALTER TABLE Cours
-ADD FOREIGN KEY (instructeur_id) REFERENCES Instructeur(instructeur_id);
-
-ALTER TABLE Cours
 ADD FOREIGN KEY (typeCours) REFERENCES TypeCours(nom);
 
 ALTER TABLE Cours
@@ -248,11 +239,8 @@ ADD FOREIGN KEY (fitness_id, salle_id) REFERENCES Salle(fitness_id, salle_id);
 ALTER TABLE Cours
 ADD FOREIGN KEY (abo_id) REFERENCES Abonnement(abo_id);
 
-ALTER TABLE InstructeurTypeCours
+ALTER TABLE TypeCours
 ADD FOREIGN KEY (instructeur_id) REFERENCES Instructeur(instructeur_id);
-
-ALTER TABLE InstructeurTypeCours
-ADD FOREIGN KEY (type_cours) REFERENCES TypeCours(nom);
 
 ALTER TABLE Salle
 ADD FOREIGN KEY (fitness_id) REFERENCES MyAmazingFitness(fitness_id);
@@ -336,7 +324,6 @@ LEFT JOIN Administrateur a ON e.id = a.administrateur_id
 LEFT JOIN Instructeur i ON e.id = i.instructeur_id
 INNER JOIN Personne p ON m.id = p.id OR e.id = p.id;
 
--- à vérifer car j'ai modifié le sens de ce qui était écrit, je crois que c'était faux
 -- View of all courses that are happening this week
 -- Seen that our hypothetical fitness center does not have a registration system to courses a table 'CoursOccurrence' is not needed
 -- But we need a view to see all the courses that are happening this week
@@ -344,51 +331,25 @@ DROP VIEW IF EXISTS CourseWeekView;
 CREATE VIEW CourseWeekView AS
 SELECT
     c.cours_id,
-    CASE EXTRACT(DOW FROM (c.jour))
-        WHEN 0 THEN 'dimanche'
-        WHEN 1 THEN 'lundi'
-        WHEN 2 THEN 'mardi'
-        WHEN 3 THEN 'mercredi'
-        WHEN 4 THEN 'jeudi'
-        WHEN 5 THEN 'vendredi'
-        WHEN 6 THEN 'samedi'
-        END AS jour,
+    DATE(current_date + ((current_date - c.jour) % 7)) AS jour,
     c.heure,
     c.description,
-    c.recurrence,
-    c.instructeur_id,
+    tc.instructeur_id AS instructeur_id,
     c.typecours,
     c.fitness_id,
     c.salle_id,
     c.abo_id
 FROM Cours c
+INNER JOIN TypeCours tc ON c.typecours = tc.nom
 ORDER BY jour;
 
--- à vérifer car j'ai modifié le sens de ce qui était écrit, je crois que c'était faux
 DROP VIEW IF EXISTS MemberCourseWeekView;
 CREATE VIEW MemberCourseWeekView AS
 SELECT
-    c.cours_id,
-    CASE EXTRACT(DOW FROM (c.jour))
-        WHEN 0 THEN 'dimanche'
-        WHEN 1 THEN 'lundi'
-        WHEN 2 THEN 'mardi'
-        WHEN 3 THEN 'mercredi'
-        WHEN 4 THEN 'jeudi'
-        WHEN 5 THEN 'vendredi'
-        WHEN 6 THEN 'samedi'
-        END AS jour,
-    c.heure,
-    c.description,
-    c.recurrence,
-    c.instructeur_id,
-    c.typecours,
-    c.fitness_id,
-    c.salle_id,
-    c.abo_id,
+    c.*,
     m.id AS membre_id,
     m.compte_id
-FROM Cours c
+FROM CourseWeekView c
 INNER JOIN ContratAbonnement ca ON c.abo_id = ca.abo_id
 INNER JOIN Contrat co ON ca.contrat_id = co.contrat_id
 INNER JOIN Membre m ON co.membre_id = m.id
@@ -422,14 +383,13 @@ SELECT
     c.heure,
     c.duree,
     c.description,
-    c.recurrence,
     c.typeCours,
     c.fitness_id,
     c.salle_id,
     c.abo_id
 FROM Instructeur i
-INNER JOIN Cours c ON i.instructeur_id = c.instructeur_id;
-
+INNER JOIN TypeCours tc ON i.instructeur_id = tc.instructeur_id
+INNER JOIN Cours c ON i.instructeur_id = tc.instructeur_id;
 
 DROP VIEW IF EXISTS MembreFactureView;
 CREATE VIEW MembreFactureView AS
@@ -453,10 +413,8 @@ DROP VIEW IF EXISTS IntructeurTypeCoursView;
 CREATE VIEW IntructeurTypeCoursView AS
 SELECT
     p.prenom || ' ' || p.nom AS instructeur,
-    c.username AS compte,
-    itc.type_cours
+    c.username AS compte
 FROM Instructeur i
-INNER JOIN InstructeurTypeCours itc ON i.instructeur_id = itc.instructeur_id
 INNER JOIN Personne p ON i.instructeur_id = p.id
 INNER JOIN Employe e ON p.id = e.id
 INNER JOIN Compte c ON e.compte_id = c.username;
@@ -473,6 +431,29 @@ FROM MyAmazingFitness ft
          LEFT JOIN ComptagePassage cp ON ft.fitness_id = cp.fitness_id AND series.jour = cp.jour AND series.heure = cp.heure
 GROUP BY ft.fitness_id, series.jour, series.heure, ft.creation_date, cp.nombre_personnes
 ORDER BY ft.fitness_id, series.heure;
+
+DROP VIEW IF EXISTS HoraireCoursView;
+CREATE VIEW HoraireCoursView AS
+SELECT
+    fitness,
+    heure,
+    MAX(CASE WHEN EXTRACT(DOW FROM jour) = 0 THEN typeCours || ' - ' || instructeur || ' - ' || salle_id ELSE NULL END) AS Sunday,
+    MAX(CASE WHEN EXTRACT(DOW FROM jour) = 1 THEN typeCours || ' - ' || instructeur || ' - ' || salle_id ELSE NULL END) AS Monday,
+    MAX(CASE WHEN EXTRACT(DOW FROM jour) = 2 THEN typeCours || ' - ' || instructeur || ' - ' || salle_id ELSE NULL END) AS Tuesday,
+    MAX(CASE WHEN EXTRACT(DOW FROM jour) = 3 THEN typeCours || ' - ' || instructeur || ' - ' || salle_id ELSE NULL END) AS Wednesday,
+    MAX(CASE WHEN EXTRACT(DOW FROM jour) = 4 THEN typeCours || ' - ' || instructeur || ' - ' || salle_id ELSE NULL END) AS Thursday,
+    MAX(CASE WHEN EXTRACT(DOW FROM jour) = 5 THEN typeCours || ' - ' || instructeur || ' - ' || salle_id ELSE NULL END) AS Friday,
+    MAX(CASE WHEN EXTRACT(DOW FROM jour) = 6 THEN typeCours || ' - ' || instructeur || ' - ' || salle_id ELSE NULL END) AS Saturday
+FROM (
+         SELECT c.jour, c.heure, c.typeCours, p.prenom || ' ' || p.nom AS instructeur, c.salle_id, f.ville AS fitness
+         FROM Cours c
+             INNER JOIN TypeCours tc ON c.typeCours = tc.nom
+             INNER JOIN Instructeur i ON tc.instructeur_id = i.instructeur_id
+             INNER JOIN Personne p ON i.instructeur_id = p.id
+             INNER JOIN MyAmazingFitness f ON c.fitness_id = f.fitness_id
+     ) AS source
+GROUP BY fitness, heure;
+
 
 ----------------------------------------------
 
@@ -600,14 +581,8 @@ EXECUTE FUNCTION log_suppression();
 
 --- Deletion:
 -- 1. Check les cascades
--- 2. We cannot delete a course if there are people registered to it. A view to check the number of people registered to a course and a trigger to check if the number is 0 before deleting the course.
 --- Triggers to add:
--- 1. L'instructeur doit être expert dans le type de cours qu'il donne
--- 2. Lorsqu'on ajoute un membre ou un employé, on doit ajouter un compte avec un username et un mot de passe nomfamile_prenom
--- 3. Lorsqu'on crée un contrat, on doit créer le nombre de factures correspondant à la fréquence de paiement
 -- 4. A chaque fois qu'il y a une entité avec debut et fin, on doit vérifier que la date de fin est après la date de début
--- 5. Seulement un membre ou employé peuvent être dans passage
 --- Vues:
--- 1. Le nombre de personnes par heure dans le fitness (à faire avec les passages)
 
 --- TODO: Ajouter comme contrainte dans l'UML: Un employé doit avoir un moyen de paiement préféré (type et info)

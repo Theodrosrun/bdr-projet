@@ -14,7 +14,6 @@
                         <img src="img/account/${expert.compte}.png" alt="" width="290px" >
                         <div class="trainer-text">
                             <h5>${expert.instructeur}</h5>
-                            <span>${expert.type_cours}</span>
                         </div>
                     </div>
                 </div>

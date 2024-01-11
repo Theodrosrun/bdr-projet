@@ -523,20 +523,28 @@ insert into Passage (membre_id, fitness_id, timestamp) values (9, 2, CURRENT_DAT
 INSERT INTO Instructeur (instructeur_id)
 VALUES (11), (12), (23);
 
-INSERT INTO TypeCours (nom)
-VALUES ('Yoga'),
-       ('Pilates'),
-       ('Cardio');
+INSERT INTO TypeCours (nom, instructeur_id)
+VALUES ('Yoga', 11),
+       ('Box', 12),
+       ('Cardio', 23),
+       ('Crossfit', 23),
+       ('Body', 11),
+       ('Aerobic', 12),
+       ('Pilates', 11),
+       ('Zumba', 12),
+       ('Kickboxing', 23),
+       ('Spinning', 23);
 
+-- Surfaces en mètres carrés
 INSERT INTO Salle (salle_id, fitness_id, capacite_max, surface)
 VALUES
-    ('Salle Musculation', 1, 200, '100m²'),
-    ('Salle A', 1, 20, '30m²'),
-    ('Salle B', 1, 15, '25m²'),
-    ('Salle C', 1, 25, '40m²'),
-    ('Salle Musculation', 2, 200, '100m²'),
-    ('Salle A', 2, 100, '100m²'),
-    ('Salle B', 2, 100, '100m²');
+    ('Salle Musculation', 1, 200, '100'),
+    ('Salle A', 1, 20, '30'),
+    ('Salle B', 1, 15, '25'),
+    ('Salle C', 1, 25, '40'),
+    ('Salle Musculation', 2, 200, '100'),
+    ('Salle A', 2, 100, '100'),
+    ('Salle B', 2, 100, '100');
 
 INSERT INTO TypeAbonnement (nom)
 VALUES
@@ -550,13 +558,28 @@ VALUES
     ('Advanced', 70.00, 'Gym'),
     ('Yoga', 50.00, 'Course'),
     ('Pilates', 60.00, 'Course'),
-    ('Workout', 40.00, 'Course');
+    ('Box', 40.00, 'Course'),
+    ('Cardio', 50.00, 'Course'),
+    ('Crossfit', 60.00, 'Course'),
+    ('Body', 40.00, 'Course'),
+    ('Aerobic', 50.00, 'Course'),
+    ('Zumba', 60.00, 'Course'),
+    ('Kickboxing', 40.00, 'Course'),
+    ('Spinning', 50.00, 'Course');
 
-INSERT INTO Cours (jour, heure, duree, description, recurrence, instructeur_id, typeCours, fitness_id, salle_id, abo_id)
+
+INSERT INTO Cours (jour, heure, duree, description, typeCours, fitness_id, salle_id, abo_id)
 VALUES
-    ('2023-12-01', '09:00:00', 1, 'Yoga class', 7, 11, 'Yoga', 1, 'Salle A', 'Yoga'),
-    ('2023-12-02', '14:00:00', 1, 'Pilates session', 7, 11, 'Pilates', 1, 'Salle B', 'Pilates'),
-    ('2023-12-03', '10:00:00', 1, 'Cardio workout', 7, 11, 'Cardio', 1, 'Salle C', 'Workout');
+    ('2023-12-03', '09:00:00', 60, 'Yoga class', 'Yoga', 1, 'Salle A', 'Yoga'),
+    ('2023-12-03', '14:00:00', 60, 'Pilates session', 'Pilates', 1, 'Salle B', 'Pilates'),
+    ('2023-12-03', '10:00:00', 60, 'Cardio workout', 'Cardio', 1, 'Salle C', 'Cardio'),
+    ('2023-12-04', '11:00:00', 60, 'Crossfit class', 'Crossfit', 1, 'Salle A', 'Crossfit'),
+    ('2023-12-05', '12:00:00', 60, 'Body workout', 'Body', 1, 'Salle B', 'Body'),
+    ('2023-12-06', '13:00:00', 60, 'Aerobic session', 'Aerobic', 1, 'Salle C', 'Aerobic'),
+    ('2023-12-07', '14:00:00', 60, 'Zumba class', 'Zumba', 1, 'Salle A', 'Zumba'),
+    ('2023-12-08', '15:00:00', 60, 'Kickboxing session', 'Kickboxing', 1, 'Salle B', 'Kickboxing'),
+    ('2023-12-09', '16:00:00', 60, 'Spinning class', 'Spinning', 1, 'Salle C', 'Spinning'),
+    ('2023-12-10', '17:00:00', 60, 'Boxing session', 'Box', 1, 'Salle A', 'Box');
 
 INSERT INTO TypeMachine (type_machine)
 VALUES
@@ -577,12 +600,6 @@ VALUES
     (1, '2023-12-01', 75.5, 6),
     (2, '2023-12-02', 72.3, 7),
     (3, '2023-12-03', 80.0, 8);
-
-INSERT INTO InstructeurTypeCours (instructeur_id, type_cours)
-VALUES
-    (11, 'Yoga'),
-    (12, 'Pilates'),
-    (23, 'Cardio');
 
 INSERT INTO Contrat (membre_id, date_debut, date_fin, frequence_paiement)
 VALUES
