@@ -2,6 +2,7 @@ package ch.heigvd.pages;
 
 import ch.heigvd.components.PageBuilder;
 import ch.heigvd.components.RegisterForm;
+import ch.heigvd.utils.controller.GeneralController;
 import ch.heigvd.utils.db.SQLManager;
 import ch.heigvd.utils.web.CookieManager;
 import jakarta.servlet.ServletException;
@@ -59,36 +60,44 @@ public class Register extends HttpServlet {
         String phoneNumber = req.getParameter("mobile");
         String city = req.getParameter("city");
         String street = req.getParameter("street");
-        Integer zipCode = Integer.parseInt(req.getParameter("zipCode"));
         String country = req.getParameter("country");
         String dateOfBirth = req.getParameter("dateOfBirth");
-        Integer numero = Integer.parseInt(req.getParameter("numero"));
+
+        int zipCode;
+        int numero;
+
+        // Vérification si les champs numériques peuvent être convertis en entier
+        try {
+            zipCode = Integer.parseInt(req.getParameter("zipCode"));
+            numero = Integer.parseInt(req.getParameter("numero"));
+        } catch (NumberFormatException e) {
+            // Gérer le cas où la conversion en entier échoue
+            resp.sendRedirect("/register?error=numeric_fields_invalid");
+            return;
+        }
 
         // Vérification si les champs requis sont vides
         if (firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() || phoneNumber.isEmpty()
-                || city.isEmpty() || street.isEmpty()  || country.isEmpty() || dateOfBirth.isEmpty() ) {
+                || city.isEmpty() || street.isEmpty()  || country.isEmpty() || dateOfBirth.isEmpty()
+                || firstName.contains("'") || lastName.contains("'") || email.contains("'")
+                || phoneNumber.contains("'") || city.contains("'") || street.contains("'")
+                || country.contains("'") || dateOfBirth.contains("'")) {
             resp.sendRedirect("/register?error=fields_empty");
             return;
         }
 
         try {
-            SQLManager sqlManager = new SQLManager(
-                    "bdr",
-                    "bdr",
-                    "jdbc:postgresql://localhost:5432/bdr",
-                    "my_amazing_fitness");
-
             // Création de la liste de colonnes et de valeurs pour l'insertion
             List<String> columns = Arrays.asList("nom", "prenom", "dateNaissance", "adresseMail", "numeroTelephone", "numero", "rue", "ville", "NPA", "pays");
             List<Object> values = Arrays.asList(firstName, lastName, dateOfBirth, email, phoneNumber, numero, street, city, zipCode, country);
 
-            sqlManager.insert(Table.Personne.name(), columns, values);
+            new GeneralController().insert(Table.Personne.name(), columns, values);
 
         } catch (Exception e) {
             // Gestion des exceptions ou des erreurs lors de l'insertion
             e.printStackTrace();
             resp.sendRedirect("/register?error=db_error");
         }
-        resp.sendRedirect("/home");
+        resp.sendRedirect("/register");
     }
 }

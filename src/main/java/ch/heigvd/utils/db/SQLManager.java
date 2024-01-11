@@ -14,7 +14,7 @@ import java.util.List;
 @Getter
 public class SQLManager {
 
-    private final Connection connection;
+    private static Connection connection = null;
 
     /***
      * Constructeur
@@ -168,7 +168,7 @@ public class SQLManager {
      * @param columns colonnes à renseigner
      * @param values attributs
      */
-    public void insert(String table, List<String> columns, List<Object> values) {
+    public static void insert(String table, List<String> columns, List<Object> values) {
         StringBuilder queryBuilder = new StringBuilder("INSERT INTO ").append(table).append(" (");
 
         for (String column : columns) {
