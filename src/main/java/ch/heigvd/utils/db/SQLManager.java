@@ -1,5 +1,6 @@
 package ch.heigvd.utils.db;
 
+import ch.heigvd.utils.structure.Table;
 import lombok.Getter;
 
 import java.sql.Connection;
@@ -182,7 +183,11 @@ public class SQLManager {
             if (value instanceof Number) {
                 // Si la valeur est un nombre, on l'ajoute tel quel
                 queryBuilder.append(value);
-            } else {
+            }
+            else if (value == "CURRENT_DATE") {
+                queryBuilder.append(value);
+            }
+            else {
                 // Sinon, on entoure la valeur de guillemets simples
                 queryBuilder.append("'").append(value).append("'");
             }
@@ -190,13 +195,22 @@ public class SQLManager {
         }
 
         queryBuilder.delete(queryBuilder.length() - 2, queryBuilder.length());
-        queryBuilder.append(") RETURNING id");
+
+        if (Table.Contrat.name().equals(table)) {
+            queryBuilder.append(") RETURNING contrat_id"); // OK pour membre et personne
+        }
+        else {
+            queryBuilder.append(") RETURNING id"); // OK pour membre et personne
+        }
 
         String query = queryBuilder.toString();
 
         try {
             ResultSet resultSet = connection.createStatement().executeQuery(query);
             if (resultSet.next()) {
+                if (Table.Contrat.name().equals(table)) {
+                    return resultSet.getInt("contrat_id");
+                }
                 return resultSet.getInt("id");
             } else {
                 throw new SQLException("La récupération de l'identifiant a échoué");

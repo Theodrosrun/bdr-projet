@@ -99,6 +99,13 @@ public class Register extends HttpServlet {
 
             new GeneralController().insert(Table.Membre.name(), columnsMembre, valuesMembre);
 
+            // Création de la liste de colonnes et de valeurs pour l'insertion d'un contrat
+            List<String> columnsContrat = Arrays.asList("membre_id", "date_debut", "date_fin", "frequence_paiement");
+            List<Object> valuesContrat = Arrays.asList(personneId, "CURRENT_DATE", "2025-01-01", 1); // frequence de paiement à questionner et date de fin aussi
+
+            // Insertion du contrat et récupération de son identifiant
+            new GeneralController().insert(Table.Contrat.name(), columnsContrat, valuesContrat);
+
         } catch (Exception e) {
             // Gestion des exceptions ou des erreurs lors de l'insertion
             e.printStackTrace();
