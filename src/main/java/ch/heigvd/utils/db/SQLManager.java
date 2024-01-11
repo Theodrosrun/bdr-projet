@@ -199,6 +199,9 @@ public class SQLManager {
         if (Table.Contrat.name().equals(table)) {
             queryBuilder.append(") RETURNING contrat_id"); // OK pour membre et personne
         }
+        else if (Table.MoyenPaiement.name().equals(table)) {
+            queryBuilder.append(") ");
+        }
         else {
             queryBuilder.append(") RETURNING id"); // OK pour membre et personne
         }
@@ -211,7 +214,10 @@ public class SQLManager {
                 if (Table.Contrat.name().equals(table)) {
                     return resultSet.getInt("contrat_id");
                 }
-                return resultSet.getInt("id");
+                else if (Table.MoyenPaiement.name().equals(table)) {
+                    return 0;
+                }
+                    return resultSet.getInt("id");
             } else {
                 throw new SQLException("La récupération de l'identifiant a échoué");
             }

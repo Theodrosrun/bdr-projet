@@ -104,13 +104,19 @@ public class Register extends HttpServlet {
             List<Object> valuesContrat = Arrays.asList(personneId, "CURRENT_DATE", "2025-01-01", 1); // frequence de paiement à questionner et date de fin aussi
 
             // Insertion du contrat et récupération de son identifiant
-            new GeneralController().insert(Table.Contrat.name(), columnsContrat, valuesContrat);
+            int contrat_id = new GeneralController().insert(Table.Contrat.name(), columnsContrat, valuesContrat);
+
+            // Création de la liste de colonnes et de valeurs pour l'insertion d'un moyen de paiement
+            List<String> columnsMoyenPaiement = Arrays.asList("type_moyen_paiement", "compte_id", "info");
+            List<Object> valuesMoyenPaiement = Arrays.asList("Carte credit", firstName + "_" + lastName, "1111-5678-9012-3456"); // info à donner et type moyen de paiement aussi
+
+            // Insertion du moyen de paiement
+            new GeneralController().insert(Table.MoyenPaiement.name(), columnsMoyenPaiement, valuesMoyenPaiement);
 
         } catch (Exception e) {
             // Gestion des exceptions ou des erreurs lors de l'insertion
             e.printStackTrace();
             resp.sendRedirect("/register?error=db_error");
         }
-        resp.sendRedirect("/register");
     }
 }
