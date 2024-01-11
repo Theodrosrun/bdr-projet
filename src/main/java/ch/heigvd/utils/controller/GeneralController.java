@@ -211,7 +211,7 @@ public class GeneralController {
         return methods.isEmpty() ? null : methods.get(0);
     }
 
-    public void insert(String table, List<String> columns, List<Object> values) {
-        SQLManager.insert(table, columns, values);
+    public int insert(String table, List<String> columns, List<Object> values) {
+        return SQLManager.insert(table, columns, values);
     }
 }

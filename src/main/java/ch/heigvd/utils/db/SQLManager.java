@@ -168,7 +168,7 @@ public class SQLManager {
      * @param columns colonnes à renseigner
      * @param values attributs
      */
-    public static void insert(String table, List<String> columns, List<Object> values) {
+    public static int insert(String table, List<String> columns, List<Object> values) {
         StringBuilder queryBuilder = new StringBuilder("INSERT INTO ").append(table).append(" (");
 
         for (String column : columns) {
@@ -190,12 +190,17 @@ public class SQLManager {
         }
 
         queryBuilder.delete(queryBuilder.length() - 2, queryBuilder.length());
-        queryBuilder.append(")");
+        queryBuilder.append(") RETURNING id");
 
         String query = queryBuilder.toString();
 
         try {
-            connection.createStatement().executeUpdate(query);
+            ResultSet resultSet = connection.createStatement().executeQuery(query);
+            if (resultSet.next()) {
+                return resultSet.getInt("id");
+            } else {
+                throw new SQLException("La récupération de l'identifiant a échoué");
+            }
         } catch (SQLException e) {
             throw new RuntimeException("Erreur lors de l'insertion des données dans la table", e);
         }

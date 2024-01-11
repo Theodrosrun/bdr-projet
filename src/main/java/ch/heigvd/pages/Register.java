@@ -91,7 +91,13 @@ public class Register extends HttpServlet {
             List<String> columns = Arrays.asList("nom", "prenom", "dateNaissance", "adresseMail", "numeroTelephone", "numero", "rue", "ville", "NPA", "pays");
             List<Object> values = Arrays.asList(firstName, lastName, dateOfBirth, email, phoneNumber, numero, street, city, zipCode, country);
 
-            new GeneralController().insert(Table.Personne.name(), columns, values);
+            int personneId = new GeneralController().insert(Table.Personne.name(), columns, values);
+
+            // Création de la liste de colonnes et de valeurs pour l'insertion
+            List<String> columnsMembre = List.of("id");
+            List<Object> valuesMembre = List.of(personneId);
+
+            new GeneralController().insert(Table.Membre.name(), columnsMembre, valuesMembre);
 
         } catch (Exception e) {
             // Gestion des exceptions ou des erreurs lors de l'insertion
