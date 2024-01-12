@@ -118,7 +118,12 @@ public class GeneralController {
     }
 
     public List<HashMap<String, String>> getInstructorsWithCoursesTypes() {
-        return SQLManager.toList(sqlManager.select(View.IntructeurTypeCoursView.name()));
+        return SQLManager.toList(sqlManager.select(Table.Instructeur.name(), " INNER JOIN personne ON instructeur_id = id ", true));
+    }
+
+    public List<HashMap<String, String>> getTodayAverageFrequency(int fitnessId) {
+        return SQLManager.toList(sqlManager.select(View.MoyennePersonnesParHeureCeJourDeSemaineView.name(),
+                "fitness_id = '" + fitnessId + "'"));
     }
 
     /***
@@ -155,7 +160,7 @@ public class GeneralController {
      * Fonction qui pourrait être améliorée, elle remplit son rôle
      * @return la totalité des instructeurs avec plus que seulement leur identifiant (cf la table)
      */
-    public List<HashMap<String, String>> getInstructors() {
+    public List<HashMap<String, String>> getInstructor(int id) {
         return SQLManager.toList(sqlManager.select(Table.Instructeur.name(), " INNER JOIN employe ON instructeur_id = id ", true));
     }
 
