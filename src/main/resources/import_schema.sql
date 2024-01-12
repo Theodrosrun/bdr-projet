@@ -83,7 +83,7 @@ CREATE TABLE Cours (
     typeCours VARCHAR(255) NOT NULL,
     fitness_id INT NOT NULL,
     salle_id VARCHAR(255) NOT NULL,
-    abo_id VARCHAR(255) NOT NULL UNIQUE
+    abo_id VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE TypeCours (
@@ -374,39 +374,18 @@ INNER JOIN ContratAbonnement ca ON c.contrat_id = ca.contrat_id
 INNER JOIN Abonnement a ON ca.abo_id = a.abo_id;
 
 -- View instructors and their courses
-DROP VIEW IF EXISTS InstructeurCoursView;
-CREATE VIEW InstructeurCoursView AS
-SELECT
-    i.instructeur_id,
-    c.cours_id,
-    c.jour,
-    c.heure,
-    c.duree,
-    c.description,
-    c.typeCours,
-    c.fitness_id,
-    c.salle_id,
-    c.abo_id
-FROM Instructeur i
-INNER JOIN TypeCours tc ON i.instructeur_id = tc.instructeur_id
-INNER JOIN Cours c ON i.instructeur_id = tc.instructeur_id;
-
 DROP VIEW IF EXISTS MembreFactureView;
 CREATE VIEW MembreFactureView AS
 SELECT
-    m.id AS membre_id,
+    m.membre_id,
     m.compte_id,
-    ab.abo_id,
-    c.contrat_id,
-    f.facture_id,
-    f.montant,
-    f.date_echeance,
+    m.abo_id AS plan,
+    f.facture_id AS bill_number,
+    f.montant AS amount,
+    f.date_echeance AS due_date,
     f.payment_id
-FROM Membre m
-INNER JOIN Contrat c ON m.id = c.membre_id
-INNER JOIN ContratAbonnement a ON c.contrat_id = a.contrat_id
-INNER JOIN Abonnement ab ON a.abo_id = ab.abo_id
-INNER JOIN Facture f ON c.contrat_id = f.contrat_id
+FROM MembreAbonnementView m
+INNER JOIN Facture f ON m.contrat_id = f.contrat_id
 ORDER BY f.date_echeance;
 
 DROP VIEW IF EXISTS IntructeurTypeCoursView;
@@ -435,7 +414,6 @@ ORDER BY ft.fitness_id, series.heure;
 DROP VIEW IF EXISTS HoraireCoursView;
 CREATE VIEW HoraireCoursView AS
 SELECT
-    fitness,
     heure,
     MAX(CASE WHEN EXTRACT(DOW FROM jour) = 0 THEN typeCours || ' - ' || instructeur || ' - ' || salle_id ELSE NULL END) AS Sunday,
     MAX(CASE WHEN EXTRACT(DOW FROM jour) = 1 THEN typeCours || ' - ' || instructeur || ' - ' || salle_id ELSE NULL END) AS Monday,
@@ -445,14 +423,12 @@ SELECT
     MAX(CASE WHEN EXTRACT(DOW FROM jour) = 5 THEN typeCours || ' - ' || instructeur || ' - ' || salle_id ELSE NULL END) AS Friday,
     MAX(CASE WHEN EXTRACT(DOW FROM jour) = 6 THEN typeCours || ' - ' || instructeur || ' - ' || salle_id ELSE NULL END) AS Saturday
 FROM (
-         SELECT c.jour, c.heure, c.typeCours, p.prenom || ' ' || p.nom AS instructeur, c.salle_id, f.ville AS fitness
-         FROM Cours c
-             INNER JOIN TypeCours tc ON c.typeCours = tc.nom
-             INNER JOIN Instructeur i ON tc.instructeur_id = i.instructeur_id
-             INNER JOIN Personne p ON i.instructeur_id = p.id
-             INNER JOIN MyAmazingFitness f ON c.fitness_id = f.fitness_id
+         SELECT c.jour, c.heure, c.typeCours, p.prenom || ' ' || p.nom AS instructeur, c.salle_id
+         FROM Instructeur i
+            INNER JOIN Personne p ON i.instructeur_id = p.id
+            INNER JOIN CourseWeekView c ON i.instructeur_id = c.instructeur_id
      ) AS source
-GROUP BY fitness, heure;
+GROUP BY heure;
 
 
 ----------------------------------------------
@@ -582,7 +558,8 @@ EXECUTE FUNCTION log_suppression();
 --- Deletion:
 -- 1. Check les cascades
 --- Triggers to add:
--- 4. A chaque fois qu'il y a une entité avec debut et fin, on doit vérifier que la date de fin est après la date de début
+-- A chaque fois qu'il y a une entité avec debut et fin, on doit vérifier que la date de fin est après la date de début
+-- Les cours doivent pas se chevaucher dans la même salle
 --- Vues:
 
 --- TODO: Ajouter comme contrainte dans l'UML: Un employé doit avoir un moyen de paiement préféré (type et info)

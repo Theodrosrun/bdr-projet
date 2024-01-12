@@ -10,6 +10,5 @@ public enum View {
     InstructeurCoursView,
     CourseWeekView,
     MemberCourseWeekView,
-    IntructeurTypeCoursView,
     MoyennePersonnesParHeureCeJourDeSemaineView,
 }

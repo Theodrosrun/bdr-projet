@@ -570,16 +570,26 @@ VALUES
 
 INSERT INTO Cours (jour, heure, duree, description, typeCours, fitness_id, salle_id, abo_id)
 VALUES
-    ('2023-12-03', '09:00:00', 60, 'Yoga class', 'Yoga', 1, 'Salle A', 'Yoga'),
-    ('2023-12-03', '14:00:00', 60, 'Pilates session', 'Pilates', 1, 'Salle B', 'Pilates'),
-    ('2023-12-03', '10:00:00', 60, 'Cardio workout', 'Cardio', 1, 'Salle C', 'Cardio'),
-    ('2023-12-04', '11:00:00', 60, 'Crossfit class', 'Crossfit', 1, 'Salle A', 'Crossfit'),
-    ('2023-12-05', '12:00:00', 60, 'Body workout', 'Body', 1, 'Salle B', 'Body'),
-    ('2023-12-06', '13:00:00', 60, 'Aerobic session', 'Aerobic', 1, 'Salle C', 'Aerobic'),
-    ('2023-12-07', '14:00:00', 60, 'Zumba class', 'Zumba', 1, 'Salle A', 'Zumba'),
-    ('2023-12-08', '15:00:00', 60, 'Kickboxing session', 'Kickboxing', 1, 'Salle B', 'Kickboxing'),
-    ('2023-12-09', '16:00:00', 60, 'Spinning class', 'Spinning', 1, 'Salle C', 'Spinning'),
-    ('2023-12-10', '17:00:00', 60, 'Boxing session', 'Box', 1, 'Salle A', 'Box');
+    (CURRENT_DATE - INTERVAL '14 day', '09:00:00', 60, 'Yoga class A', 'Yoga', 1, 'Salle A', 'Yoga'),
+    (CURRENT_DATE - INTERVAL '14 day', '14:00:00', 60, 'Pilates session A', 'Pilates', 1, 'Salle B', 'Pilates'),
+    (CURRENT_DATE - INTERVAL '14 day', '10:00:00', 60, 'Cardio workout A', 'Cardio', 1, 'Salle C', 'Cardio'),
+    (CURRENT_DATE - INTERVAL '13 day', '11:00:00', 60, 'Crossfit class A', 'Crossfit', 1, 'Salle A', 'Crossfit'),
+    (CURRENT_DATE - INTERVAL '13 day', '14:00:00', 60, 'Body workout A', 'Body', 1, 'Salle A', 'Body'),
+    (CURRENT_DATE - INTERVAL '13 day', '16:00:00', 60, 'Kickboxing session A', 'Kickboxing', 1, 'Salle B', 'Kickboxing'),
+    (CURRENT_DATE - INTERVAL '12 day', '16:00:00', 60, 'Boxing session A', 'Box', 1, 'Salle A', 'Box'),
+    (CURRENT_DATE - INTERVAL '12 day', '12:00:00', 60, 'Body workout B', 'Body', 1, 'Salle B', 'Body'),
+    (CURRENT_DATE - INTERVAL '12 day', '13:00:00', 60, 'Aerobic session A', 'Aerobic', 1, 'Salle C', 'Aerobic'),
+    (CURRENT_DATE - INTERVAL '11 day', '13:00:00', 60, 'Aerobic session B', 'Aerobic', 1, 'Salle C', 'Aerobic'),
+    (CURRENT_DATE - INTERVAL '11 day', '08:00:00', 60, 'Yoga class A', 'Yoga', 1, 'Salle A', 'Yoga'),
+    (CURRENT_DATE - INTERVAL '11 day', '15:00:00', 60, 'Spinning class A', 'Spinning', 1, 'Salle C', 'Spinning'),
+    (CURRENT_DATE - INTERVAL '10 day', '17:00:00', 60, 'Boxing session B', 'Box', 1, 'Salle A', 'Box'),
+    (CURRENT_DATE - INTERVAL '10 day', '09:00:00', 60, 'Pilates session B', 'Pilates', 1, 'Salle B', 'Pilates'),
+    (CURRENT_DATE - INTERVAL '10 day', '10:00:00', 60, 'Cardio workout B', 'Cardio', 1, 'Salle C', 'Cardio'),
+    (CURRENT_DATE - INTERVAL '9 day', '15:00:00', 60, 'Kickboxing session B', 'Kickboxing', 1, 'Salle B', 'Kickboxing'),
+    (CURRENT_DATE - INTERVAL '9 day', '11:00:00', 60, 'Crossfit class B', 'Crossfit', 1, 'Salle A', 'Crossfit'),
+    (CURRENT_DATE - INTERVAL '9 day', '16:00:00', 60, 'Body workout C', 'Body', 1, 'Salle C', 'Body'),
+    (CURRENT_DATE - INTERVAL '8 day', '16:00:00', 60, 'Spinning class B', 'Spinning', 1, 'Salle C', 'Spinning'),
+    (CURRENT_DATE - INTERVAL '8 day', '12:00:00', 60, 'Aerobic session C', 'Aerobic', 1, 'Salle B', 'Aerobic');
 
 INSERT INTO TypeMachine (type_machine)
 VALUES
