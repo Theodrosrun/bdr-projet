@@ -7,7 +7,7 @@
                         <h2>Register Now</h2>
                         <p>The First 7 Day Trial Is Completely Free With The Teacher</p>
                     </div>
-                    <form action="#" class="register-form">
+                    <form action="/register" class="register-form" method="post">
                         <div class="row">
                             <div class="col-lg-6">
                                 <label for="name">First Name</label>

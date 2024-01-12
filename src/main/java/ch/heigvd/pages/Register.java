@@ -2,6 +2,7 @@ package ch.heigvd.pages;
 
 import ch.heigvd.components.PageBuilder;
 import ch.heigvd.components.RegisterForm;
+import ch.heigvd.utils.controller.GeneralController;
 import ch.heigvd.utils.db.SQLManager;
 import ch.heigvd.utils.web.CookieManager;
 import jakarta.servlet.ServletException;
@@ -59,36 +60,63 @@ public class Register extends HttpServlet {
         String phoneNumber = req.getParameter("mobile");
         String city = req.getParameter("city");
         String street = req.getParameter("street");
-        Integer zipCode = Integer.parseInt(req.getParameter("zipCode"));
         String country = req.getParameter("country");
         String dateOfBirth = req.getParameter("dateOfBirth");
-        Integer numero = Integer.parseInt(req.getParameter("numero"));
+
+        int zipCode;
+        int numero;
+
+        // Vérification si les champs numériques peuvent être convertis en entier
+        try {
+            zipCode = Integer.parseInt(req.getParameter("zipCode"));
+            numero = Integer.parseInt(req.getParameter("numero"));
+        } catch (NumberFormatException e) {
+            // Gérer le cas où la conversion en entier échoue
+            resp.sendRedirect("/register?error=numeric_fields_invalid");
+            return;
+        }
 
         // Vérification si les champs requis sont vides
         if (firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() || phoneNumber.isEmpty()
-                || city.isEmpty() || street.isEmpty()  || country.isEmpty() || dateOfBirth.isEmpty() ) {
+                || city.isEmpty() || street.isEmpty()  || country.isEmpty() || dateOfBirth.isEmpty()
+                || firstName.contains("'") || lastName.contains("'") || email.contains("'")
+                || phoneNumber.contains("'") || city.contains("'") || street.contains("'")
+                || country.contains("'") || dateOfBirth.contains("'")) {
             resp.sendRedirect("/register?error=fields_empty");
             return;
         }
 
         try {
-            SQLManager sqlManager = new SQLManager(
-                    "bdr",
-                    "bdr",
-                    "jdbc:postgresql://localhost:5432/bdr",
-                    "my_amazing_fitness");
-
             // Création de la liste de colonnes et de valeurs pour l'insertion
             List<String> columns = Arrays.asList("nom", "prenom", "dateNaissance", "adresseMail", "numeroTelephone", "numero", "rue", "ville", "NPA", "pays");
             List<Object> values = Arrays.asList(firstName, lastName, dateOfBirth, email, phoneNumber, numero, street, city, zipCode, country);
 
-            sqlManager.insert(Table.Personne.name(), columns, values);
+            int personneId = new GeneralController().insert(Table.Personne.name(), columns, values);
+
+            // Création de la liste de colonnes et de valeurs pour l'insertion
+            List<String> columnsMembre = List.of("id");
+            List<Object> valuesMembre = List.of(personneId);
+
+            new GeneralController().insert(Table.Membre.name(), columnsMembre, valuesMembre);
+
+            // Création de la liste de colonnes et de valeurs pour l'insertion d'un contrat
+            List<String> columnsContrat = Arrays.asList("membre_id", "date_debut", "date_fin", "frequence_paiement");
+            List<Object> valuesContrat = Arrays.asList(personneId, "CURRENT_DATE", "2025-01-01", 1); // frequence de paiement à questionner et date de fin aussi
+
+            // Insertion du contrat et récupération de son identifiant
+            int contrat_id = new GeneralController().insert(Table.Contrat.name(), columnsContrat, valuesContrat);
+
+            // Création de la liste de colonnes et de valeurs pour l'insertion d'un moyen de paiement
+            List<String> columnsMoyenPaiement = Arrays.asList("type_moyen_paiement", "compte_id", "info");
+            List<Object> valuesMoyenPaiement = Arrays.asList("Carte credit", firstName + "_" + lastName, "1111-5678-9012-3456"); // info à donner et type moyen de paiement aussi
+
+            // Insertion du moyen de paiement
+            new GeneralController().insert(Table.MoyenPaiement.name(), columnsMoyenPaiement, valuesMoyenPaiement);
 
         } catch (Exception e) {
             // Gestion des exceptions ou des erreurs lors de l'insertion
             e.printStackTrace();
             resp.sendRedirect("/register?error=db_error");
         }
-        resp.sendRedirect("/home");
     }
 }

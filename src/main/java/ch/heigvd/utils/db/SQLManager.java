@@ -1,5 +1,6 @@
 package ch.heigvd.utils.db;
 
+import ch.heigvd.utils.structure.Table;
 import lombok.Getter;
 
 import java.sql.Connection;
@@ -14,7 +15,7 @@ import java.util.List;
 @Getter
 public class SQLManager {
 
-    private final Connection connection;
+    private static Connection connection = null;
 
     /***
      * Constructeur
@@ -168,7 +169,7 @@ public class SQLManager {
      * @param columns colonnes à renseigner
      * @param values attributs
      */
-    public void insert(String table, List<String> columns, List<Object> values) {
+    public static int insert(String table, List<String> columns, List<Object> values) {
         StringBuilder queryBuilder = new StringBuilder("INSERT INTO ").append(table).append(" (");
 
         for (String column : columns) {
@@ -182,7 +183,11 @@ public class SQLManager {
             if (value instanceof Number) {
                 // Si la valeur est un nombre, on l'ajoute tel quel
                 queryBuilder.append(value);
-            } else {
+            }
+            else if (value == "CURRENT_DATE") {
+                queryBuilder.append(value);
+            }
+            else {
                 // Sinon, on entoure la valeur de guillemets simples
                 queryBuilder.append("'").append(value).append("'");
             }
@@ -190,12 +195,32 @@ public class SQLManager {
         }
 
         queryBuilder.delete(queryBuilder.length() - 2, queryBuilder.length());
-        queryBuilder.append(")");
+
+        if (Table.Contrat.name().equals(table)) {
+            queryBuilder.append(") RETURNING contrat_id"); // OK pour membre et personne
+        }
+        else if (Table.MoyenPaiement.name().equals(table)) {
+            queryBuilder.append(") ");
+        }
+        else {
+            queryBuilder.append(") RETURNING id"); // OK pour membre et personne
+        }
 
         String query = queryBuilder.toString();
 
         try {
-            connection.createStatement().executeUpdate(query);
+            ResultSet resultSet = connection.createStatement().executeQuery(query);
+            if (resultSet.next()) {
+                if (Table.Contrat.name().equals(table)) {
+                    return resultSet.getInt("contrat_id");
+                }
+                else if (Table.MoyenPaiement.name().equals(table)) {
+                    return 0;
+                }
+                    return resultSet.getInt("id");
+            } else {
+                throw new SQLException("La récupération de l'identifiant a échoué");
+            }
         } catch (SQLException e) {
             throw new RuntimeException("Erreur lors de l'insertion des données dans la table", e);
         }

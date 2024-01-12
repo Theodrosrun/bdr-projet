@@ -210,4 +210,8 @@ public class GeneralController {
                 "moyen_paiement_id = '" + payingMethodId + "'"));
         return methods.isEmpty() ? null : methods.get(0);
     }
+
+    public int insert(String table, List<String> columns, List<Object> values) {
+        return SQLManager.insert(table, columns, values);
+    }
 }
