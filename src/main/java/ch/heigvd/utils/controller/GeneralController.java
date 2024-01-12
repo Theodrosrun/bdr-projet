@@ -29,7 +29,7 @@ public class GeneralController {
      */
     public HashMap<String, String> getAccount(String userName) {
         // la liste de tous les utilisateurs visibles sur la vue AccountView
-        List<HashMap<String, String>> accounts = SQLManager.toList(sqlManager.select(View.AccountView.name(),
+        List<HashMap<String, String>> accounts = SQLManager.toHashMapList(sqlManager.select(View.AccountView.name(),
                 "username = '" + userName + "'"));
         return accounts.isEmpty() ? null : accounts.get(0);
     }
@@ -40,7 +40,7 @@ public class GeneralController {
      * @return les informations liées à l'identifiant
      */
     public HashMap<String, String> getPerson(int personId) {
-        List<HashMap<String, String>> persons = SQLManager.toList(sqlManager.select(Table.Personne.name(),
+        List<HashMap<String, String>> persons = SQLManager.toHashMapList(sqlManager.select(Table.Personne.name(),
                 "id = '" + personId + "'"));
         return persons.isEmpty() ? null : persons.get(0);
     }
@@ -52,7 +52,7 @@ public class GeneralController {
      */
     public List<HashMap<String, String>> getSubscriptions(int memberId) {
         // la liste de tous les abonnements des membres sur la vue MembreAbonnementView
-        return SQLManager.toList(sqlManager.select(View.MembreAbonnementView.name(),
+        return SQLManager.toHashMapList(sqlManager.select(View.MembreAbonnementView.name(),
                 "membre_id = '" + memberId + "'"));
     }
 
@@ -64,7 +64,7 @@ public class GeneralController {
      */
     public List<HashMap<String, String>> getBills(int memberId, String ... columns) {
         // la liste de toutes les factures des membres sur la vue MembreFactureView
-        return SQLManager.toList(sqlManager.select(View.MembreFactureView.name(),
+        return SQLManager.toHashMapList(sqlManager.select(View.MembreFactureView.name(),
                 "membre_id = '" + memberId + "'",
                 columns));
     }
@@ -75,7 +75,7 @@ public class GeneralController {
      */
     public List<HashMap<String, String>> getMembersUnpaid() {
         // la liste de toutes les factures des membres sur la vue MembreFactureView
-        return SQLManager.toList(sqlManager.select(View.MembreFactureView.name(),
+        return SQLManager.toHashMapList(sqlManager.select(View.MembreFactureView.name(),
                 "payment_id IS NULL AND date_echeance < CURRENT_DATE"));
     }
 
@@ -87,7 +87,7 @@ public class GeneralController {
      */
     public List<HashMap<String, String>> getMemberCourses(int memberId, String ... columns) {
         // la liste de tous les cours de la semaine des membres sur la vue MemberCourseWeekView
-        return SQLManager.toList(sqlManager.select(View.MemberCourseWeekView.name(),
+        return SQLManager.toHashMapList(sqlManager.select(View.MemberCourseWeekView.name(),
                 "membre_id = '" + memberId + "'", columns));
     }
 
@@ -99,7 +99,7 @@ public class GeneralController {
      */
     public List<HashMap<String, String>> getInstructorWeekCourses(int memberId, String ... columns) {
         // la liste de tous les cours de la semaine des instructeurs sur la vue CourseWeekView
-        return SQLManager.toList(sqlManager.select(View.CourseWeekView.name(),
+        return SQLManager.toHashMapList(sqlManager.select(View.CourseWeekView.name(),
                 "instructeur_id = '" + memberId + "'", columns));
     }
 
@@ -109,7 +109,7 @@ public class GeneralController {
      * @return les informations sur le membre
      */
     public HashMap<String, String> getMember(int compte_id) {
-        List<HashMap<String, String>> members = SQLManager.toList(sqlManager.select(Table.Membre.name(),
+        List<HashMap<String, String>> members = SQLManager.toHashMapList(sqlManager.select(Table.Membre.name(),
                 "compte_id = '" + compte_id + "'"));
         if (members.isEmpty()) {
             return null;
@@ -118,11 +118,11 @@ public class GeneralController {
     }
 
     public List<HashMap<String, String>> getInstructorsWithCoursesTypes() {
-        return SQLManager.toList(sqlManager.select(View.IntructeurTypeCoursView.name()));
+        return SQLManager.toHashMapList(sqlManager.select(View.IntructeurTypeCoursView.name()));
     }
 
     public List<HashMap<String, String>> getTodayAverageFrequency(int fitnessId) {
-        return SQLManager.toList(sqlManager.select(View.MoyennePersonnesParHeureCeJourDeSemaineView.name(),
+        return SQLManager.toHashMapList(sqlManager.select(View.MoyennePersonnesParHeureCeJourDeSemaineView.name(),
                 "fitness_id = '" + fitnessId + "'"));
     }
 
@@ -132,7 +132,7 @@ public class GeneralController {
      * @return les informations de l'employée
      */
     public  HashMap<String, String> getEmployee(int compte_id) {
-        List<HashMap<String, String>> employees = SQLManager.toList(sqlManager.select(Table.Employe.name(),
+        List<HashMap<String, String>> employees = SQLManager.toHashMapList(sqlManager.select(Table.Employe.name(),
                 "compte_id = '" + compte_id + "'"));
         if (employees.isEmpty()) {
             return null;
@@ -145,7 +145,7 @@ public class GeneralController {
      * @return la liste de tous les membres
      */
     public List<HashMap<String, String>> getMembers() {
-        return SQLManager.toList(sqlManager.select(Table.Membre.name()));
+        return SQLManager.toHashMapList(sqlManager.select(Table.Membre.name()));
     }
 
     /***
@@ -153,7 +153,7 @@ public class GeneralController {
      * @return la liste de tous les employés
      */
     public List<HashMap<String, String>> getEmployees() {
-        return SQLManager.toList(sqlManager.select(Table.Employe.name()));
+        return SQLManager.toHashMapList(sqlManager.select(Table.Employe.name()));
     }
 
     /***
@@ -161,7 +161,8 @@ public class GeneralController {
      * @return la totalité des instructeurs avec plus que seulement leur identifiant (cf la table)
      */
     public List<HashMap<String, String>> getInstructors() {
-        return SQLManager.toList(sqlManager.select(Table.Instructeur.name(), " INNER JOIN employe ON instructeur_id = id ", true));
+        return SQLManager.toHashMapList(sqlManager.select(Table.Instructeur.name(),
+                " INNER JOIN employe ON instructeur_id = id ", true));
     }
 
     /**
@@ -169,7 +170,7 @@ public class GeneralController {
      * @return la liste de tous les comptes
      */
     public List<HashMap<String, String>> getAccounts() {
-        return SQLManager.toList(sqlManager.select(Table.Compte.name()));
+        return SQLManager.toHashMapList(sqlManager.select(Table.Compte.name()));
     }
 
     /***
@@ -178,7 +179,7 @@ public class GeneralController {
      * @return la liste de tous les abonnements
      */
     public List<HashMap<String, String>> getAbosOf(int memberId) {
-        return SQLManager.toList(sqlManager.select(Table.Abonnement.name(),
+        return SQLManager.toHashMapList(sqlManager.select(Table.Abonnement.name(),
                 "membre_id = '" + memberId + "'"));
     }
 
@@ -186,9 +187,13 @@ public class GeneralController {
      * Obtention de la liste de tous les abonnements disponibles de Gym
      * @return liste de tous les abonnements de muscu
      */
-    public List<HashMap<String, String>> getCurrentAbosMuscu() {
-        return SQLManager.toList(sqlManager.select(Table.Abonnement.name(),
+    public List<HashMap<String, String>> getGymPlans() {
+        return SQLManager.toHashMapList(sqlManager.select(Table.Abonnement.name(),
                 "type_abonnement = 'Gym' AND disponibilite = true"));
+    }
+
+    public List<HashMap<String, String>> getTypePaymentMethods() {
+        return SQLManager.toHashMapList(sqlManager.select(Table.TypeMoyenPaiement.name()));
     }
 
     /***
@@ -196,7 +201,7 @@ public class GeneralController {
      * @return liste de tous les abonnements disponibles
      */
     public List<HashMap<String, String>> getCurrentAbosCours() {
-        return SQLManager.toList(sqlManager.select(Table.Abonnement.name(),
+        return SQLManager.toHashMapList(sqlManager.select(Table.Abonnement.name(),
                 "type_abonnement = 'Course' AND disponibilite = true"));
     }
 
@@ -206,12 +211,31 @@ public class GeneralController {
      * @return le moyen de payement
      */
     public HashMap<String, String> getPayingMethods(int payingMethodId) {
-        List<HashMap<String, String>> methods = SQLManager.toList(sqlManager.select(Table.MoyenPaiement.name(),
+        List<HashMap<String, String>> methods = SQLManager.toHashMapList(sqlManager.select(Table.MoyenPaiement.name(),
                 "moyen_paiement_id = '" + payingMethodId + "'"));
         return methods.isEmpty() ? null : methods.get(0);
     }
 
-    public int insert(String table, List<String> columns, List<Object> values) {
-        return SQLManager.insert(table, columns, values);
+    public Object insert(String table, List<String> columns, List<Object> values, String returning) {
+        return sqlManager.insert(table, columns, values, returning);
     }
+
+    /***
+     * Récupération des colonnes de la table
+     * @param table table en question
+     * @return les colonnes de la table
+     */
+    public List<String> getColumns(String table) {
+        return sqlManager.selectColumns(table);
+    }
+
+    /***
+     * Récupération des colonnes de la table
+     * @param table table en question
+     * @return les colonnes de la table
+     */
+    public List<String> getColumns(String table, String where) {
+        return sqlManager.selectColumns(table, where);
+    }
+
 }

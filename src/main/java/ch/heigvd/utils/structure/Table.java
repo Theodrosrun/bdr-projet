@@ -27,7 +27,9 @@ public enum Table {
     Facture,
     Progression,
     SuppressionLog,
-    MoyenPaiement
+    MoyenPaiement,
+
+    TypeMoyenPaiement
 }
 
 

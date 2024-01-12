@@ -13,7 +13,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import ch.heigvd.utils.structure.Table;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 /***
@@ -21,6 +23,7 @@ import java.util.List;
  */
 @WebServlet(name = "Register", value = "/register")
 public class Register extends HttpServlet {
+
     /***
      * Cette méthode est utilisée pour gérer les requêtes HTTP de type GET.
      * Elle permet au servlet de récupérer des informations à partir de l'URL.
@@ -51,67 +54,41 @@ public class Register extends HttpServlet {
      * Cette fonction ne marche pas pour l'instant .... il faut analyser plutôt comment faire un insert stupide ds la BDD
      */
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
         // Récupérer les paramètres du formulaire
-        String firstName = req.getParameter("name");
-        String lastName = req.getParameter("lastname");
-        String email = req.getParameter("email");
-        String phoneNumber = req.getParameter("mobile");
-        String city = req.getParameter("city");
-        String street = req.getParameter("street");
-        String country = req.getParameter("country");
-        String dateOfBirth = req.getParameter("dateOfBirth");
-
-        int zipCode;
-        int numero;
-
-        // Vérification si les champs numériques peuvent être convertis en entier
-        try {
-            zipCode = Integer.parseInt(req.getParameter("zipCode"));
-            numero = Integer.parseInt(req.getParameter("numero"));
-        } catch (NumberFormatException e) {
-            // Gérer le cas où la conversion en entier échoue
-            resp.sendRedirect("/register?error=numeric_fields_invalid");
-            return;
+        List<Object> personValues = new ArrayList<>();
+        List<Object> contractValues = new ArrayList<>();
+        List<Object> contratAbonnementValues = new ArrayList<>();
+        List<Object> paymentMethodValues = new ArrayList<>();
+        for (String personParam : RegisterForm.PERSON_PARAM_NAMES) {
+            personValues.add(req.getParameter(personParam));
         }
-
-        // Vérification si les champs requis sont vides
-        if (firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() || phoneNumber.isEmpty()
-                || city.isEmpty() || street.isEmpty()  || country.isEmpty() || dateOfBirth.isEmpty()
-                || firstName.contains("'") || lastName.contains("'") || email.contains("'")
-                || phoneNumber.contains("'") || city.contains("'") || street.contains("'")
-                || country.contains("'") || dateOfBirth.contains("'")) {
-            resp.sendRedirect("/register?error=fields_empty");
-            return;
+        for (String contractParam : RegisterForm.CONTRACT_PARAM_NAMES) {
+            contractValues.add(req.getParameter(contractParam));
+        }
+        for (String memberContractParam : RegisterForm.MEMBER_CONTRACT_PARAM_NAMES) {
+            contratAbonnementValues.add(req.getParameter(memberContractParam));
+        }
+        for (String paymentMethodParam : RegisterForm.PAYMENT_METHOD_PARAM_NAMES) {
+            paymentMethodValues.add(req.getParameter(paymentMethodParam));
         }
 
         try {
-            // Création de la liste de colonnes et de valeurs pour l'insertion
-            List<String> columns = Arrays.asList("nom", "prenom", "dateNaissance", "adresseMail", "numeroTelephone", "numero", "rue", "ville", "NPA", "pays");
-            List<Object> values = Arrays.asList(firstName, lastName, dateOfBirth, email, phoneNumber, numero, street, city, zipCode, country);
+            GeneralController generalController = new GeneralController();
+            List<String> personneColumns = generalController.getColumns(Table.Personne.name(),
+                    "column_default IS NULL AND is_nullable = 'NO'");
+            int personneId = (int) generalController.insert(Table.Personne.name(), personneColumns, personValues, "id");
+            String compteId =  (String) generalController.insert(Table.Membre.name(), List.of("id"), List.of(personneId), "compte_id");
+            List<String> contratColumns = generalController.getColumns(Table.Contrat.name(),
+                    "is_nullable = 'NO' AND column_name <> 'contrat_id'");
+            contractValues.add(0, compteId);
+            int contratId = (int) generalController.insert(Table.Abonnement.name(), contratColumns, contractValues, "contrat_id");
+            List<String> contratAbonnementColumns = generalController.getColumns(Table.ContratAbonnement.name(),
+                    "is_nullable = 'NO'");
+            contratAbonnementValues.add(0, contratId);
+            generalController.insert(Table.ContratAbonnement.name(), contratAbonnementColumns, contratAbonnementValues, null);
 
-            int personneId = new GeneralController().insert(Table.Personne.name(), columns, values);
-
-            // Création de la liste de colonnes et de valeurs pour l'insertion
-            List<String> columnsMembre = List.of("id");
-            List<Object> valuesMembre = List.of(personneId);
-
-            new GeneralController().insert(Table.Membre.name(), columnsMembre, valuesMembre);
-
-            // Création de la liste de colonnes et de valeurs pour l'insertion d'un contrat
-            List<String> columnsContrat = Arrays.asList("membre_id", "date_debut", "date_fin", "frequence_paiement");
-            List<Object> valuesContrat = Arrays.asList(personneId, "CURRENT_DATE", "2025-01-01", 1); // frequence de paiement à questionner et date de fin aussi
-
-            // Insertion du contrat et récupération de son identifiant
-            int contrat_id = new GeneralController().insert(Table.Contrat.name(), columnsContrat, valuesContrat);
-
-            // Création de la liste de colonnes et de valeurs pour l'insertion d'un moyen de paiement
-            List<String> columnsMoyenPaiement = Arrays.asList("type_moyen_paiement", "compte_id", "info");
-            List<Object> valuesMoyenPaiement = Arrays.asList("Carte credit", firstName + "_" + lastName, "1111-5678-9012-3456"); // info à donner et type moyen de paiement aussi
-
-            // Insertion du moyen de paiement
-            new GeneralController().insert(Table.MoyenPaiement.name(), columnsMoyenPaiement, valuesMoyenPaiement);
 
         } catch (Exception e) {
             // Gestion des exceptions ou des erreurs lors de l'insertion

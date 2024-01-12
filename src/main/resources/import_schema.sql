@@ -9,7 +9,7 @@ SET search_path = my_amazing_fitness;
 
 CREATE TABLE MyAmazingFitness (
     fitness_id INT PRIMARY KEY,
-    numero INT NOT NULL,
+    numero varchar(255) NOT NULL,
     rue VARCHAR(255) NOT NULL,
     ville VARCHAR(255) NOT NULL,
     NPA INT NOT NULL,
@@ -22,9 +22,9 @@ CREATE TABLE Personne (
     prenom VARCHAR(255) NOT NULL,
     dateNaissance DATE NOT NULL,
     adresseMail VARCHAR(255) NOT NULL,
-    numeroTelephone VARCHAR(255),
-    numero INT NOT NULL,
+    numeroTelephone VARCHAR(255) NOT NULL,
     rue VARCHAR(255) NOT NULL,
+    numero varchar(255) NOT NULL,
     ville VARCHAR(255) NOT NULL,
     NPA INT NOT NULL,
     pays VARCHAR(255) NOT NULL
@@ -117,8 +117,8 @@ CREATE TABLE TypeMachine (
 CREATE TABLE Contrat (
     contrat_id SERIAL PRIMARY KEY,
     membre_id INT NOT NULL,
-    date_debut DATE NOT NULL,
-    date_fin DATE NOT NULL,
+    date_debut DATE NOT NULL DEFAULT CURRENT_DATE,
+    duree INT NOT NULL DEFAULT 12, -- le nombre de mois
     frequence_paiement INT NOT NULL DEFAULT 1 -- le nombre de mois pour payer
 );
 
@@ -363,7 +363,7 @@ SELECT
     m.compte_id,
     c.contrat_id,
     c.date_debut,
-    c.date_fin,
+    c.date_debut + (interval '1 month' * c.duree) AS date_fin,
     c.frequence_paiement,
     a.abo_id,
     a.prix,
@@ -501,6 +501,7 @@ CREATE TRIGGER create_factures_trigger
     FOR EACH ROW
 EXECUTE FUNCTION create_factures();
 
+
 ------------------------------------- Trigger to Increment the number of people in the fitness center
 
 CREATE OR REPLACE FUNCTION increment_comptage_passage()
@@ -525,7 +526,7 @@ CREATE TRIGGER increment_comptage_passage_trigger
     FOR EACH ROW
 EXECUTE FUNCTION increment_comptage_passage();
 
-
+------------------------------------- Trigger to create a contract whe
 
 CREATE OR REPLACE FUNCTION log_suppression()
 RETURNS TRIGGER AS

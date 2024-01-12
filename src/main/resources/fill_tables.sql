@@ -57,7 +57,7 @@ VALUES (13), (22);
 INSERT INTO PersonnelAdministratif (padministratif_id)
 VALUES (14), (15);
 
-INSERT INTO Membre (id)
+INSERT INTO Membre
 VALUES (6),
        (7),
        (8),
@@ -611,13 +611,13 @@ VALUES
     (2, '2023-12-02', 72.3, 7),
     (3, '2023-12-03', 80.0, 8);
 
-INSERT INTO Contrat (membre_id, date_debut, date_fin, frequence_paiement)
+INSERT INTO Contrat (membre_id, date_debut, duree, frequence_paiement)
 VALUES
-    (6, '2023-01-01', '2023-12-31', 1),
-    (7, '2023-02-15', '2023-12-15', 1),
-    (8, '2023-03-10', '2023-09-10', 3),
-    (8, '2023-03-10', '2023-09-10', 3),
-    (6, '2022-01-01', '2022-12-31', 1);
+    (6, '2023-01-01', 1, 1),
+    (7, '2023-02-15', 12, 1),
+    (8, '2023-03-10', 6, 3),
+    (8, '2023-03-10', 6, 3),
+    (6, '2022-01-01', 12, 1);
 
 INSERT INTO ContratAbonnement (contrat_id, abo_id)
 VALUES

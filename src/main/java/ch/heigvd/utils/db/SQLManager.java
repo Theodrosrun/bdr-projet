@@ -15,7 +15,8 @@ import java.util.List;
 @Getter
 public class SQLManager {
 
-    private static Connection connection = null;
+    private Connection connection;
+    private String schema;
 
     /***
      * Constructeur
@@ -34,6 +35,7 @@ public class SQLManager {
             connection = DriverManager.getConnection(
                     url + "?user=" + user + "&password=" + password + "&currentSchema=" + schema
             );
+            this.schema = schema;
         } catch (SQLException e) {
             throw new RuntimeException("Erreur lors de la connexion à la base de données", e);
         }
@@ -70,6 +72,32 @@ public class SQLManager {
 
     public ResultSet select(String table, List<String> columns) {
         return executeQuery(createSelectQuery(table, columns, null, null, null));
+    }
+
+    public List<String> selectColumns(String table){
+        String query = createSelectQuery("information_schema.columns", List.of("column_name"),
+                null, "table_schema = '" + schema + "' AND table_name = '" + table + "'", null);
+        ResultSet rs = executeQuery(query);
+        return toList(rs);
+    }
+
+    public List<String> selectColumns(String table, String where){
+        String query = createSelectQuery("information_schema.columns", List.of("column_name"),
+                null, "table_schema = '" + schema + "' AND table_name = '" + table.toLowerCase() + "' AND " + where, null);
+        ResultSet rs = executeQuery(query);
+        return toList(rs);
+    }
+
+    private List<String> toList(ResultSet rs) {
+        List<String> list = new ArrayList<>();
+        try (rs) {
+            while (rs.next()) {
+                list.add(rs.getString(1));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Erreur lors de la conversion du ResultSet en liste", e);
+        }
+        return list;
     }
 
     /***
@@ -146,7 +174,7 @@ public class SQLManager {
      * @return une structure de deux éléments où les clés sont les noms des colonnes et les valeurs sont les valeurs
      * correspondantes de chaque colonne dans cette ligne.
      */
-    public static List<HashMap<String, String>> toList(ResultSet rs) {
+    public static List<HashMap<String, String>> toHashMapList(ResultSet rs) {
         List<HashMap<String, String>> list = new ArrayList<>();
         try (rs) {
             while (rs.next()) {
@@ -169,41 +197,23 @@ public class SQLManager {
      * @param columns colonnes à renseigner
      * @param values attributs
      */
-    public static int insert(String table, List<String> columns, List<Object> values) {
+    public Object insert(String table, List<String> columns, List<Object> values, String returning) {
         StringBuilder queryBuilder = new StringBuilder("INSERT INTO ").append(table).append(" (");
-
         for (String column : columns) {
             queryBuilder.append(column).append(", ");
         }
-
         queryBuilder.delete(queryBuilder.length() - 2, queryBuilder.length());
         queryBuilder.append(") VALUES (");
 
         for (Object value : values) {
-            if (value instanceof Number) {
-                // Si la valeur est un nombre, on l'ajoute tel quel
-                queryBuilder.append(value);
-            }
-            else if (value == "CURRENT_DATE") {
-                queryBuilder.append(value);
-            }
-            else {
-                // Sinon, on entoure la valeur de guillemets simples
-                queryBuilder.append("'").append(value).append("'");
-            }
+            queryBuilder.append("'").append(value).append("'");
             queryBuilder.append(", ");
         }
-
         queryBuilder.delete(queryBuilder.length() - 2, queryBuilder.length());
+        queryBuilder.append(") ");
 
-        if (Table.Contrat.name().equals(table)) {
-            queryBuilder.append(") RETURNING contrat_id"); // OK pour membre et personne
-        }
-        else if (Table.MoyenPaiement.name().equals(table)) {
-            queryBuilder.append(") ");
-        }
-        else {
-            queryBuilder.append(") RETURNING id"); // OK pour membre et personne
+        if (returning != null) {
+            queryBuilder.append("RETURNING ").append(returning);
         }
 
         String query = queryBuilder.toString();
@@ -211,13 +221,11 @@ public class SQLManager {
         try {
             ResultSet resultSet = connection.createStatement().executeQuery(query);
             if (resultSet.next()) {
-                if (Table.Contrat.name().equals(table)) {
-                    return resultSet.getInt("contrat_id");
-                }
-                else if (Table.MoyenPaiement.name().equals(table)) {
+                if (returning != null) {
+                    return resultSet.getObject(returning);
+                } else {
                     return 0;
                 }
-                    return resultSet.getInt("id");
             } else {
                 throw new SQLException("La récupération de l'identifiant a échoué");
             }
