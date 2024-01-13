@@ -16,6 +16,13 @@ public class Field {
     public static List<String> ALL_INPUT_NAMES = new ArrayList<>();
     public static List<String> ALL_INPUT_TYPES = new ArrayList<>();
 
+    /***
+     * Constructeur surchargé (on ajoute tous les éléments dans des listes statiques)
+     * @param labelName nom du label
+     * @param inputName label / champ
+     * @param inputType type de la variable renseignée (doit être select)
+     * @param options paramètre optionnel
+     */
     public Field(String labelName, String inputName, String inputType, List<String> options) {
         if(!inputType.equals("select")) {
             throw new RuntimeException("Le type de champ doit être 'select'");
@@ -39,6 +46,9 @@ public class Field {
         ALL_INPUT_TYPES.add(inputType);
     }
 
+    /***
+     * La fonction n'est pas finie ni utilisée car la liste ALL_FIELDS n'est pas encore générée
+     */
     public Field getField(String inputName) {
         if (!ALL_INPUT_NAMES.contains(inputName)) {
             throw new RuntimeException("Le champ " + inputName + " n'existe pas");
@@ -47,6 +57,10 @@ public class Field {
         return ALL_FIELDS.get(index);
     }
 
+    /***
+     * Ajouter l'option à la classe
+     * @param options élément optionnel mais le type de la variable doit être "select"
+     */
     public void setOptions(List<String> options) {
         if (!inputType.equals("select")) {
             return;

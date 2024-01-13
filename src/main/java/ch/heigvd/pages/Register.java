@@ -51,7 +51,8 @@ public class Register extends HttpServlet {
     }
 
     /***
-     * Cette fonction ne marche pas pour l'instant .... il faut analyser plutôt comment faire un insert stupide ds la BDD
+     * Réception des données renseignées par l'utilisateur qui souhaite s'enregistrer.
+     * Réalisation d'une insertion dans la BDD dans différentes tables.
      */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -61,6 +62,7 @@ public class Register extends HttpServlet {
         List<Object> contractValues = new ArrayList<>();
         List<Object> contratAbonnementValues = new ArrayList<>();
         List<Object> paymentMethodValues = new ArrayList<>();
+
         for (String personParam : RegisterForm.PERSON_PARAM_NAMES) {
             personValues.add(req.getParameter(personParam));
         }
@@ -75,18 +77,22 @@ public class Register extends HttpServlet {
         }
 
         try {
+
             GeneralController generalController = new GeneralController();
-            List<String> personneColumns = generalController.getColumns(Table.Personne.name(),
-                    "column_default IS NULL AND is_nullable = 'NO'");
+
+            List<String> personneColumns = generalController.getColumns(Table.Personne.name(), "column_default IS NULL AND is_nullable = 'NO'");
+
             int personneId = (int) generalController.insert(Table.Personne.name(), personneColumns, personValues, "id");
             String compteId =  (String) generalController.insert(Table.Membre.name(), List.of("id"), List.of(personneId), "compte_id");
-            List<String> contratColumns = generalController.getColumns(Table.Contrat.name(),
-                    "is_nullable = 'NO' AND column_name <> 'contrat_id'");
+            List<String> contratColumns = generalController.getColumns(Table.Contrat.name(), "is_nullable = 'NO' AND column_name <> 'contrat_id'");
+
             contractValues.add(0, personneId);
+
             int contratId = (int) generalController.insert(Table.Contrat.name(), contratColumns, contractValues, "contrat_id");
-            List<String> contratAbonnementColumns = generalController.getColumns(Table.ContratAbonnement.name(),
-                    "is_nullable = 'NO'");
+            List<String> contratAbonnementColumns = generalController.getColumns(Table.ContratAbonnement.name(), "is_nullable = 'NO'");
+
             contratAbonnementValues.add(0, contratId);
+
             generalController.insert(Table.ContratAbonnement.name(), contratAbonnementColumns, contratAbonnementValues, null);
 
 
