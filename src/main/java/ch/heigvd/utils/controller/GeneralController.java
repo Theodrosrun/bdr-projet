@@ -50,7 +50,7 @@ public class GeneralController {
      * @param memberId identifiant du membre
      * @return les informations liées à l'identifiant
      */
-    public List<HashMap<String, String>> getSubscriptions(int memberId) {
+    public List<HashMap<String, String>> getPlans(int memberId) {
         // la liste de tous les abonnements des membres sur la vue MembreAbonnementView
         return SQLManager.toHashMapList(sqlManager.select(View.MembreAbonnementView.name(),
                 "membre_id = '" + memberId + "'"));

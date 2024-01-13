@@ -15,8 +15,8 @@ import java.util.List;
 @Getter
 public class SQLManager {
 
-    private Connection connection;
-    private String schema;
+    private final Connection connection;
+    private final String schema;
 
     /***
      * Constructeur
@@ -219,18 +219,19 @@ public class SQLManager {
         String query = queryBuilder.toString();
 
         try {
-            ResultSet resultSet = connection.createStatement().executeQuery(query);
-            if (resultSet.next()) {
-                if (returning != null) {
+            if (returning != null) {
+                ResultSet resultSet = connection.createStatement().executeQuery(query);
+                if (resultSet.next()) {
                     return resultSet.getObject(returning);
                 } else {
-                    return 0;
+                    throw new SQLException("La récupération de l'identifiant a échoué");
                 }
-            } else {
-                throw new SQLException("La récupération de l'identifiant a échoué");
+            }else{
+                connection.createStatement().executeUpdate(query);
+                return null;
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Erreur lors de l'insertion des données dans la table", e);
+            throw new RuntimeException("Erreur lors de l'insertion des données dans la table {}".formatted(table), e);
         }
     }
 }

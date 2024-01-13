@@ -82,8 +82,8 @@ public class Register extends HttpServlet {
             String compteId =  (String) generalController.insert(Table.Membre.name(), List.of("id"), List.of(personneId), "compte_id");
             List<String> contratColumns = generalController.getColumns(Table.Contrat.name(),
                     "is_nullable = 'NO' AND column_name <> 'contrat_id'");
-            contractValues.add(0, compteId);
-            int contratId = (int) generalController.insert(Table.Abonnement.name(), contratColumns, contractValues, "contrat_id");
+            contractValues.add(0, personneId);
+            int contratId = (int) generalController.insert(Table.Contrat.name(), contratColumns, contractValues, "contrat_id");
             List<String> contratAbonnementColumns = generalController.getColumns(Table.ContratAbonnement.name(),
                     "is_nullable = 'NO'");
             contratAbonnementValues.add(0, contratId);

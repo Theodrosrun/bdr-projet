@@ -70,10 +70,10 @@ public class MyAccount extends HttpServlet {
      * @param account le compte connecté
      */
     private void addSubscription(PageBuilder pageBuilder, Account account) throws IOException {
-        List<HashMap<String, String>> subscriptions = new GeneralController().getSubscriptions(account.getId());
+        List<HashMap<String, String>> subscriptions = new GeneralController().getPlans(account.getId());
         if (!subscriptions.isEmpty()) {
             pageBuilder.add(Plans.doGet("My subscriptions",
-                            new GeneralController().getSubscriptions(account.getId()),
+                            new GeneralController().getPlans(account.getId()),
                             false));
         }
     }
