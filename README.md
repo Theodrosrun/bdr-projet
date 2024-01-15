@@ -96,8 +96,6 @@ Le package pages englobe plusieurs classes conçues pour gérer les requêtes do
 
 ## Lancement de l'application
 
-Pour lancer l'application, suivez ces étapes :
-
 **Déploiement du fichier WAR** :
 Redémarrez le serveur Tomcat pour que l'application soit déployée.
 
