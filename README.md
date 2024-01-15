@@ -72,9 +72,25 @@ La classe UserController agit comme un middleware entre l'interface utilisateur 
 
 La classe CookieManager du package ch.heigvd.utils.web offre des fonctionnalités de gestion des cookies pour les applications web basées sur Jakarta Servlet. Ses principales responsabilités incluent :  
 
-**Authentification par Cookies** : Les méthodes mustLogin et isLogged permettent de déterminer si l'utilisateur doit se connecter ou s'il est déjà connecté en vérifiant la présence des cookies "username" et "password" dans la requête HTTP.
-**Génération et Gestion des Cookies de Connexion** : Les méthodes setCookie sont responsables de la création de cookies de connexion avec le nom, la valeur, et la durée de vie spécifiés. Ces cookies sont utilisés pour indiquer l'état de connexion de l'utilisateur au serveur. La méthode deleteCookie permet de supprimer ces cookies lorsqu'ils ne sont plus nécessaires.
-**Récupération de Cookies** : La méthode getCookie facilite la récupération d'un cookie spécifique à partir de la requête HTTP.
+**Authentification par Cookies** : Les méthodes mustLogin et isLogged permettent de déterminer si l'utilisateur doit se connecter ou s'il est déjà connecté en vérifiant la présence des cookies "username" et "password" dans la requête HTTP.  
+**Génération et Gestion des Cookies de Connexion** : Les méthodes setCookie sont responsables de la création de cookies de connexion avec le nom, la valeur, et la durée de vie spécifiés. Ces cookies sont utilisés pour indiquer l'état de connexion de l'utilisateur au serveur. La méthode deleteCookie permet de supprimer ces cookies lorsqu'ils ne sont plus nécessaires.  
+**Récupération de Cookies** : La méthode getCookie facilite la récupération d'un cookie spécifique à partir de la requête HTTP.  
+
+### 4. Classe ViewManager :  
+
+La classe ViewManager du package ch.heigvd.utils.structure offre une approche structurée pour gérer les vues dans le contexte de requêtes complexes. Elle définit une énumération View listant toutes les vues disponibles dans le fichier SQL associé au système. Voici une explication de son rôle :  
+
+**Gestion des Vues SQL** : La classe ViewManager centralise la définition de vues SQL dans une énumération View. En utilisant une énumération, la classe facilite la gestion et la navigation des différentes vues disponibles dans le système. Chaque élément de l'énumération représente une vue spécifique définie dans le fichier SQL.  
+**Utilisation dans les Requêtes Complexes** : Le système part du principe que ces vues, définies dans le fichier SQL associé, servent de composants essentiels pour des requêtes complexes. Les vues peuvent être utilisées pour agréger des données, fournir des résultats spécifiques, ou simplifier la complexité des requêtes.  
+**Maintenabilité et Cohérence** : En définissant les vues dans une énumération, les développeurs peuvent maintenir et ajuster facilement les requêtes complexes en utilisant ces vues dans le code. Cela contribue à la cohérence et à la facilité de maintenance du système.  
+
+### 5. Package Pages :
+
+Le package pages englobe plusieurs classes conçues pour gérer les requêtes doPost() et doGet() dans le contexte d'une application web basée sur Jakarta Servlet. Ces classes représentent les pages accessibles sur le serveur local (localhost) et jouent un rôle crucial dans l'interaction entre l'utilisateur et le système. Voici une vue d'ensemble des responsabilités de ce package :
+
+**Gestion des Requêtes HTTP** : Chaque classe dans le package pages est responsable de la gestion des requêtes HTTP spécifiques, distinguant entre les requêtes POST et GET. Cela permet de traiter les formulaires soumis (POST) et les requêtes d'information (GET) de manière appropriée.  
+**Logique de page spécifique** : Chaque classe encapsule la logique spécifique à une page particulière de l'application. Cela peut inclure la manipulation de données, l'appel de méthodes de la couche de contrôle, et la préparation des réponses à renvoyer au client.  
+**Présentation des Données** : Les classes du package pages sont souvent responsables de la préparation des données pour l'affichage dans les pages web correspondantes. Cela peut inclure la récupération d'informations depuis la base de données et la transmission de ces données aux pages pour être présentées à l'utilisateur.  
 
 ---
 
