@@ -95,3 +95,16 @@ Le package pages englobe plusieurs classes conçues pour gérer les requêtes do
 ---
 
 ## Lancement de l'application
+
+Pour lancer l'application, suivez ces étapes :
+
+**Déploiement du fichier WAR** :
+Redémarrez le serveur Tomcat pour que l'application soit déployée.
+
+**Accès à l'Application** :
+Ouvrez votre navigateur web préféré.
+Accédez à l'URL suivante : http://localhost:8080/home
+Vous devriez être redirigé vers la page principale de l'application.
+
+**Gestion des Erreurs** : L'application a mis en place une gestion robuste des erreurs. En cas d'erreur, des mécanismes de redirection sont utilisés pour informer l'utilisateur de manière claire tout en maintenant la cohérence de l'expérience utilisateur. La gestion des transactions avec les commits et les begins a été stratégiquement intégrée pour assurer la cohérence des données même en cas d'erreur.
+
