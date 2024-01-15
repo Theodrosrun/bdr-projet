@@ -216,6 +216,14 @@ public class GeneralController {
         return methods.isEmpty() ? null : methods.get(0);
     }
 
+    /***
+     * Liste tous les types de cours
+     * @return la liste de tous les cours
+     */
+    public List<HashMap<String, String>> getTypeCours() {
+        return SQLManager.toHashMapList(sqlManager.select(Table.TypeCours.name()));
+    }
+
     public Object insert(String table, List<String> columns, List<Object> values, String returning) {
         return sqlManager.insert(table, columns, values, returning);
     }
