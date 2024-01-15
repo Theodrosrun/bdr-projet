@@ -221,7 +221,7 @@ public class GeneralController {
      * @return la liste de tous les cours
      */
     public List<HashMap<String, String>> getTypeCours() {
-        return SQLManager.toHashMapList(sqlManager.select(Table.TypeCours.name()));
+        return SQLManager.toHashMapList(sqlManager.select(View.IntructeurTypeCoursView.name()));
     }
 
     public Object insert(String table, List<String> columns, List<Object> values, String returning) {
