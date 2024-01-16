@@ -11,6 +11,7 @@ import java.util.Date;
 public class Compte {
 
     @Id
+    @Column(name = "username", length = 255)
     private String username;
 
     @Column(name = "mot_de_passe", nullable = false)
@@ -18,8 +19,7 @@ public class Compte {
 
     @Column(name = "moyen_paiement_pref_id")
     private Integer moyenPaiementPrefId;
-
-    @Column(name = "date_de_creation", nullable = false)
+    @Column(name = "date_de_creation", nullable = false, columnDefinition = "DATE")
     private Date dateDeCreation;
 
     public Compte() {

@@ -8,6 +8,7 @@ public class MoyenPaiement {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "moyen_paiement_id", nullable = false)
     private int moyenPaiementId;
 
     @Column(name = "type_moyen_paiement", nullable = false)

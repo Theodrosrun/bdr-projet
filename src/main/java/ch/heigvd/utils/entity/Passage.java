@@ -9,6 +9,7 @@ public class Passage {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "passage_id", nullable = false)
     private int passageId;
 
     @Column(name = "membre_id", nullable = false)

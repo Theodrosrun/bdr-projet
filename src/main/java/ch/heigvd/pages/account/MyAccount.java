@@ -100,7 +100,7 @@ public class MyAccount extends HttpServlet {
      * @param account le compte connecté
      */
     private void addBills(PageBuilder pageBuilder, Account account) throws IOException {
-        String[] columns = {"abo_id", "contrat_id", "facture_id", "montant", "date_echeance"};
+        String[] columns = {"abonnement", "facture", "montant", "echeance"};
         List<HashMap<String, String>> bills = new GeneralController().getBills(account.getId(), columns);
         if (!bills.isEmpty()) {
             pageBuilder.add(Table.doGet(List.of(columns), bills, "My bills"));

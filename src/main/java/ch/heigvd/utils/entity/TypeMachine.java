@@ -10,6 +10,7 @@ import jakarta.persistence.Table;
 public class TypeMachine {
 
     @Id
+    @Column(name = "type_machine", nullable = false)
     private String typeMachine;
 
 

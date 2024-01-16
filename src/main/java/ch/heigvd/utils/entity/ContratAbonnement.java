@@ -16,4 +16,9 @@ public class ContratAbonnement {
 
     public ContratAbonnement() {
     }
+
+    public ContratAbonnement(int contratId, String aboId) {
+        this.contratId = contratId;
+        this.aboId = aboId;
+    }
 }

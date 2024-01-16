@@ -2,8 +2,12 @@ package ch.heigvd.pages;
 
 import ch.heigvd.components.PageBuilder;
 import ch.heigvd.components.RegisterForm;
-import ch.heigvd.utils.controller.GeneralController;
+import ch.heigvd.utils.controller.*;
 import ch.heigvd.utils.db.SQLManager;
+import ch.heigvd.utils.entity.Contrat;
+import ch.heigvd.utils.entity.ContratAbonnement;
+import ch.heigvd.utils.entity.Membre;
+import ch.heigvd.utils.entity.Personne;
 import ch.heigvd.utils.web.CookieManager;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -13,10 +17,13 @@ import jakarta.servlet.http.HttpServletResponse;
 import ch.heigvd.utils.structure.Table;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+
+import static ch.heigvd.components.RegisterForm.PERSON_PARAM_NAMES;
 
 /***
  * Variable isConnected dans menu.ftlh ?
@@ -56,45 +63,35 @@ public class Register extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-
-        // Récupérer les paramètres du formulaire
-        List<Object> personValues = new ArrayList<>();
-        List<Object> contractValues = new ArrayList<>();
-        List<Object> contratAbonnementValues = new ArrayList<>();
-        List<Object> paymentMethodValues = new ArrayList<>();
-
-        for (String personParam : RegisterForm.PERSON_PARAM_NAMES) {
-            personValues.add(req.getParameter(personParam));
-        }
-        for (String contractParam : RegisterForm.CONTRACT_PARAM_NAMES) {
-            contractValues.add(req.getParameter(contractParam));
-        }
-        for (String memberContractParam : RegisterForm.MEMBER_CONTRACT_PARAM_NAMES) {
-            contratAbonnementValues.add(req.getParameter(memberContractParam));
-        }
-        for (String paymentMethodParam : RegisterForm.PAYMENT_METHOD_PARAM_NAMES) {
-            paymentMethodValues.add(req.getParameter(paymentMethodParam));
-        }
-
         try {
-
-            GeneralController generalController = new GeneralController();
-
-            List<String> personneColumns = generalController.getColumns(Table.Personne.name(), "column_default IS NULL AND is_nullable = 'NO'");
-
-            int personneId = (int) generalController.insert(Table.Personne.name(), personneColumns, personValues, "id");
-            String compteId =  (String) generalController.insert(Table.Membre.name(), List.of("id"), List.of(personneId), "compte_id");
-            List<String> contratColumns = generalController.getColumns(Table.Contrat.name(), "is_nullable = 'NO' AND column_name <> 'contrat_id'");
-
-            contractValues.add(0, personneId);
-
-            int contratId = (int) generalController.insert(Table.Contrat.name(), contratColumns, contractValues, "contrat_id");
-            List<String> contratAbonnementColumns = generalController.getColumns(Table.ContratAbonnement.name(), "is_nullable = 'NO'");
-
-            contratAbonnementValues.add(0, contratId);
-
-            generalController.insert(Table.ContratAbonnement.name(), contratAbonnementColumns, contratAbonnementValues, null);
-
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            Personne personne = new Personne(
+                    req.getParameter("lastname"),
+                    req.getParameter("name"),
+                    formatter.parse(req.getParameter("dateOfBirth")),
+                    req.getParameter("email"),
+                    req.getParameter("mobile"),
+                    req.getParameter("street"),
+                    req.getParameter("number"),
+                    req.getParameter("city"),
+                    Integer.parseInt(req.getParameter("zipCode")),
+                    req.getParameter("country")
+            );
+            PersonneController.create(personne);
+            Membre membre = new Membre(personne.getId());
+            MembreController.create(membre);
+            Contrat contrat = new Contrat(
+                    personne.getId(),
+                    formatter.parse(req.getParameter("startDate")),
+                    Integer.parseInt(req.getParameter("duration")),
+                    Integer.parseInt(req.getParameter("frequency"))
+            );
+            ContratController.create(contrat);
+            ContratAbonnement contratAbonnement = new ContratAbonnement(
+                    contrat.getContratId(),
+                    req.getParameter("plan")
+            );
+            ContratAbonnementController.create(contratAbonnement);
 
         } catch (Exception e) {
             // Gestion des exceptions ou des erreurs lors de l'insertion

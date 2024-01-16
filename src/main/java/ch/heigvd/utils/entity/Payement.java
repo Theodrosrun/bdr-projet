@@ -9,6 +9,7 @@ public class Payement {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "payement_id", nullable = false)
     private int payementId;
 
     @Column(name = "facture_id", nullable = false)

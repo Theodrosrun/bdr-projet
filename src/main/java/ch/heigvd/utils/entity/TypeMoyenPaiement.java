@@ -10,6 +10,7 @@ import jakarta.persistence.Table;
 public class TypeMoyenPaiement {
 
     @Id
+    @Column(name = "nom", nullable = false)
     private String nom;
 
     public TypeMoyenPaiement() {

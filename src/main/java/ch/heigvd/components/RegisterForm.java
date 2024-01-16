@@ -16,7 +16,7 @@ import java.util.*;
 public class RegisterForm {
     public static final List<String> DURATIONS = List.of("1", "3", "6", "12");
     public static final List<String> FREQUENCIES = List.of("1", "3", "6", "12");
-    private static final List<Field> fields = new ArrayList<>(){{
+    public static final List<Field> fields = new ArrayList<>(){{
         add(new Field("Last Name", "lastname", "text"));
         add(new Field("First Name", "name", "text"));
         add(new Field("Date of Birth", "dateOfBirth", "date"));

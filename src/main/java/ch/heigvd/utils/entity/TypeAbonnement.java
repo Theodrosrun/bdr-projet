@@ -10,6 +10,7 @@ import jakarta.persistence.Table;
 public class TypeAbonnement {
 
     @Id
+    @Column(name = "nom", nullable = false)
     private String nom;
 
 
