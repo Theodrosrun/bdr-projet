@@ -417,10 +417,12 @@ SELECT
     MAX(CASE WHEN EXTRACT(DOW FROM jour) = 5 THEN typeCours || ' - ' || instructeur || ' - ' || salle_id ELSE NULL END) AS Friday,
     MAX(CASE WHEN EXTRACT(DOW FROM jour) = 6 THEN typeCours || ' - ' || instructeur || ' - ' || salle_id ELSE NULL END) AS Saturday
 FROM (
-         SELECT c.jour, c.heure, c.typeCours, p.prenom || ' ' || p.nom AS instructeur, c.salle_id
+         SELECT extract(DOW FROM jour), c.heure, c.typecours, p.prenom || ' ' || p.nom AS instructeur, c.salle_id
          FROM Instructeur i
             INNER JOIN Personne p ON i.instructeur_id = p.id
-            INNER JOIN CourseWeekView c ON i.instructeur_id = c.instructeur_id
+            INNER JOIN TypeCours tc ON i.instructeur_id = tc.instructeur_id
+            INNER JOIN Cours c ON tc.nom = c.typecours
+         order by c.jour, c.heure
      ) AS source
 GROUP BY heure;
 

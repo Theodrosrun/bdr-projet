@@ -57,20 +57,6 @@ public class GeneralController {
                 "fitness_id = '" + fitnessId + "'"));
     }
 
-    /***
-     * Récupération des informations de l'employée grâce à l'identifiant du compte
-     * @param compte_id identifiant du compte
-     * @return les informations de l'employée
-     */
-    public  HashMap<String, String> getEmployee(int compte_id) {
-        List<HashMap<String, String>> employees = SQLManager.toHashMapList(sqlManager.select(Table.Employe.name(),
-                "compte_id = '" + compte_id + "'"));
-        if (employees.isEmpty()) {
-            return null;
-        }
-        return employees.get(0);
-    }
-
 
     /***
      * Fonction qui pourrait être améliorée, elle remplit son rôle
