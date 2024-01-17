@@ -26,6 +26,9 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
+/***
+ * Affichage de la page utilisateur
+ */
 @WebServlet(name = "MyAccount", value = "/myaccount")
 public class MyAccount extends HttpServlet {
 

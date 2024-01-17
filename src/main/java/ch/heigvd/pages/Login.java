@@ -12,7 +12,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /***
- * Variable isConnected dans menu.ftlh ?
+ * Connexion
  */
 @WebServlet(name = "Login", value = "/login")
 public class Login extends HttpServlet {

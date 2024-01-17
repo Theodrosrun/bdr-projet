@@ -19,6 +19,8 @@ public class MembreFactureView {
         this.echeance = (String) obj[4];
         if (obj[5] != null)
             this.payment_id = (String) obj[5];
+        else
+            this.payment_id = "";
     }
 
 }

@@ -9,6 +9,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/***
+ * Page principale
+ */
 @WebServlet(name = "Home", value = "/home")
 public class Home extends HttpServlet {
 

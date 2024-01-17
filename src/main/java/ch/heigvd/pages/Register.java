@@ -3,7 +3,6 @@ package ch.heigvd.pages;
 import ch.heigvd.components.PageBuilder;
 import ch.heigvd.components.RegisterForm;
 import ch.heigvd.utils.controller.*;
-import ch.heigvd.utils.db.SQLManager;
 import ch.heigvd.utils.entity.Contrat;
 import ch.heigvd.utils.entity.ContratAbonnement;
 import ch.heigvd.utils.entity.Membre;
@@ -14,19 +13,12 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import ch.heigvd.utils.structure.Table;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-
-import static ch.heigvd.components.RegisterForm.PERSON_PARAM_NAMES;
 
 /***
- * Variable isConnected dans menu.ftlh ?
+ * Enregistrement d'un nouveau compte
  */
 @WebServlet(name = "Register", value = "/register")
 public class Register extends HttpServlet {
