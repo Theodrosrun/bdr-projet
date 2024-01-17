@@ -25,9 +25,7 @@ public class Instructors extends HttpServlet {
             resp.sendRedirect("/login?error=1");
             return;
         }
-        Account account = Account.from(usernameCookie.getValue(), passwordCookie.getValue());
-        if (account == null) return;
-
+        Account account = Account.from(usernameCookie.getValue());
         PageBuilder pageBuilder = new PageBuilder(account.getUsername(), req, resp);
         pageBuilder.add(Title.doGet("Experts"));
         addInfo(pageBuilder);

@@ -61,14 +61,10 @@ public class Account {
      * comparaison du compte associé
      *
      * @param username nom d'utilisateur
-     * @param password mdp
      * @return création d'une nouvelle instance de la classe Compte
      */
-    public static Account from(String username, String password) {
+    public static Account from(String username) {
         HashMap<String, String> information = new GeneralController().getAccount(username);
-        if (information == null || !information.get("mot_de_passe").equals(password)) { // mot_de_passe est la clef
-            return null;
-        }
         return new Account(information);
     }
 

@@ -9,7 +9,7 @@
                         <div class="row">
                             <div class="col-lg-6">
                                 <label>Payment method type</label>
-                                <p>${payment_m.type_moyen_paiement}</p>
+                                <p>${payment_m.typeMoyenPaiement}</p>
                             </div>
                             <div class="col-lg-6">
                                 <label>Information</label>

@@ -47,7 +47,7 @@ CREATE TABLE Administrateur (
 
 CREATE TABLE Membre (
     id INT PRIMARY KEY,
-    compte_id VARCHAR(255) UNIQUE NOT NULL -- Trigger will create the account and set the compte_id and not null
+    compte_id VARCHAR(255) UNIQUE NOT NULL
 );
 
 CREATE TABLE Visiteur (
@@ -297,7 +297,6 @@ CREATE VIEW AccountView
 AS
 SELECT
     c.username,
-    c.mot_de_passe,
     c.moyen_paiement_pref_id,
     p.id,
     p.nom,
@@ -330,7 +329,6 @@ INNER JOIN Personne p ON m.id = p.id OR e.id = p.id;
 DROP VIEW IF EXISTS CourseWeekView;
 CREATE VIEW CourseWeekView AS
 SELECT
-    c.cours_id,
     DATE(current_date + ((current_date - c.jour) % 7)) AS jour,
     c.heure,
     c.description,
@@ -347,8 +345,7 @@ DROP VIEW IF EXISTS MemberCourseWeekView;
 CREATE VIEW MemberCourseWeekView AS
 SELECT
     c.*,
-    m.id AS membre_id,
-    m.compte_id
+    m.id AS membre_id
 FROM CourseWeekView c
 INNER JOIN ContratAbonnement ca ON c.abo_id = ca.abo_id
 INNER JOIN Contrat co ON ca.contrat_id = co.contrat_id
@@ -356,15 +353,13 @@ INNER JOIN Membre m ON co.membre_id = m.id
 ORDER BY jour;
 
 -- View of members and their contracts and memberships
-DROP VIEW IF EXISTS MembreAbonnementView;
-CREATE VIEW MembreAbonnementView AS
+DROP VIEW IF EXISTS my_amazing_fitness.MembreAbonnementView;
+CREATE VIEW my_amazing_fitness.MembreAbonnementView AS
 SELECT
     m.id AS membre_id,
-    m.compte_id,
     c.contrat_id,
     c.date_debut,
     c.date_debut + (interval '1 month' * c.duree) AS date_fin,
-    c.frequence_paiement,
     a.abo_id,
     a.prix,
     a.type_abonnement
@@ -378,7 +373,6 @@ DROP VIEW IF EXISTS MembreFactureView;
 CREATE VIEW MembreFactureView AS
 SELECT
     m.membre_id,
-    m.compte_id,
     m.abo_id AS abonnement,
     f.facture_id AS facture,
     f.montant AS montant,

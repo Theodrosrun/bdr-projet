@@ -75,8 +75,7 @@ public class Register extends HttpServlet {
                     req.getParameter("number"),
                     req.getParameter("city"),
                     Integer.parseInt(req.getParameter("zipCode")),
-                    req.getParameter("country")
-            );
+                    req.getParameter("country"));
             PersonneController.create(personne);
             Membre membre = new Membre(personne.getId());
             MembreController.create(membre);
@@ -84,15 +83,12 @@ public class Register extends HttpServlet {
                     personne.getId(),
                     formatter.parse(req.getParameter("startDate")),
                     Integer.parseInt(req.getParameter("duration")),
-                    Integer.parseInt(req.getParameter("frequency"))
-            );
+                    Integer.parseInt(req.getParameter("frequency")));
             ContratController.create(contrat);
             ContratAbonnement contratAbonnement = new ContratAbonnement(
                     contrat.getContratId(),
-                    req.getParameter("plan")
-            );
+                    req.getParameter("plan"));
             ContratAbonnementController.create(contratAbonnement);
-
         } catch (Exception e) {
             // Gestion des exceptions ou des erreurs lors de l'insertion
             e.printStackTrace();

@@ -34,62 +34,6 @@ public class GeneralController {
         return accounts.isEmpty() ? null : accounts.get(0);
     }
 
-    /***
-     * Récupération des informations liées à l'identifiant de la personne (clause WHERE)
-     * @param personId identifiant de la personne
-     * @return les informations liées à l'identifiant
-     */
-    public HashMap<String, String> getPerson(int personId) {
-        List<HashMap<String, String>> persons = SQLManager.toHashMapList(sqlManager.select(Table.Personne.name(),
-                "id = '" + personId + "'"));
-        return persons.isEmpty() ? null : persons.get(0);
-    }
-
-    /***
-     * Récupération des informations liées à l'identifiant du membre (clause WHERE)
-     * @param memberId identifiant du membre
-     * @return les informations liées à l'identifiant
-     */
-    public List<HashMap<String, String>> getPlans(int memberId) {
-        // la liste de tous les abonnements des membres sur la vue MembreAbonnementView
-        return SQLManager.toHashMapList(sqlManager.select(View.MembreAbonnementView.name(),
-                "membre_id = '" + memberId + "'"));
-    }
-
-    /***
-     * Récupération des informations (columns) sur les factures relatives à l'identifiant du membre (clause WHERE)
-     * @param memberId identifiant du membre
-     * @param columns colonnes dont on souhaite connaître les informations
-     * @return les informations liées à l'identifiant
-     */
-    public List<HashMap<String, String>> getBills(int memberId, String ... columns) {
-        // la liste de toutes les factures des membres sur la vue MembreFactureView
-        return SQLManager.toHashMapList(sqlManager.select(View.MembreFactureView.name(),
-                "membre_id = '" + memberId + "'",
-                columns));
-    }
-
-    /***
-     * Récupération des informations sur les membres n'ayant pas payé
-     * @return la liste des informations sur tous les employés n'ayant pas payé
-     */
-    public List<HashMap<String, String>> getMembersUnpaid() {
-        // la liste de toutes les factures des membres sur la vue MembreFactureView
-        return SQLManager.toHashMapList(sqlManager.select(View.MembreFactureView.name(),
-                "payment_id IS NULL AND date_echeance < CURRENT_DATE"));
-    }
-
-    /***
-     * Récupération des informations (columns) sur les cours relatifs à l'identifiant du membre (clause WHERE)
-     * @param memberId identifiant du membre
-     * @param columns colonnes dont on souhaite connaître les informations
-     * @return les informations liées à l'identifiant
-     */
-    public List<HashMap<String, String>> getMemberCourses(int memberId, String ... columns) {
-        // la liste de tous les cours de la semaine des membres sur la vue MemberCourseWeekView
-        return SQLManager.toHashMapList(sqlManager.select(View.MemberCourseWeekView.name(),
-                "membre_id = '" + memberId + "'", columns));
-    }
 
     /***
      * Récupération des informations (columns) sur les cours relatifs à l'identifiant de l'instructeur (clause WHERE)
@@ -103,19 +47,6 @@ public class GeneralController {
                 "instructeur_id = '" + memberId + "'", columns));
     }
 
-    /***
-     * Récupération du membre grâce à l'identifiant du compte
-     * @param compte_id identifiant du compte
-     * @return les informations sur le membre
-     */
-    public HashMap<String, String> getMember(int compte_id) {
-        List<HashMap<String, String>> members = SQLManager.toHashMapList(sqlManager.select(Table.Membre.name(),
-                "compte_id = '" + compte_id + "'"));
-        if (members.isEmpty()) {
-            return null;
-        }
-        return members.get(0);
-    }
 
     public List<HashMap<String, String>> getInstructorsWithCoursesTypes() {
         return SQLManager.toHashMapList(sqlManager.select(View.IntructeurTypeCoursView.name()));
@@ -140,21 +71,6 @@ public class GeneralController {
         return employees.get(0);
     }
 
-    /***
-     * Liste tous les membres
-     * @return la liste de tous les membres
-     */
-    public List<HashMap<String, String>> getMembers() {
-        return SQLManager.toHashMapList(sqlManager.select(Table.Membre.name()));
-    }
-
-    /***
-     * Liste tous les employés
-     * @return la liste de tous les employés
-     */
-    public List<HashMap<String, String>> getEmployees() {
-        return SQLManager.toHashMapList(sqlManager.select(Table.Employe.name()));
-    }
 
     /***
      * Fonction qui pourrait être améliorée, elle remplit son rôle
@@ -163,24 +79,6 @@ public class GeneralController {
     public List<HashMap<String, String>> getInstructors() {
         return SQLManager.toHashMapList(sqlManager.select(Table.Instructeur.name(),
                 " INNER JOIN employe ON instructeur_id = id ", true));
-    }
-
-    /**
-     * Liste tous les comptes
-     * @return la liste de tous les comptes
-     */
-    public List<HashMap<String, String>> getAccounts() {
-        return SQLManager.toHashMapList(sqlManager.select(Table.Compte.name()));
-    }
-
-    /***
-     * Obtention de la liste de tous les abonnements de l'identifiant du membre
-     * @param memberId identifiant du membre
-     * @return la liste de tous les abonnements
-     */
-    public List<HashMap<String, String>> getAbosOf(int memberId) {
-        return SQLManager.toHashMapList(sqlManager.select(Table.Abonnement.name(),
-                "membre_id = '" + memberId + "'"));
     }
 
     /***
@@ -196,46 +94,7 @@ public class GeneralController {
         return SQLManager.toHashMapList(sqlManager.select(Table.TypeMoyenPaiement.name()));
     }
 
-    /***
-     * Obtention de la liste de tous les abonnements disponibles de cours
-     * @return liste de tous les abonnements disponibles
-     */
-    public List<HashMap<String, String>> getCurrentAbosCours() {
-        return SQLManager.toHashMapList(sqlManager.select(Table.Abonnement.name(),
-                "type_abonnement = 'Course' AND disponibilite = true"));
-    }
-
-    /***
-     * Donne le moyen de payement en fonction de son identifiant
-     * @param payingMethodId idenfiant du moyen de payement
-     * @return le moyen de payement
-     */
-    public HashMap<String, String> getPayingMethods(int payingMethodId) {
-        List<HashMap<String, String>> methods = SQLManager.toHashMapList(sqlManager.select(Table.MoyenPaiement.name(),
-                "moyen_paiement_id = '" + payingMethodId + "'"));
-        return methods.isEmpty() ? null : methods.get(0);
-    }
-
     public Object insert(String table, List<String> columns, List<Object> values, String returning) {
         return sqlManager.insert(table, columns, values, returning);
     }
-
-    /***
-     * Récupération des colonnes de la table
-     * @param table table en question
-     * @return les colonnes de la table
-     */
-    public List<String> getColumns(String table) {
-        return sqlManager.selectColumns(table);
-    }
-
-    /***
-     * Récupération des colonnes de la table
-     * @param table table en question
-     * @return les colonnes de la table
-     */
-    public List<String> getColumns(String table, String where) {
-        return sqlManager.selectColumns(table, where);
-    }
-
 }

@@ -1,5 +1,6 @@
 package ch.heigvd.components;
 
+import ch.heigvd.utils.entity.MoyenPaiement;
 import ch.heigvd.utils.freemarker.FreeMarkerConfig;
 import freemarker.template.Template;
 
@@ -8,7 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class PayingMethod {
-    public static String doGet(HashMap<String, String> method) {
+    public static String doGet(MoyenPaiement method) {
         try {
             Template template = FreeMarkerConfig.getConfig().getTemplate("paying_methods.ftlh");
             StringWriter out = new StringWriter();

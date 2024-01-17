@@ -2,8 +2,10 @@ package ch.heigvd.utils.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Positive;
+import lombok.Getter;
 
 @Entity
+@Getter
 @Table(name = "Membre")
 public class Membre {
 
@@ -11,7 +13,7 @@ public class Membre {
     @Column(name = "id", nullable = false)
     private int id;
 
-    @Column(name = "compte_id", unique = true)
+    @Column(name = "compte_id", unique = true, nullable = false)
     private String compteId;
 
     public Membre() {
@@ -19,6 +21,11 @@ public class Membre {
 
     public Membre(@Positive int id) {
         this.id = id;
+    }
+
+    public Membre(@Positive int id, String compteId) {
+        this.id = id;
+        this.compteId = compteId;
     }
 
 }

@@ -1,9 +1,11 @@
 package ch.heigvd.utils.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 
 @Entity
 @Table(name = "MoyenPaiement")
+@Getter
 public class MoyenPaiement {
 
     @Id
