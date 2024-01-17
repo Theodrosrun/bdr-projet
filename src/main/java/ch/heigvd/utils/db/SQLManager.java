@@ -1,6 +1,5 @@
 package ch.heigvd.utils.db;
 
-import ch.heigvd.utils.structure.Table;
 import lombok.Getter;
 
 import java.sql.Connection;

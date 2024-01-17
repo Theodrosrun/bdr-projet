@@ -3,6 +3,11 @@ package ch.heigvd.utils.controller;
 import ch.heigvd.utils.entity.Membre;
 import jakarta.persistence.EntityManager;
 
+/***
+ * Cette classe gère les opérations de persistance pour l'entité Membre.
+ * Elle est responsable de l'ajout de nouveaux membres dans la base de données
+ * et de la mise à jour des membres existants.
+ */
 public class MembreController {
     static final EntityManager em = AppContextListener.createEntityManager();
     public static void create(Membre membre) {

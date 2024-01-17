@@ -9,6 +9,9 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
+/***
+ * Déconnexion
+ */
 @WebServlet(name = "Logout", value = "/logout")
 public class Logout extends HttpServlet {
     @Override

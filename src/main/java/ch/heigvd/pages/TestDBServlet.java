@@ -4,8 +4,6 @@ import ch.heigvd.utils.controller.AppContextListener;
 import ch.heigvd.utils.controller.PersonneController;
 import ch.heigvd.utils.entity.Personne;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.Persistence;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
