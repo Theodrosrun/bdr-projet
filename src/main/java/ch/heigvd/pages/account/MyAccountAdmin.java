@@ -4,11 +4,7 @@ import ch.heigvd.components.*;
 import ch.heigvd.utils.controller.GeneralController;
 import ch.heigvd.utils.controller.MembreController;
 import ch.heigvd.utils.entity.Membre;
-import ch.heigvd.utils.entity.MoyenPaiement;
 import ch.heigvd.utils.view.AccountView;
-import ch.heigvd.utils.view.MemberCourseWeekView;
-import ch.heigvd.utils.view.MembreAbonnementView;
-import ch.heigvd.utils.view.MembreFactureView;
 import ch.heigvd.utils.web.CookieManager;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -16,23 +12,12 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-
 import java.io.IOException;
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
-/***
- * Affichage de la page utilisateur
- */
 @WebServlet(name = "MyAccountAdmin", value = "/myaccountadmin")
 public class MyAccountAdmin extends HttpServlet {
 
-    /***
-     * Cette méthode est utilisée pour gérer les requêtes HTTP de type GET.
-     * Elle permet au servlet de récupérer des informations à partir de l'URL.
-     */
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         if (!CookieManager.isLogged(req)) {
@@ -59,6 +44,20 @@ public class MyAccountAdmin extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String username = req.getParameter("username");
 
+        if (username == null || username.isEmpty()) {
+            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Le nom d'utilisateur est requis");
+            return;
+        }
+
+        int result = new GeneralController().delete("DELETE FROM compte WHERE username = " + username);
+
+//        if (isDeleted) {
+//            resp.setStatus(HttpServletResponse.SC_OK);
+//            resp.getWriter().write("Compte supprimé avec succès");
+//        } else {
+//            resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Erreur lors de la suppression");
+//        }
     }
 }

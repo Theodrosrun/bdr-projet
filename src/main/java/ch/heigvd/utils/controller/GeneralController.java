@@ -3,7 +3,6 @@ package ch.heigvd.utils.controller;
 import ch.heigvd.utils.db.SQLManager;
 import ch.heigvd.utils.structure.Table;
 import ch.heigvd.utils.structure.View;
-
 import java.util.HashMap;
 import java.util.List;
 
@@ -86,5 +85,9 @@ public class GeneralController {
 
     public List<HashMap<String, String>> getAccountView() {
         return SQLManager.toHashMapList(sqlManager.select(View.AccountView.name()));
+    }
+
+    public int delete(String query) {
+        return sqlManager.delete(query);
     }
 }

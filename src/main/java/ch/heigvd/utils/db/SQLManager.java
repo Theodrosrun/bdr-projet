@@ -1,12 +1,7 @@
 package ch.heigvd.utils.db;
 
-import ch.heigvd.utils.structure.Table;
 import lombok.Getter;
-
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -111,6 +106,10 @@ public class SQLManager {
         return executeQuery(createSelectQuery(table, List.of("*"), inner, null, null));
     }
 
+    public int delete(String query) {
+        return executeUpdate(query);
+    }
+
     /***
      * Fermeture de la connexion à la BDD
      */
@@ -164,6 +163,19 @@ public class SQLManager {
             return connection.createStatement().executeQuery(query);
         } catch (SQLException e) {
             throw new RuntimeException("Erreur lors de l'exécution de la requête", e);
+        }
+    }
+
+    /**
+     * Exécution d'une requête de mise à jour (INSERT, UPDATE, DELETE)
+     * @param query string formé pour une requête de mise à jour
+     * @return le nombre de lignes affectées
+     */
+    private int executeUpdate(String query) {
+        try (Statement statement = connection.createStatement()) {
+            return statement.executeUpdate(query);
+        } catch (SQLException e) {
+            throw new RuntimeException("Erreur lors de l'exécution de la requête de mise à jour", e);
         }
     }
 

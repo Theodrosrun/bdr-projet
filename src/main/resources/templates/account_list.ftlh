@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <title>Votre Titre</title>
     <style>
-        /* Ici, ajoutez le code CSS */
         .accounts-section {
             text-align: center;
         }
@@ -67,7 +66,7 @@
                     <td>${compte.username}</td>
                     <td>${compte.nom}</td>
                     <td>${compte.prenom}</td>
-                    <td><button type="button" onclick="supprimerCompte('${compte.id}');">Supprimer</button></td>
+                    <td><button type="button" onclick="supprimerCompte('${compte.username}');">Supprimer</button></td>
                 </tr>
             </#list>
         </table>
@@ -75,14 +74,14 @@
 </section>
 
 <script>
-    function supprimerCompte(idCompte) {
+    function supprimerCompte(username) {
         if (confirm('Êtes-vous sûr de vouloir supprimer ce compte ?')) {
             fetch('/myaccountadmin', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
+                    'Content-Type': 'application/x-www-form-urlencoded',
                 },
-                body: JSON.stringify({ id: idCompte }),
+                body: 'username=' + encodeURIComponent(username),
             })
                 .then(response => {
                     if (response.ok) {
