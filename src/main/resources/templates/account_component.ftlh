@@ -54,9 +54,17 @@
             </div>
             <div class="col-lg-4">
                 <div class="register-pic">
-                    <img src="img/account/${account.username}.png" alt="Register">
+                    <img id="profile-image" src="" alt="">
                 </div>
             </div>
         </div>
     </div>
+    <script>
+        let imgElement = document.getElementById('profile-image');
+        let imgSrc = "img/account/${account.username}.png"
+        imgElement.src = imgSrc;
+        imgElement.onerror = function() {
+            imgElement.src = "img/account/default.png";
+        };
+    </script>
 </section>

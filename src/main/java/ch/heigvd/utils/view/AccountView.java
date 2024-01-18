@@ -5,8 +5,8 @@ import lombok.Getter;
 @Getter
 public class AccountView {
     private String username;
-    private int moyen_paiement_pref_id;
-    private int id;
+    private String moyen_paiement_pref_id;
+    private String id;
     private String nom;
     private String prenom;
     private String dateNaissance;
@@ -19,8 +19,8 @@ public class AccountView {
 
     public AccountView(Object[] obj) {
         this.username = (String) obj[0];
-        this.moyen_paiement_pref_id = Integer.parseInt((String) obj[1]);
-        this.id = Integer.parseInt((String) obj[2]);
+        this.moyen_paiement_pref_id = (obj[1] != null) ? (String) obj[1] : "";
+        this.id = (String) obj[2];
         this.nom = (String) obj[3];
         this.prenom = (String) obj[4];
         this.dateNaissance = (String) obj[5];

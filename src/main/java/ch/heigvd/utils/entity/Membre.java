@@ -13,7 +13,7 @@ public class Membre {
     @Column(name = "id", nullable = false)
     private int id;
 
-    @Column(name = "compte_id", unique = true, nullable = false)
+    @Column(name = "compte_id", unique = true)
     private String compteId;
 
     public Membre() {

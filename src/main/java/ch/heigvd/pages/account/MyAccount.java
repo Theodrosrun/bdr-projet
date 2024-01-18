@@ -65,10 +65,10 @@ public class MyAccount extends HttpServlet {
      * @param accountView le compte connecté
      */
     private void addPayingMethod(PageBuilder pageBuilder, AccountView accountView) throws IOException {
-        if (accountView.getMoyen_paiement_pref_id() == 0) {
+        if (accountView.getMoyen_paiement_pref_id().isEmpty()) {
             return;
         }
-        MoyenPaiement method = MembreController.getMoyenPayment(accountView.getMoyen_paiement_pref_id());
+        MoyenPaiement method = MembreController.getMoyenPayment(Integer.parseInt(accountView.getMoyen_paiement_pref_id()));
         if (method != null) {
             pageBuilder.add(PayingMethod.doGet(method));
         }
@@ -80,7 +80,7 @@ public class MyAccount extends HttpServlet {
      * @param accountView le compte connecté
      */
     private void addSubscription(PageBuilder pageBuilder, AccountView accountView) throws IOException {
-        List<MembreAbonnementView> subscriptions = MembreController.getAbonnementsView(accountView.getId());
+        List<MembreAbonnementView> subscriptions = MembreController.getAbonnementsView(Integer.parseInt(accountView.getId()));
         if (!subscriptions.isEmpty()) {
             pageBuilder.add(Plans.doGet("My subscriptions", subscriptions, false));
         }
@@ -93,7 +93,7 @@ public class MyAccount extends HttpServlet {
      * @param account le compte connecté
      */
     private void addBills(PageBuilder pageBuilder, AccountView account) throws IOException {
-        List<?> bills = MembreController.getMembreFactureView(account.getId());
+        List<?> bills = MembreController.getMembreFactureView(Integer.parseInt(account.getId()));
         if (!bills.isEmpty()) {
             pageBuilder.add(
                     Table.doGet(
@@ -111,7 +111,7 @@ public class MyAccount extends HttpServlet {
      * @param account le compte connecté
      */
     private void addCourses(PageBuilder pageBuilder, AccountView account) throws IOException {
-        List<?> courses = MembreController.getMemberCourseWeekView(account.getId());
+        List<?> courses = MembreController.getMemberCourseWeekView(Integer.parseInt(account.getId()));
         List<String> fields = new ArrayList<>(
                 Arrays.stream(MemberCourseWeekView.class.getSuperclass().getDeclaredFields())
                 .map(Field::getName)
