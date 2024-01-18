@@ -49,6 +49,16 @@
             display: block;
             margin: 0 auto;
         }
+
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .delete-button {
+            background-color: red;
+            color: white;
+        }
     </style>
 </head>
 <body>
@@ -63,10 +73,15 @@
             </tr>
             <#list comptes as compte>
                 <tr>
-                    <td>${compte.username}</td>
-                    <td>${compte.nom}</td>
-                    <td>${compte.prenom}</td>
-                    <td><button type="button" onclick="supprimerCompte('${compte.username}');">Supprimer</button></td>
+                    <td><input type="text" value="${compte.username}" /></td>
+                    <td><input type="text" value="${compte.nom}" /></td>
+                    <td><input type="text" value="${compte.prenom}" /></td>
+                    <td>
+                        <div class="button-container">
+                            <button type="button" onclick="mettreAJourCompte('${compte.username}');">Mettre à jour</button>
+                            <button type="button" class="delete-button" onclick="supprimerCompte('${compte.username}');">Supprimer</button>
+                        </div>
+                    </td>
                 </tr>
             </#list>
         </table>
@@ -74,6 +89,10 @@
 </section>
 
 <script>
+    function mettreAJourCompte(username) {
+
+    }
+
     function supprimerCompte(username) {
         if (confirm('Êtes-vous sûr de vouloir supprimer ce compte ?')) {
             fetch('/myaccountadmin', {
