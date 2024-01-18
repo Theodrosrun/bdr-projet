@@ -381,7 +381,6 @@ FROM MembreAbonnementView m
 INNER JOIN Facture f ON m.contrat_id = f.contrat_id
 ORDER BY f.date_echeance;
 
--- View instructors and their courses
 DROP VIEW IF EXISTS IntructeurTypeCoursView;
 CREATE VIEW IntructeurTypeCoursView AS
 SELECT
