@@ -27,8 +27,8 @@ public class Home extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         PageBuilder pageBuilder = new PageBuilder("Home", req, resp);
         pageBuilder.add(Slider.doGet());
-        pageBuilder.add(Services.doGet());
         pageBuilder.add(Classes.doGet());
+        pageBuilder.add(Services.doGet());
         pageBuilder.add(Experts.doGet());
         pageBuilder.add(Plans.doGet("MEMBERSHIP PLANS", new GeneralController().getGymPlans(), true));
         HoraireCoursView hr =  MainController.getHoraireCoursView();
