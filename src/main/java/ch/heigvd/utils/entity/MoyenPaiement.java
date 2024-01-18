@@ -26,5 +26,11 @@ public class MoyenPaiement {
     public MoyenPaiement() {
     }
 
+    public MoyenPaiement(String typeMoyenPaiement, String compteId, String info) {
+        this.typeMoyenPaiement = typeMoyenPaiement;
+        this.compteId = compteId;
+        this.info = info;
+    }
+
 }
 

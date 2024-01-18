@@ -79,8 +79,4 @@ public class GeneralController {
     public List<HashMap<String, String>> getTypePaymentMethods() {
         return SQLManager.toHashMapList(sqlManager.select(Table.TypeMoyenPaiement.name()));
     }
-
-    public Object insert(String table, List<String> columns, List<Object> values, String returning) {
-        return sqlManager.insert(table, columns, values, returning);
-    }
 }

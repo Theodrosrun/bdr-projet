@@ -25,4 +25,15 @@ public class Compte {
 
     public Compte() {
     }
+
+    public Compte(String username, String motDePasse, Integer moyenPaiementPrefId, Date dateDeCreation) {
+        this.username = username;
+        this.motDePasse = motDePasse;
+        this.moyenPaiementPrefId = moyenPaiementPrefId;
+        this.dateDeCreation = dateDeCreation;
+    }
+
+    public void setMoyenPaiementPrefId(Integer moyenPaiementPrefId) {
+        this.moyenPaiementPrefId = moyenPaiementPrefId;
+    }
 }

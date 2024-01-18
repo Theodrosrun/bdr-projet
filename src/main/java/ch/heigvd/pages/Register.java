@@ -3,10 +3,7 @@ package ch.heigvd.pages;
 import ch.heigvd.components.PageBuilder;
 import ch.heigvd.components.RegisterForm;
 import ch.heigvd.utils.controller.*;
-import ch.heigvd.utils.entity.Contrat;
-import ch.heigvd.utils.entity.ContratAbonnement;
-import ch.heigvd.utils.entity.Membre;
-import ch.heigvd.utils.entity.Personne;
+import ch.heigvd.utils.entity.*;
 import ch.heigvd.utils.web.CookieManager;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -81,8 +78,15 @@ public class Register extends HttpServlet {
                     contrat.getContratId(),
                     req.getParameter("plan"));
             ContratAbonnementController.create(contratAbonnement);
+            MoyenPaiement moyenPaiement = new MoyenPaiement(
+                    req.getParameter("paymentMethod"),
+                    membre.getCompteId(),
+                    req.getParameter("paymentInformation"));
+            MoyenPaiementController.create(moyenPaiement);
+            MembreController.setMoyenPaiement(
+                    MembreController.getCompte(membre.getCompteId()), moyenPaiement);
+            resp.sendRedirect("/login");
         } catch (Exception e) {
-            // Gestion des exceptions ou des erreurs lors de l'insertion
             e.printStackTrace();
             resp.sendRedirect("/register?error=db_error");
         }
