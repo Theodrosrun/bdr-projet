@@ -19,5 +19,4 @@ public class ClassesOverview extends HttpServlet {
         pageBuilder.add(TimeTable.doGet(MainController.getHoraireCoursView()));
         pageBuilder.close();
     }
-
 }
