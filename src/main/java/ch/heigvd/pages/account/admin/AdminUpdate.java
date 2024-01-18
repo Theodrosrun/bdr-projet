@@ -1,5 +1,6 @@
 package ch.heigvd.pages.account.admin;
 
+import ch.heigvd.utils.controller.GeneralController;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -20,7 +21,8 @@ public class AdminUpdate extends HttpServlet {
             return;
         }
 
-        System.out.println(username + nom + prenom);
+        String query = "UPDATE compte SET moyen_paiement_pref_id = " + 4 + " WHERE username = '" + username + "';";
+        int result = new GeneralController().createQuery(query);
 
 //        if (isDeleted) {
 //            resp.setStatus(HttpServletResponse.SC_OK);

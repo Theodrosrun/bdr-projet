@@ -87,7 +87,7 @@ public class GeneralController {
         return SQLManager.toHashMapList(sqlManager.select(View.AccountView.name()));
     }
 
-    public int delete(String query) {
-        return sqlManager.delete(query);
+    public int createQuery(String query) {
+        return sqlManager.CreateQuery(query);
     }
 }

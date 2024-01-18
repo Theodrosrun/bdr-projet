@@ -106,7 +106,7 @@ public class SQLManager {
         return executeQuery(createSelectQuery(table, List.of("*"), inner, null, null));
     }
 
-    public int delete(String query) {
+    public int CreateQuery(String query) {
         return executeUpdate(query);
     }
 
