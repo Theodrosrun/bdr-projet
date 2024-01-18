@@ -83,4 +83,8 @@ public class GeneralController {
     public List<HashMap<String, String>> getTypeCours() {
         return SQLManager.toHashMapList(sqlManager.select(Table.TypeCours.name()));
     }
+
+    public List<HashMap<String, String>> getAccountView() {
+        return SQLManager.toHashMapList(sqlManager.select(View.AccountView.name()));
+    }
 }
