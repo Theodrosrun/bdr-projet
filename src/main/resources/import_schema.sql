@@ -47,7 +47,7 @@ CREATE TABLE Administrateur (
 
 CREATE TABLE Membre (
     id INT PRIMARY KEY,
-    compte_id VARCHAR(255) UNIQUE -- Trigger will create the account and set the compte_id and not null
+    compte_id VARCHAR(255) UNIQUE NOT NULL
 );
 
 CREATE TABLE Visiteur (
@@ -297,7 +297,6 @@ CREATE VIEW AccountView
 AS
 SELECT
     c.username,
-    c.mot_de_passe,
     c.moyen_paiement_pref_id,
     p.id,
     p.nom,
@@ -330,7 +329,6 @@ INNER JOIN Personne p ON m.id = p.id OR e.id = p.id;
 DROP VIEW IF EXISTS CourseWeekView;
 CREATE VIEW CourseWeekView AS
 SELECT
-    c.cours_id,
     DATE(current_date + ((current_date - c.jour) % 7)) AS jour,
     c.heure,
     c.description,
@@ -347,8 +345,7 @@ DROP VIEW IF EXISTS MemberCourseWeekView;
 CREATE VIEW MemberCourseWeekView AS
 SELECT
     c.*,
-    m.id AS membre_id,
-    m.compte_id
+    m.id AS membre_id
 FROM CourseWeekView c
 INNER JOIN ContratAbonnement ca ON c.abo_id = ca.abo_id
 INNER JOIN Contrat co ON ca.contrat_id = co.contrat_id
@@ -356,15 +353,13 @@ INNER JOIN Membre m ON co.membre_id = m.id
 ORDER BY jour;
 
 -- View of members and their contracts and memberships
-DROP VIEW IF EXISTS MembreAbonnementView;
-CREATE VIEW MembreAbonnementView AS
+DROP VIEW IF EXISTS my_amazing_fitness.MembreAbonnementView;
+CREATE VIEW my_amazing_fitness.MembreAbonnementView AS
 SELECT
     m.id AS membre_id,
-    m.compte_id,
     c.contrat_id,
     c.date_debut,
     c.date_debut + (interval '1 month' * c.duree) AS date_fin,
-    c.frequence_paiement,
     a.abo_id,
     a.prix,
     a.type_abonnement
@@ -377,11 +372,10 @@ DROP VIEW IF EXISTS MembreFactureView;
 CREATE VIEW MembreFactureView AS
 SELECT
     m.membre_id,
-    m.compte_id,
-    m.abo_id AS plan,
-    f.facture_id AS bill_number,
-    f.montant AS amount,
-    f.date_echeance AS due_date,
+    m.abo_id AS abonnement,
+    f.facture_id AS facture,
+    f.montant AS montant,
+    f.date_echeance AS echeance,
     f.payment_id
 FROM MembreAbonnementView m
 INNER JOIN Facture f ON m.contrat_id = f.contrat_id
@@ -425,10 +419,12 @@ SELECT
     MAX(CASE WHEN EXTRACT(DOW FROM jour) = 5 THEN typeCours || ' - ' || instructeur || ' - ' || salle_id ELSE NULL END) AS Friday,
     MAX(CASE WHEN EXTRACT(DOW FROM jour) = 6 THEN typeCours || ' - ' || instructeur || ' - ' || salle_id ELSE NULL END) AS Saturday
 FROM (
-         SELECT c.jour, c.heure, c.typeCours, p.prenom || ' ' || p.nom AS instructeur, c.salle_id
+         SELECT c.jour, c.heure, c.typecours, p.prenom || ' ' || p.nom AS instructeur, c.salle_id
          FROM Instructeur i
             INNER JOIN Personne p ON i.instructeur_id = p.id
-            INNER JOIN CourseWeekView c ON i.instructeur_id = c.instructeur_id
+            INNER JOIN TypeCours tc ON i.instructeur_id = tc.instructeur_id
+            INNER JOIN Cours c ON tc.nom = c.typecours
+         order by c.jour, c.heure
      ) AS source
 GROUP BY heure;
 
@@ -451,13 +447,13 @@ DECLARE
     personne_nom TEXT;
     personne_prenom TEXT;
 BEGIN
-    SELECT nom, prenom INTO personne_nom, personne_prenom FROM Personne WHERE id = NEW.id;
+    SELECT nom, prenom INTO personne_nom, personne_prenom FROM my_amazing_fitness.Personne WHERE id = NEW.id;
     new_username := lower(CONCAT(personne_nom, '_', personne_prenom));
-    WHILE EXISTS (SELECT 1 FROM Compte WHERE username = new_username) LOOP
+    WHILE EXISTS (SELECT 1 FROM my_amazing_fitness.Compte WHERE username = new_username) LOOP
             new_username := lower(CONCAT(personne_nom, '_', personne_prenom, username_suffix));
             username_suffix := username_suffix + 1;
     END LOOP;
-    INSERT INTO Compte (username, mot_de_passe, date_de_creation)
+    INSERT INTO my_amazing_fitness.Compte (username, mot_de_passe, date_de_creation)
     VALUES (new_username, new_username, CURRENT_DATE) -- Password is the same as the username
     RETURNING new_username INTO new_compte_id;
     NEW.compte_id := new_compte_id;
@@ -466,12 +462,12 @@ END;
 $$;
 
 CREATE TRIGGER create_account_trigger_membre
-    BEFORE INSERT ON Membre
+    BEFORE INSERT ON my_amazing_fitness.Membre
     FOR EACH ROW
 EXECUTE FUNCTION create_account();
 
 CREATE TRIGGER create_account_trigger_employe
-    BEFORE INSERT ON Employe
+    BEFORE INSERT ON my_amazing_fitness.Employe
     FOR EACH ROW
 EXECUTE FUNCTION create_account();
 
@@ -484,14 +480,14 @@ AS
 $$
 DECLARE
     i INT := 0;
-    frequence INT := (SELECT frequence_paiement FROM Contrat WHERE contrat_id = NEW.contrat_id);
-    dateDebut DATE := (SELECT date_debut FROM Contrat WHERE contrat_id = NEW.contrat_id);
-    abo_prix DECIMAL(8,2) := (SELECT prix FROM Abonnement WHERE abo_id = NEW.abo_id);
+    frequence INT := (SELECT frequence_paiement FROM my_amazing_fitness.Contrat WHERE contrat_id = NEW.contrat_id);
+    dateDebut DATE := (SELECT date_debut FROM my_amazing_fitness.Contrat WHERE contrat_id = NEW.contrat_id);
+    abo_prix DECIMAL(8,2) := (SELECT prix FROM my_amazing_fitness.Abonnement WHERE abo_id = NEW.abo_id);
     montant_facture DECIMAL(8,2) := FLOOR((abo_prix / frequence) / 0.05) * 0.05;
     BEGIN
         WHILE i < frequence LOOP
-            INSERT INTO Facture (contrat_id, montant, date_echeance)
-            VALUES (NEW.contrat_id, montant_facture, dateDebut + (interval '1 month' * i));
+            INSERT INTO my_amazing_fitness.Facture (contrat_id, montant, date_echeance)
+            VALUES (NEW.contrat_id, montant_facture, dateDebut + (interval '1 month' * (i+1)));
             i := i + 1;
         END LOOP;
         RETURN NEW;
@@ -499,7 +495,7 @@ DECLARE
 $$;
 
 CREATE TRIGGER create_factures_trigger
-    AFTER INSERT ON ContratAbonnement
+    AFTER INSERT ON my_amazing_fitness.ContratAbonnement
     FOR EACH ROW
 EXECUTE FUNCTION create_factures();
 
@@ -512,11 +508,11 @@ CREATE OR REPLACE FUNCTION increment_comptage_passage()
 AS
 $$
 DECLARE
-    new_fitness_id INT := (SELECT fitness_id FROM Passage WHERE passage_id = NEW.passage_id);
+    new_fitness_id INT := (SELECT fitness_id FROM my_amazing_fitness.Passage WHERE passage_id = NEW.passage_id);
     new_jour INT := EXTRACT(DOW FROM NEW.timestamp);
     new_heure INT := EXTRACT(HOUR FROM NEW.timestamp);
 BEGIN
-    INSERT INTO ComptagePassage (fitness_id, jour, heure, nombre_personnes)
+    INSERT INTO my_amazing_fitness.ComptagePassage (fitness_id, jour, heure, nombre_personnes)
     VALUES (new_fitness_id, new_jour, new_heure, 1)
     ON CONFLICT (fitness_id, jour, heure) DO UPDATE SET nombre_personnes = ComptagePassage.nombre_personnes + 1;
     RETURN NEW;
@@ -524,7 +520,7 @@ END;
 $$;
 
 CREATE TRIGGER increment_comptage_passage_trigger
-    AFTER INSERT ON Passage
+    AFTER INSERT ON my_amazing_fitness.Passage
     FOR EACH ROW
 EXECUTE FUNCTION increment_comptage_passage();
 

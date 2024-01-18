@@ -10,16 +10,17 @@ import java.util.List;
 import java.util.Map;
 
 public class Table {
-    public static String doGet(List<String> headers, List<HashMap<String, String>> entries, String title) {
+    public static String doGet(List<String> headers, List<?> entries, String title) {
         try {
             Template template = FreeMarkerConfig.getConfig().getTemplate("table.ftlh");
             StringWriter out = new StringWriter();
             Map<String, Object> data = new HashMap<>();
-            List<List<String>> entriesList = new ArrayList<>();
-            for (HashMap<String, String> entry : entries) {
-                List<String> entryList = new ArrayList<>();
+            List<List<?>> entriesList = new ArrayList<>();
+            for (var entry : entries) {
+                List<Object> entryList = new ArrayList<>();
                 for (String header : headers) {
-                    entryList.add(entry.get(header));
+                    String methodName = "get" + header.substring(0, 1).toUpperCase() + header.substring(1);
+                    entryList.add(entry.getClass().getDeclaredMethod(methodName).invoke(entry));
                 }
                 entriesList.add(entryList);
             }

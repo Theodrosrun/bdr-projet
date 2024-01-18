@@ -2,8 +2,15 @@ package ch.heigvd.pages.account;
 
 import ch.heigvd.components.*;
 import ch.heigvd.utils.controller.GeneralController;
+import ch.heigvd.utils.controller.MembreController;
+import ch.heigvd.utils.entity.Membre;
+import ch.heigvd.utils.entity.MoyenPaiement;
 import ch.heigvd.utils.structure.Account;
 import ch.heigvd.utils.structure.UserType;
+import ch.heigvd.utils.view.AccountView;
+import ch.heigvd.utils.view.MemberCourseWeekView;
+import ch.heigvd.utils.view.MembreAbonnementView;
+import ch.heigvd.utils.view.MembreFactureView;
 import ch.heigvd.utils.web.CookieManager;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -13,9 +20,15 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
+/***
+ * Affichage de la page utilisateur
+ */
 @WebServlet(name = "MyAccount", value = "/myaccount")
 public class MyAccount extends HttpServlet {
 
@@ -25,40 +38,37 @@ public class MyAccount extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        if (CookieManager.mustLogin(req)) {
+        if (!CookieManager.isLogged(req)) {
             resp.sendRedirect("/login");
             return;
         }
         Cookie usernameCookie = CookieManager.getCookie(req, "username");
-        Cookie passwordCookie = CookieManager.getCookie(req, "password");
-        if (usernameCookie == null || passwordCookie == null)
+        if (usernameCookie == null) {
+            resp.sendRedirect("/login");
             return;
-        Account account = Account.from(usernameCookie.getValue(), passwordCookie.getValue());
-        if (account == null)
-            return;
-        PageBuilder pageBuilder = new PageBuilder(account.getUsername(), req, resp);
+        }
+        Membre membre = MembreController.getMembre(usernameCookie.getValue());
+        AccountView accountView = MembreController.getAccountView(membre.getId());
+        PageBuilder pageBuilder = new PageBuilder(accountView.getUsername(), req, resp);
         pageBuilder.add(Title.doGet("My account"));
-        pageBuilder.add(AccountComponent.doGet(account)); // affichage de toutes les caractéristiques du compte
-
-        addPayingMethod(pageBuilder, account);
-        addSubscription(pageBuilder, account);
-        addCourses(pageBuilder, account);
-        addBills(pageBuilder, account);
-        addMembersUnpaid(pageBuilder, account);
-
+        pageBuilder.add(AccountComponent.doGet(accountView));
+        addPayingMethod(pageBuilder, accountView);
+        addSubscription(pageBuilder, accountView);
+        addCourses(pageBuilder, accountView);
+        addBills(pageBuilder, accountView);
         pageBuilder.close();
     }
 
     /***
      * Affichage du moyen de payement
      * @param pageBuilder la page web où va être inscrit l'information
-     * @param account le compte connecté
+     * @param accountView le compte connecté
      */
-    private void addPayingMethod(PageBuilder pageBuilder, Account account) throws IOException {
-        if (account.getPayingMethodId() == null) { // le getter existe automatiquement
+    private void addPayingMethod(PageBuilder pageBuilder, AccountView accountView) throws IOException {
+        if (accountView.getMoyen_paiement_pref_id().isEmpty()) {
             return;
         }
-        HashMap<String, String> method = new GeneralController().getPayingMethods(account.getPayingMethodId());
+        MoyenPaiement method = MembreController.getMoyenPayment(Integer.parseInt(accountView.getMoyen_paiement_pref_id()));
         if (method != null) {
             pageBuilder.add(PayingMethod.doGet(method));
         }
@@ -67,43 +77,31 @@ public class MyAccount extends HttpServlet {
     /**
      * Affichage de la liste de tous les abonnements du membre
      * @param pageBuilder la page web où va être inscrit l'information
-     * @param account le compte connecté
+     * @param accountView le compte connecté
      */
-    private void addSubscription(PageBuilder pageBuilder, Account account) throws IOException {
-        List<HashMap<String, String>> subscriptions = new GeneralController().getPlans(account.getId());
+    private void addSubscription(PageBuilder pageBuilder, AccountView accountView) throws IOException {
+        List<MembreAbonnementView> subscriptions = MembreController.getAbonnementsView(Integer.parseInt(accountView.getId()));
         if (!subscriptions.isEmpty()) {
-            pageBuilder.add(Plans.doGet("My subscriptions",
-                            new GeneralController().getPlans(account.getId()),
-                            false));
+            pageBuilder.add(Plans.doGet("My subscriptions", subscriptions, false));
         }
     }
 
-    /***
-     * Affichage des membres qui ne paient pas seulement si la personne appartient au personnel administratif
-     * @param pageBuilder la page web où va être inscrit l'information
-     * @param account le compte connecté
-     */
-    private void addMembersUnpaid(PageBuilder pageBuilder, Account account) throws IOException {
-        if (account.getUserType() != UserType.PersonnelAdministratif) { // le getter existe automatiquement
-            return;
-        }
-        String[] columns = {"compte_id", "abo_id", "contrat_id", "facture_id", "montant", "date_echeance"};
-        List<HashMap<String, String>> members = new GeneralController().getMembersUnpaid();
-        if (!members.isEmpty()) {
-            pageBuilder.add(Table.doGet(List.of(columns), members, "Members unpaid")); // à l'image de "MEMBERSHIP PLANS" de /home
-        }
-    }
 
     /***
      * Récupération des informations sur les factures relatives au membre
      * @param pageBuilder la page web où va être inscrit l'information
      * @param account le compte connecté
      */
-    private void addBills(PageBuilder pageBuilder, Account account) throws IOException {
-        String[] columns = {"abo_id", "contrat_id", "facture_id", "montant", "date_echeance"};
-        List<HashMap<String, String>> bills = new GeneralController().getBills(account.getId(), columns);
+    private void addBills(PageBuilder pageBuilder, AccountView account) throws IOException {
+        List<?> bills = MembreController.getMembreFactureView(Integer.parseInt(account.getId()));
         if (!bills.isEmpty()) {
-            pageBuilder.add(Table.doGet(List.of(columns), bills, "My bills"));
+            pageBuilder.add(
+                    Table.doGet(
+                            Arrays.stream(
+                                    MembreFactureView.class.getDeclaredFields())
+                                    .map(Field::getName)
+                                    .toList(), bills, "My bills")
+            );
         }
     }
 
@@ -112,18 +110,18 @@ public class MyAccount extends HttpServlet {
      * @param pageBuilder la page web où va être inscrit l'information
      * @param account le compte connecté
      */
-    private void addCourses(PageBuilder pageBuilder, Account account) throws IOException {
-        List<HashMap<String, String>> courses;
-        String[] columns = {"jour", "heure", "description", "typecours", "salle_id", "abo_id"};
-        if (account.getUserType() == UserType.Instructeur) {
-            courses = new GeneralController().getInstructorWeekCourses(account.getId(), columns);
-        } else if (account.getUserType() == UserType.Membre) {
-            courses = new GeneralController().getMemberCourses(account.getId(), columns);
-        } else {
-            return;
-        }
+    private void addCourses(PageBuilder pageBuilder, AccountView account) throws IOException {
+        List<?> courses = MembreController.getMemberCourseWeekView(Integer.parseInt(account.getId()));
+        List<String> fields = new ArrayList<>(
+                Arrays.stream(MemberCourseWeekView.class.getSuperclass().getDeclaredFields())
+                .map(Field::getName)
+                .toList());
+        fields.addAll(Arrays.stream(Arrays.stream(MemberCourseWeekView.class.getDeclaredFields())
+                                .map(Field::getName)
+                                .toArray(String[]::new))
+                .toList());
         if (!courses.isEmpty()) {
-            pageBuilder.add(Table.doGet(List.of(columns), courses, "Next courses"));
+            pageBuilder.add(Table.doGet(fields, courses, "My courses"));
         }
     }
 }

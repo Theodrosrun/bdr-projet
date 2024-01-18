@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 public class Visiteur {
 
     @Id
+    @Column(name = "visiteur_id", nullable = false)
     private int visiteurId;
 
     @Column(name = "fitness_id", nullable = false)

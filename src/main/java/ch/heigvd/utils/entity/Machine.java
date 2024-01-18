@@ -8,6 +8,7 @@ public class Machine {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "machine_id", nullable = false)
     private int machineId;
 
     @Column(name = "fitness_id", nullable = false)

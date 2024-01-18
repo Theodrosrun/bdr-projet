@@ -4,7 +4,7 @@ SET search_path = my_amazing_fitness;
 SELECT P.nom,
        P.prenom
 FROM Employe E
-    JOIN Personne P ON E.employe_id = P.id
+    JOIN Personne P ON E.id = P.id
 WHERE P.nom = 'Baker';
 
 -- Sélectionne tous les détails des employés dont le salaire est supérieur à 5000
@@ -27,15 +27,6 @@ SELECT *
 FROM facture
 WHERE montant > 50;
 
--- Sélectionne la description, l'heure, le jour des cours et le prénom de l'instructeur pour chaque cours
-SELECT C.description,
-       C.heure,
-       C.jour,
-       P.prenom
-FROM Cours C
-    JOIN Instructeur I ON C.instructeur_id = I.instructeur_id
-    JOIN Personne P ON P.id = I.instructeur_id;
-
 -- Sélectionne tous les détails des progressions pour le membre avec l'identifiant 6
 SELECT *
 FROM Progression
@@ -45,7 +36,7 @@ WHERE membre_id = 6;
 BEGIN;
 -- Met à jour la fréquence de paiement du contrat avec l'identifiant 1
 UPDATE Contrat
-SET frequencePaiement = 2 -- Nouvelle fréquence de paiement
+SET frequence_paiement = 2 -- Nouvelle fréquence de paiement
 WHERE contrat_id = 1; -- ID contrat à modifier
 
 -- Met à jour le montant de la facture pour le contrat avec l'identifiant 1

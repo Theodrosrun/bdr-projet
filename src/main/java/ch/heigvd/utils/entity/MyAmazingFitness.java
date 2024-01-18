@@ -13,7 +13,7 @@ public class MyAmazingFitness {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int fitnessId;
     @Column(name = "numero", nullable = false)
-    private int numero;
+    private String numero;
 
     @Column(name = "rue", nullable = false)
     private String rue;
@@ -24,7 +24,7 @@ public class MyAmazingFitness {
     @Column(name = "NPA", nullable = false)
     private int npa;
 
-    @Column(name = "creation_date", nullable = false)
+    @Column(name = "creation_date", nullable = false, columnDefinition = "DATE")
     private Date creationDate;
 
     public MyAmazingFitness() {

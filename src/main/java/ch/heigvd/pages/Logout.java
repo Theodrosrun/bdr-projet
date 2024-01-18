@@ -9,12 +9,14 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
+/***
+ * Déconnexion
+ */
 @WebServlet(name = "Logout", value = "/logout")
 public class Logout extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         CookieManager.deleteCookie(resp, req, "username");
-        CookieManager.deleteCookie(resp, req, "password");
-        resp.sendRedirect("/home"); // redirection immédiate sur /home
+        resp.sendRedirect("/login"); // redirection immédiate sur /home
     }
 }

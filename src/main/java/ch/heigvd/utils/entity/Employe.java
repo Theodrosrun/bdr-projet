@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 public class Employe {
 
     @Id
+    @Column(name = "id", nullable = false)
     private int id;
 
     @Column(name = "fitness_id", nullable = false)
@@ -16,8 +17,8 @@ public class Employe {
     @Column(name = "compte_id", unique = true)
     private String compteId;
 
-    @Column(name = "salaire", nullable = false, precision = 8, scale = 2)
-    private float salaire;
+    @Column(name = "salaire", nullable = false)
+    private BigDecimal salaire;
 
 }
 

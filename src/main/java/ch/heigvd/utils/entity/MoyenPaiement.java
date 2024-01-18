@@ -1,13 +1,16 @@
 package ch.heigvd.utils.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 
 @Entity
 @Table(name = "MoyenPaiement")
+@Getter
 public class MoyenPaiement {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "moyen_paiement_id", nullable = false)
     private int moyenPaiementId;
 
     @Column(name = "type_moyen_paiement", nullable = false)
@@ -21,6 +24,12 @@ public class MoyenPaiement {
 
 
     public MoyenPaiement() {
+    }
+
+    public MoyenPaiement(String typeMoyenPaiement, String compteId, String info) {
+        this.typeMoyenPaiement = typeMoyenPaiement;
+        this.compteId = compteId;
+        this.info = info;
     }
 
 }

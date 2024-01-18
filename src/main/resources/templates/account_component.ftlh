@@ -9,12 +9,12 @@
                     <div class="register-form">
                     <div class="row">
                         <div class="col-lg-6">
-                            <label>Firstname</label>
-                            <p>${account.firstName}</p>
+                            <label>Prénom</label>
+                            <p>${account.prenom}</p>
                         </div>
                         <div class="col-lg-6">
-                            <label>Lastname</label>
-                            <p>${account.lastName}</p>
+                            <label>Nom</label>
+                            <p>${account.nom}</p>
                         </div>
                         <div class="col-lg-6">
                             <label>Username</label>
@@ -22,31 +22,31 @@
                         </div>
                         <div class="col-lg-6">
                             <label>Email</label>
-                            <p>${account.email}</p>
+                            <p>${account.adresseMail}</p>
                         </div>
                         <div class="col-lg-6">
-                            <label>Phone</label>
-                            <p>${account.phoneNumber}</p>
+                            <label>Telephone</label>
+                            <p>${account.numeroTelephone}</p>
                         </div>
                         <div class="col-lg-6">
                             <label>Type</label>
-                            <p>${account.userType}</p>
+                            <p>0</p>
                         </div>
                         <div class="col-lg-6">
-                            <label>Address</label>
-                            <p>${account.addressNumberStreet}</p>
+                            <label>Adresse</label>
+                            <p>${account.adresse}</p>
                         </div>
                         <div class="col-lg-6">
-                            <label>City</label>
-                            <p>${account.addressCity}</p>
+                            <label>Ville</label>
+                            <p>${account.ville}</p>
                         </div>
                         <div class="col-lg-6">
                             <label>NPA</label>
-                            <p>${account.addressNPA}</p>
+                            <p>${account.NPA}</p>
                         </div>
                         <div class="col-lg-6">
                             <label>Country</label>
-                            <p>${account.addressCountry}</p>
+                            <p>${account.pays}</p>
                         </div>
                     </div>
                     </div>
@@ -54,9 +54,17 @@
             </div>
             <div class="col-lg-4">
                 <div class="register-pic">
-                    <img src="img/account/${account.username}.png" alt="Register">
+                    <img id="profile-image" src="" alt="">
                 </div>
             </div>
         </div>
     </div>
+    <script>
+        let imgElement = document.getElementById('profile-image');
+        let imgSrc = "img/account/${account.username}.png"
+        imgElement.src = imgSrc;
+        imgElement.onerror = function() {
+            imgElement.src = "img/account/default.png";
+        };
+    </script>
 </section>

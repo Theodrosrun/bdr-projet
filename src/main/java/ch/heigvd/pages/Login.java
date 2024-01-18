@@ -12,7 +12,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /***
- * Variable isConnected dans menu.ftlh ?
+ * Connexion
  */
 @WebServlet(name = "Login", value = "/login")
 public class Login extends HttpServlet {
@@ -52,14 +52,12 @@ public class Login extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String username = req.getParameter("username").trim();
-        String password = req.getParameter("password").trim();
-        Account account = Account.from(username, password); // comparaison avec le compte associé
+        Account account = Account.from(username); // comparaison avec le compte associé
         if (account == null) {
             resp.sendRedirect("/login?error=1");
             return;
         }
         CookieManager.setCookie(resp, req, "username", username);
-        CookieManager.setCookie(resp, req, "password", password);
         resp.sendRedirect("/myaccount");
     }
 }

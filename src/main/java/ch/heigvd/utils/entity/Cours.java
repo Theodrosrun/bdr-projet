@@ -10,9 +10,10 @@ public class Cours {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "cours_id", nullable = false)
     private int coursId;
 
-    @Column(name = "jour", nullable = false)
+    @Column(name = "jour", nullable = false, columnDefinition = "DATE")
     private Date jour;
 
     @Column(name = "heure", nullable = false)

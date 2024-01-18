@@ -2,6 +2,8 @@ package ch.heigvd.pages;
 
 import ch.heigvd.components.*;
 import ch.heigvd.utils.controller.GeneralController;
+import ch.heigvd.utils.controller.MainController;
+import ch.heigvd.utils.view.HoraireCoursView;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -9,6 +11,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/***
+ * Page principale
+ */
 @WebServlet(name = "Home", value = "/home")
 public class Home extends HttpServlet {
 
@@ -27,8 +32,9 @@ public class Home extends HttpServlet {
         pageBuilder.add(Classes.doGet());
         pageBuilder.add(Experts.doGet());
         pageBuilder.add(Plans.doGet("MEMBERSHIP PLANS", new GeneralController().getGymPlans(), true));
+        HoraireCoursView hr =  MainController.getHoraireCoursView();
         pageBuilder.add(RegisterForm.doGet(req));
-        pageBuilder.add(TimeTable.doGet());
+        pageBuilder.add(TimeTable.doGet(hr));
         pageBuilder.add(HistogramChart.doGet());
         pageBuilder.add(FooterBanner.doGet());
         pageBuilder.close();

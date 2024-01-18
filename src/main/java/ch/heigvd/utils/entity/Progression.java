@@ -10,11 +10,13 @@ public class Progression {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "progression_id", nullable = false)
     private int progressionId;
 
+    @Column(name = "date", nullable = false)
     private Date date;
 
-    @Column(precision = 4, scale = 1)
+    @Column(precision = 4)
     private BigDecimal poids;
 
     @Column(name = "membre_id", nullable = false)

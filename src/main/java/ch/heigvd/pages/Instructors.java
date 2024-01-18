@@ -15,6 +15,9 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 
+/***
+ * Affichage des instructeurs
+ */
 @WebServlet(name = "Instructors", value = "/instructeurs")
 public class Instructors extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -25,9 +28,7 @@ public class Instructors extends HttpServlet {
             resp.sendRedirect("/login?error=1");
             return;
         }
-        Account account = Account.from(usernameCookie.getValue(), passwordCookie.getValue());
-        if (account == null) return;
-
+        Account account = Account.from(usernameCookie.getValue());
         PageBuilder pageBuilder = new PageBuilder(account.getUsername(), req, resp);
         pageBuilder.add(Title.doGet("Experts"));
         addInfo(pageBuilder);

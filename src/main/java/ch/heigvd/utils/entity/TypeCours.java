@@ -10,6 +10,7 @@ import jakarta.persistence.Table;
 public class TypeCours {
 
     @Id
+    @Column(name = "nom", nullable = false)
     private String nom;
 
     @Column(name = "instructeur_id", nullable = false)

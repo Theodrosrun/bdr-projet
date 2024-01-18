@@ -2,13 +2,14 @@ package ch.heigvd.components;
 
 import ch.heigvd.utils.freemarker.FreeMarkerConfig;
 import ch.heigvd.utils.structure.Account;
+import ch.heigvd.utils.view.AccountView;
 import freemarker.template.Template;
 import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Map;
 
 public class AccountComponent {
-    public static String doGet(Account account) {
+    public static String doGet(AccountView account) {
         try {
             Map<String, Object> data = new HashMap<>();
             data.put("account", account);

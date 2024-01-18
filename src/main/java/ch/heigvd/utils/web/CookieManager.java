@@ -7,18 +7,6 @@ import jakarta.servlet.http.HttpServletResponse;
 public class CookieManager {
 
     /***
-     * Fonction qui sert à savoir si l'utilisateur possède un cookie valide ou non (la différence est || avec isLogged)
-     *
-     * @param req l'objet HttpServletRequest représentant la requête HTTP actuelle
-     * @return si l'utilisateur possède un cookie ou non
-     */
-    public static boolean mustLogin(HttpServletRequest req) {
-        Cookie usernameCookie =  CookieManager.getCookie(req, "username");
-        Cookie passwordCookie = CookieManager.getCookie(req, "password");
-        return usernameCookie == null || passwordCookie == null;
-    }
-
-    /***
      * Fonction qui sert à savoir si l'utilisateur possède un cookie ou non
      *
      * @param req l'objet HttpServletRequest représentant la requête HTTP actuelle
@@ -26,8 +14,7 @@ public class CookieManager {
      */
     public static boolean isLogged(HttpServletRequest req) {
         Cookie usernameCookie =  CookieManager.getCookie(req, "username");
-        Cookie passwordCookie = CookieManager.getCookie(req, "password");
-        return usernameCookie != null && passwordCookie != null;
+        return usernameCookie != null;
     }
 
     /***
