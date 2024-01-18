@@ -1,7 +1,7 @@
 <header class="header-section">
     <div class="container">
         <div class="logo">
-            <a href="./index.html">
+            <a href="./home">
                 <img src="img/logo.png" alt="">
             </a>
         </div>

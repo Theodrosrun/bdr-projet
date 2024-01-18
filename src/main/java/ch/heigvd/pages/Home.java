@@ -29,7 +29,7 @@ public class Home extends HttpServlet {
         pageBuilder.add(Slider.doGet());
         pageBuilder.add(AboutUs.doGet());
         pageBuilder.add(Services.doGet());
-        // pageBuilder.add(Classes.doGet());
+        pageBuilder.add(Classes.doGet());
         pageBuilder.add(Experts.doGet());
         pageBuilder.add(Plans.doGet("MEMBERSHIP PLANS", new GeneralController().getGymPlans(), true));
         HoraireCoursView hr =  MainController.getHoraireCoursView();

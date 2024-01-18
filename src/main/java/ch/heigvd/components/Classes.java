@@ -13,7 +13,7 @@ public class Classes {
         try {
             Template template = FreeMarkerConfig.getConfig().getTemplate("classes.ftlh");
             Map<String, Object> data = new HashMap<>();
-            List<HashMap<String, String>> classes = new GeneralController().getInstructorsWithCoursesTypes();
+            List<HashMap<String, String>> classes = new GeneralController().getTypeCours();
             data.put("classes", classes);
             StringWriter out = new StringWriter();
             template.process(data, out);

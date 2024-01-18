@@ -17,6 +17,7 @@ public class ClassesTimetable extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         PageBuilder pageBuilder = new PageBuilder("ClassesTimetable", req, resp);
+        pageBuilder.add(Classes.doGet());
         pageBuilder.add(Experts.doGet());
         pageBuilder.add(TimeTable.doGet(MainController.getHoraireCoursView()));
         pageBuilder.close();
