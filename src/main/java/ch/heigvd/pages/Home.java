@@ -27,7 +27,6 @@ public class Home extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         PageBuilder pageBuilder = new PageBuilder("Home", req, resp);
         pageBuilder.add(Slider.doGet());
-        pageBuilder.add(AboutUs.doGet());
         pageBuilder.add(Services.doGet());
         pageBuilder.add(Classes.doGet());
         pageBuilder.add(Experts.doGet());
@@ -36,7 +35,6 @@ public class Home extends HttpServlet {
         pageBuilder.add(RegisterForm.doGet(req));
         pageBuilder.add(TimeTable.doGet(hr));
         pageBuilder.add(HistogramChart.doGet());
-        pageBuilder.add(FooterBanner.doGet());
         pageBuilder.close();
     }
 }

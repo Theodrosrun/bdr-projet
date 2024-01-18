@@ -368,7 +368,6 @@ INNER JOIN Contrat c ON m.id = c.membre_id
 INNER JOIN ContratAbonnement ca ON c.contrat_id = ca.contrat_id
 INNER JOIN Abonnement a ON ca.abo_id = a.abo_id;
 
--- View instructors and their courses
 DROP VIEW IF EXISTS MembreFactureView;
 CREATE VIEW MembreFactureView AS
 SELECT

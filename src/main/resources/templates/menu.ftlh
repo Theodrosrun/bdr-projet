@@ -1,7 +1,7 @@
 <header class="header-section">
     <div class="container">
         <div class="logo">
-            <a href="./index.html">
+            <a href="./home">
                 <img src="img/logo.png" alt="">
             </a>
         </div>
@@ -9,11 +9,7 @@
             <nav class="mainmenu mobile-menu">
                 <ul>
                     <li class="active"><a href="./home">Home</a></li>
-                    <li><a href="./about-us.html">About</a></li>
-                    <li><a href="./classes.html">Classes</a></li>
-                    <li><a href="./blog.html">Blog</a></li>
-                    <li><a href="./gallery.html">Gallery</a></li>
-                    <li><a href="./contact.html">Contacts</a></li>
+                    <li><a href="./ClassesOverview">Classes</a></li>
                     <#if isConnected>
                         <!-- Lien Logout -->
                         <li><a href="/logout" class="highlighted-link">Logout</a></li>
