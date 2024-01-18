@@ -9,14 +9,11 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-/***
- * Liste des classes
- */
-@WebServlet(name = "ClassesTimetable", value = "/classestimetable")
-public class ClassesTimetable extends HttpServlet {
+@WebServlet(name = "ClassesOverview", value = "/ClassesOverview")
+public class ClassesOverview extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        PageBuilder pageBuilder = new PageBuilder("ClassesTimetable", req, resp);
+        PageBuilder pageBuilder = new PageBuilder("ClassesOverview", req, resp);
         pageBuilder.add(Classes.doGet());
         pageBuilder.add(Experts.doGet());
         pageBuilder.add(TimeTable.doGet(MainController.getHoraireCoursView()));

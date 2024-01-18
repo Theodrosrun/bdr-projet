@@ -9,7 +9,7 @@
             <nav class="mainmenu mobile-menu">
                 <ul>
                     <li class="active"><a href="./home">Home</a></li>
-                    <li><a href="./classestimetable">Classes</a></li>
+                    <li><a href="./ClassesOverview">Classes</a></li>
                     <#if isConnected>
                         <!-- Lien Logout -->
                         <li><a href="/logout" class="highlighted-link">Logout</a></li>
