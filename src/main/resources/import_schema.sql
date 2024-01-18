@@ -386,13 +386,11 @@ DROP VIEW IF EXISTS IntructeurTypeCoursView;
 CREATE VIEW IntructeurTypeCoursView AS
 SELECT
     p.prenom || ' ' || p.nom AS instructeur,
-    c.username AS compte,
-    t.nom AS nomCours
+    c.username AS compte
 FROM Instructeur i
 INNER JOIN Personne p ON i.instructeur_id = p.id
 INNER JOIN Employe e ON p.id = e.id
-INNER JOIN Compte c ON e.compte_id = c.username
-INNER JOIN TypeCours t ON i.instructeur_id = t.instructeur_id;
+INNER JOIN Compte c ON e.compte_id = c.username;
 
 DROP VIEW IF EXISTS MoyennePersonnesParHeureCeJourDeSemaineView;
 CREATE VIEW MoyennePersonnesParHeureCeJourDeSemaineView AS
