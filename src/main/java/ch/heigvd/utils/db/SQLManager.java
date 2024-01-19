@@ -69,32 +69,6 @@ public class SQLManager {
         return executeQuery(createSelectQuery(table, columns, null, null, null));
     }
 
-    public List<String> selectColumns(String table){
-        String query = createSelectQuery("information_schema.columns", List.of("column_name"),
-                null, "table_schema = '" + schema + "' AND table_name = '" + table + "'", null);
-        ResultSet rs = executeQuery(query);
-        return toList(rs);
-    }
-
-    public List<String> selectColumns(String table, String where){
-        String query = createSelectQuery("information_schema.columns", List.of("column_name"),
-                null, "table_schema = '" + schema + "' AND table_name = '" + table.toLowerCase() + "' AND " + where, null);
-        ResultSet rs = executeQuery(query);
-        return toList(rs);
-    }
-
-    private List<String> toList(ResultSet rs) {
-        List<String> list = new ArrayList<>();
-        try (rs) {
-            while (rs.next()) {
-                list.add(rs.getString(1));
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException("Erreur lors de la conversion du ResultSet en liste", e);
-        }
-        return list;
-    }
-
     /***
      * Fonction qui pourrait être factorisée mais qui ne modifie pas celle ci-dessus
      * @param table table de base
@@ -200,50 +174,5 @@ public class SQLManager {
             throw new RuntimeException("Erreur lors de la conversion du ResultSet en liste", e);
         }
         return list;
-    }
-
-
-    /***
-     * Fonction servant à insérer des nouveaux attributs dans une table
-     * @param table table en question
-     * @param columns colonnes à renseigner
-     * @param values attributs
-     */
-    public Object insert(String table, List<String> columns, List<Object> values, String returning) {
-        StringBuilder queryBuilder = new StringBuilder("INSERT INTO ").append(table).append(" (");
-        for (String column : columns) {
-            queryBuilder.append(column).append(", ");
-        }
-        queryBuilder.delete(queryBuilder.length() - 2, queryBuilder.length());
-        queryBuilder.append(") VALUES (");
-
-        for (Object value : values) {
-            queryBuilder.append("'").append(value).append("'");
-            queryBuilder.append(", ");
-        }
-        queryBuilder.delete(queryBuilder.length() - 2, queryBuilder.length());
-        queryBuilder.append(") ");
-
-        if (returning != null) {
-            queryBuilder.append("RETURNING ").append(returning);
-        }
-
-        String query = queryBuilder.toString();
-
-        try {
-            if (returning != null) {
-                ResultSet resultSet = connection.createStatement().executeQuery(query);
-                if (resultSet.next()) {
-                    return resultSet.getObject(returning);
-                } else {
-                    throw new SQLException("La récupération de l'identifiant a échoué");
-                }
-            }else{
-                connection.createStatement().executeUpdate(query);
-                return null;
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException("Erreur lors de l'insertion des données dans la table {}".formatted(table), e);
-        }
     }
 }

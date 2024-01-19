@@ -6,7 +6,7 @@
                     <div class="section-title">
                         <h2>Register Now</h2>
                     </div>
-                    <form class="register-form" action="/register" method="post">
+                    <form class="register-form" action="/registermember" method="post">
                         <div class="row">
                             <#list fields as field>
                                 <div class="col-lg-6">
