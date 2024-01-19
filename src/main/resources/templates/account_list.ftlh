@@ -86,8 +86,8 @@
 
 <script>
     function mettreAJourCompte(button) {
-        var row = button.closest("tr");
-        var data = 'username=' + encodeURIComponent(row.cells[0].querySelector("input").value) +
+        let row = button.closest("tr");
+        let data = 'username=' + encodeURIComponent(row.cells[0].querySelector("input").value) +
                    '&nom='     + encodeURIComponent(row.cells[1].querySelector("input").value) +
                    '&prenom='  + encodeURIComponent(row.cells[2].querySelector("input").value);
         fetch('/adminupdate', {
@@ -110,7 +110,7 @@
     }
 
     function supprimerCompte(username) {
-        var data = 'username=' + encodeURIComponent(username);
+        let data = 'username=' + encodeURIComponent(username);
         if (confirm('Êtes-vous sûr de vouloir supprimer ce compte ?')) {
             fetch('/admindelete', {
                 method: 'POST',

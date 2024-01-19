@@ -1,4 +1,4 @@
-package ch.heigvd.pages.account.admin;
+package ch.heigvd.pages.account;
 
 import ch.heigvd.components.*;
 import ch.heigvd.utils.controller.MembreController;
