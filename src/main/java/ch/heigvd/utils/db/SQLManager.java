@@ -6,11 +6,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-
 @Getter
 public class SQLManager {
 
     private final Connection connection;
+
     private final String schema;
 
     /***
@@ -36,37 +36,40 @@ public class SQLManager {
         }
     }
 
-    /***
-     * Surchage de l'utilisation de select
-     * @param table table donnée
-     * @return résultat du SELECT
-     */
+    public int createUpdate(String query) {
+        return executeUpdate(query);
+    }
+
+    public ResultSet createSelect(String query) {
+        return executeSelect(query);
+    }
+
     public ResultSet select(String table) {
-        return executeQuery(createSelectQuery(table, List.of("*"), null, null, null));
+        return executeSelect(createSelectQuery(table, List.of("*"), null, null, null));
     }
 
     public ResultSet select(String table, String where) {
-        return executeQuery(createSelectQuery(table, List.of("*"), null, where, null));
+        return executeSelect(createSelectQuery(table, List.of("*"), null, where, null));
     }
 
     public ResultSet select(String table, String where, String orderBy) {
-        return executeQuery(createSelectQuery(table, List.of("*"), null, where, orderBy));
+        return executeSelect(createSelectQuery(table, List.of("*"), null, where, orderBy));
     }
 
     public ResultSet select(String table, String... columns) {
-        return executeQuery(createSelectQuery(table, List.of(columns), null, null, null));
+        return executeSelect(createSelectQuery(table, List.of(columns), null, null, null));
     }
 
     public ResultSet select(String table, String where, String... columns) {
-        return executeQuery(createSelectQuery(table, List.of(columns), null, where, null));
+        return executeSelect(createSelectQuery(table, List.of(columns), null, where, null));
     }
 
     public ResultSet select(String table, String where, String orderBy, String... columns) {
-        return executeQuery(createSelectQuery(table, List.of(columns), null, where, orderBy));
+        return executeSelect(createSelectQuery(table, List.of(columns), null, where, orderBy));
     }
 
     public ResultSet select(String table, List<String> columns) {
-        return executeQuery(createSelectQuery(table, columns, null, null, null));
+        return executeSelect(createSelectQuery(table, columns, null, null, null));
     }
 
     /***
@@ -77,11 +80,7 @@ public class SQLManager {
      * @return la selection avec inner join.
      */
     public ResultSet select(String table, String inner, boolean utilisationInnerJoin) {
-        return executeQuery(createSelectQuery(table, List.of("*"), inner, null, null));
-    }
-
-    public int CreateQuery(String query) {
-        return executeUpdate(query);
+        return executeSelect(createSelectQuery(table, List.of("*"), inner, null, null));
     }
 
     /***
@@ -92,6 +91,32 @@ public class SQLManager {
             connection.close();
         } catch (SQLException e) {
             throw new RuntimeException("Erreur lors de la fermeture de la connexion à la base de données", e);
+        }
+    }
+
+    /**
+     * Exécution d'une requête de mise à jour (INSERT, UPDATE, DELETE)
+     * @param query string formé pour une requête de mise à jour
+     * @return le nombre de lignes affectées
+     */
+    private int executeUpdate(String query) {
+        try (Statement statement = connection.createStatement()) {
+            return statement.executeUpdate(query);
+        } catch (SQLException e) {
+            throw new RuntimeException("Erreur lors de l'exécution de la requête de mise à jour", e);
+        }
+    }
+
+    /***
+     * Exécution d'une requête
+     * @param query string formé grâce à la fonction createSelectQuery()
+     * @return un ResultSet
+     */
+    private ResultSet executeSelect(String query) {
+        try {
+            return connection.createStatement().executeQuery(query);
+        } catch (SQLException e) {
+            throw new RuntimeException("Erreur lors de l'exécution de la requête", e);
         }
     }
 
@@ -125,32 +150,6 @@ public class SQLManager {
             query.append(" ORDER BY ").append(orderBy);
         }
         return query.toString();
-    }
-
-    /***
-     * Exécution d'une requête
-     * @param query string formé grâce à la fonction createSelectQuery()
-     * @return un ResultSet
-     */
-    private ResultSet executeQuery(String query) {
-        try {
-            return connection.createStatement().executeQuery(query);
-        } catch (SQLException e) {
-            throw new RuntimeException("Erreur lors de l'exécution de la requête", e);
-        }
-    }
-
-    /**
-     * Exécution d'une requête de mise à jour (INSERT, UPDATE, DELETE)
-     * @param query string formé pour une requête de mise à jour
-     * @return le nombre de lignes affectées
-     */
-    private int executeUpdate(String query) {
-        try (Statement statement = connection.createStatement()) {
-            return statement.executeUpdate(query);
-        } catch (SQLException e) {
-            throw new RuntimeException("Erreur lors de l'exécution de la requête de mise à jour", e);
-        }
     }
 
     /***

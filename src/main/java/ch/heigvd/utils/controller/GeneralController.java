@@ -56,7 +56,6 @@ public class GeneralController {
                 "fitness_id = '" + fitnessId + "'"));
     }
 
-
     /***
      * Fonction qui pourrait être améliorée, elle remplit son rôle
      * @return la totalité des instructeurs avec plus que seulement leur identifiant (cf la table)
@@ -88,6 +87,6 @@ public class GeneralController {
     }
 
     public int createQuery(String query) {
-        return sqlManager.CreateQuery(query);
+        return sqlManager.createUpdate(query);
     }
 }
