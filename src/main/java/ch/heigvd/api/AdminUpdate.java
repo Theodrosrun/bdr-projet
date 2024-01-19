@@ -22,7 +22,7 @@ public class AdminUpdate extends HttpServlet {
         }
 
         String query = "UPDATE compte SET moyen_paiement_pref_id = " + 4 + " WHERE username = '" + username + "';";
-        int result = new GeneralController().createQuery(query);
+        int result = new GeneralController().executeUpdate(query);
 
 //        if (isDeleted) {
 //            resp.setStatus(HttpServletResponse.SC_OK);

@@ -20,7 +20,7 @@ public class AdminDelete extends HttpServlet {
         }
 
         String query = "DELETE FROM compte WHERE username = '" + username + "';";
-        int result = new GeneralController().createQuery(query);
+        int result = new GeneralController().executeUpdate(query);
 
 //        if (isDeleted) {
 //            resp.setStatus(HttpServletResponse.SC_OK);

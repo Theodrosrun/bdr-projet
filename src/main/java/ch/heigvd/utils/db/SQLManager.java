@@ -36,12 +36,30 @@ public class SQLManager {
         }
     }
 
-    public int createUpdate(String query) {
-        return executeUpdate(query);
+    /**
+     * Exécution d'une requête de mise à jour (INSERT, UPDATE, DELETE)
+     * @param query string formé pour une requête de mise à jour
+     * @return le nombre de lignes affectées
+     */
+    public int executeUpdate(String query) {
+        try (Statement statement = connection.createStatement()) {
+            return statement.executeUpdate(query);
+        } catch (SQLException e) {
+            throw new RuntimeException("Erreur lors de l'exécution de la requête de mise à jour", e);
+        }
     }
 
-    public ResultSet createSelect(String query) {
-        return executeSelect(query);
+    /***
+     * Exécution d'une requête
+     * @param query string formé grâce à la fonction createSelectQuery()
+     * @return un ResultSet
+     */
+    public ResultSet executeSelect(String query) {
+        try {
+            return connection.createStatement().executeQuery(query);
+        } catch (SQLException e) {
+            throw new RuntimeException("Erreur lors de l'exécution de la requête", e);
+        }
     }
 
     public ResultSet select(String table) {
@@ -91,32 +109,6 @@ public class SQLManager {
             connection.close();
         } catch (SQLException e) {
             throw new RuntimeException("Erreur lors de la fermeture de la connexion à la base de données", e);
-        }
-    }
-
-    /**
-     * Exécution d'une requête de mise à jour (INSERT, UPDATE, DELETE)
-     * @param query string formé pour une requête de mise à jour
-     * @return le nombre de lignes affectées
-     */
-    private int executeUpdate(String query) {
-        try (Statement statement = connection.createStatement()) {
-            return statement.executeUpdate(query);
-        } catch (SQLException e) {
-            throw new RuntimeException("Erreur lors de l'exécution de la requête de mise à jour", e);
-        }
-    }
-
-    /***
-     * Exécution d'une requête
-     * @param query string formé grâce à la fonction createSelectQuery()
-     * @return un ResultSet
-     */
-    private ResultSet executeSelect(String query) {
-        try {
-            return connection.createStatement().executeQuery(query);
-        } catch (SQLException e) {
-            throw new RuntimeException("Erreur lors de l'exécution de la requête", e);
         }
     }
 
