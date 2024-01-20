@@ -45,6 +45,7 @@
             border: 1px solid #ddd;
             padding: 8px;
             text-align: left;
+            color: black; /* Added to make label text black */
         }
 
         th {
@@ -57,7 +58,7 @@
             color: white;
             padding: 10px 15px;
             border: none;
-            border-radius: 5px;
+            border-radius: 10px;
             cursor: pointer;
             text-align: center;
         }
@@ -83,18 +84,18 @@
     <div class="container">
         <table>
             <tr>
-                <th>Username</th>
-                <th>Nom</th>
-                <th>Prénom</th>
-                <th>Mode paiement</th>
-                <th>Action</th>
+                <th style="background-color: #333; color: #fff;">Username</th>
+                <th style="background-color: #333; color: #fff;">Nom</th>
+                <th style="background-color: #333; color: #fff;">Prénom</th>
+                <th style="background-color: #333; color: #fff;">Mode paiement</th>
+                <th style="background-color: #333; color: #fff;">Action</th>
             </tr>
             <#list comptes as compte>
                 <tr>
-                    <td><input type="text" value="${compte.username}" /></td>
-                    <td><input type="text" value="${compte.nom}" /></td>
-                    <td><input type="text" value="${compte.prenom}" /></td>
-                    <td><input type="text" value="${compte.moyen_paiement_pref_id!'non renseigné'}" /></td>
+                    <td><input type="text" value="${compte.username}" readonly style="border: 0px solid #ccc; border-radius: 5px;"/></td>
+                    <td><input type="text" value="${compte.nom}"               style="border: 1px solid #ccc; border-radius: 5px;"/></td>
+                    <td><input type="text" value="${compte.prenom}"            style="border: 1px solid #ccc; border-radius: 5px;"/></td>
+                    <td><input type="text" value="${compte.moyen_paiement_pref_id!'non renseigné'}" style="border: 1px solid #ccc; border-radius: 5px;"/></td>
                     <td>
                         <div class="button-container">
                             <input  type="hidden" value="${compte.id}" class="compte-id" />
