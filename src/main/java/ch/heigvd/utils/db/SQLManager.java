@@ -41,11 +41,18 @@ public class SQLManager {
      * @param query string formé pour une requête de mise à jour
      * @return le nombre de lignes affectées
      */
-    public int executeUpdate(String query, String... params) {
+    public int executeUpdate(String query, Object... params) {
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             for (int i = 0; i < params.length; i++) {
-                statement.setString(i + 1, params[i]);
+                if (params[i] instanceof String) {
+                    statement.setString(i + 1, (String) params[i]);
+                } else if (params[i] instanceof Integer) {
+                    statement.setInt(i + 1, (Integer) params[i]);
+                } else if (params[i] instanceof Long) {
+                    statement.setLong(i + 1, (Long) params[i]);
+                }
             }
+            System.out.println(statement.toString());
             return statement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException("Erreur lors de l'exécution de la requête de mise à jour", e);

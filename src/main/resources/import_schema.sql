@@ -297,7 +297,6 @@ CREATE VIEW AccountView
 AS
 SELECT
     c.username,
-    c.mot_de_passe,
     c.moyen_paiement_pref_id,
     p.id,
     p.nom,

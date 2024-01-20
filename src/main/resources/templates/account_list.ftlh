@@ -65,7 +65,7 @@
                 <th>Username</th>
                 <th>Nom</th>
                 <th>Prénom</th>
-                <th>Mot de passe</th>
+                <th>Mode paiement</th>
                 <th>Action</th>
             </tr>
             <#list comptes as compte>
@@ -73,7 +73,7 @@
                     <td><input type="text" value="${compte.username}" /></td>
                     <td><input type="text" value="${compte.nom}" /></td>
                     <td><input type="text" value="${compte.prenom}" /></td>
-                    <td><input type="text" value="${compte.mot_de_passe}" /></td>
+                    <td><input type="text" value="${compte.moyen_paiement_pref_id!'non renseigné'}" /></td>
                     <td>
                         <div class="button-container">
                             <button type="button" onclick="mettreAJourCompte(this);">update</button>
@@ -89,10 +89,10 @@
 <script>
     function mettreAJourCompte(button) {
         let row = button.closest("tr");
-        let data = 'username='      + encodeURIComponent(row.cells[0].querySelector("input").value) +
-                   '&nom='          + encodeURIComponent(row.cells[1].querySelector("input").value) +
-                   '&prenom='       + encodeURIComponent(row.cells[2].querySelector("input").value) +
-                   '&mot_de_passe=' + encodeURIComponent(row.cells[3].querySelector("input").value);
+        let data = 'username='        + encodeURIComponent(row.cells[0].querySelector("input").value) +
+                   '&nom='            + encodeURIComponent(row.cells[1].querySelector("input").value) +
+                   '&prenom='         + encodeURIComponent(row.cells[2].querySelector("input").value) +
+                   '&mode_paiement='  + encodeURIComponent(row.cells[3].querySelector("input").value);
         fetch('/adminupdate', {
             method: 'POST',
             headers: {

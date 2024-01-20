@@ -23,7 +23,7 @@ public class GeneralController {
 
     public GeneralController() {}
 
-    public int executeUpdate(String query, String... params) {
+    public int executeUpdate(String query, Object... params) {
         return sqlManager.executeUpdate(query, params);
     }
 
