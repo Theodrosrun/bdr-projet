@@ -41,9 +41,12 @@ public class SQLManager {
      * @param query string formé pour une requête de mise à jour
      * @return le nombre de lignes affectées
      */
-    public int executeUpdate(String query) {
-        try (Statement statement = connection.createStatement()) {
-            return statement.executeUpdate(query);
+    public int executeUpdate(String query, String... params) {
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            for (int i = 0; i < params.length; i++) {
+                statement.setString(i + 1, params[i]);
+            }
+            return statement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException("Erreur lors de l'exécution de la requête de mise à jour", e);
         }

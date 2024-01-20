@@ -19,14 +19,16 @@ public class AdminDelete extends HttpServlet {
             return;
         }
 
-        String query = "DELETE FROM compte WHERE username = '" + username + "';";
-        int result = new GeneralController().executeUpdate(query);
+        final String query = "DELETE FROM compte WHERE username = ?;";
 
-//        if (isDeleted) {
-//            resp.setStatus(HttpServletResponse.SC_OK);
-//            resp.getWriter().write("Compte supprimé avec succès");
-//        } else {
-//            resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Erreur lors de la suppression");
-//        }
+        GeneralController controller = new GeneralController();
+        int result = controller.executeUpdate(query, username);
+
+        if (result > 0) {
+            resp.setStatus(HttpServletResponse.SC_OK);
+            resp.getWriter().write("Compte supprimé avec succès");
+        } else {
+            resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Aucun username associé n'a été trouvé");
+        }
     }
 }

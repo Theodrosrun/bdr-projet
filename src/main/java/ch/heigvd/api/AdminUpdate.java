@@ -13,22 +13,23 @@ public class AdminUpdate extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String username = req.getParameter("username");
-        String nom = req.getParameter("nom");
-        String prenom = req.getParameter("prenom");
 
         if (username == null || username.isEmpty()) {
             resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Le nom d'utilisateur est requis");
             return;
         }
 
-        String query = "UPDATE compte SET moyen_paiement_pref_id = " + 4 + " WHERE username = '" + username + "';";
-        int result = new GeneralController().executeUpdate(query);
+        final String query = "UPDATE compte SET moyen_paiement_pref_id = ? WHERE username = ?;";
 
-//        if (isDeleted) {
-//            resp.setStatus(HttpServletResponse.SC_OK);
-//            resp.getWriter().write("Compte supprimé avec succès");
-//        } else {
-//            resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Erreur lors de la suppression");
-//        }
+        GeneralController controller = new GeneralController();
+        int result = controller.executeUpdate(query, "4", username);
+
+        if (result > 0) {
+            resp.setStatus(HttpServletResponse.SC_OK);
+            resp.getWriter().write("Compte mis à jour avec succès");
+        } else {
+            resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Erreur lors de la mise à jour");
+        }
     }
+
 }

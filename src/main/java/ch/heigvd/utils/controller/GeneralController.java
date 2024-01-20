@@ -23,8 +23,8 @@ public class GeneralController {
 
     public GeneralController() {}
 
-    public int executeUpdate(String query) {
-        return sqlManager.executeUpdate(query);
+    public int executeUpdate(String query, String... params) {
+        return sqlManager.executeUpdate(query, params);
     }
 
     public ResultSet executeSelect(String query) {
