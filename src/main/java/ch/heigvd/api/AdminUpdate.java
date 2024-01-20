@@ -13,16 +13,17 @@ public class AdminUpdate extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String username = req.getParameter("username");
+        String password = req.getParameter("mot_de_passe");
 
         if (username == null || username.isEmpty()) {
             resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Le nom d'utilisateur est requis");
             return;
         }
 
-        final String query = "UPDATE compte SET moyen_paiement_pref_id = ? WHERE username = ?;";
+        final String query = "UPDATE compte SET mot_de_passe = ? WHERE username = ?;";
 
         GeneralController controller = new GeneralController();
-        int result = controller.executeUpdate(query, "4", username);
+        int result = controller.executeUpdate(query, password, username);
 
         if (result > 0) {
             resp.setStatus(HttpServletResponse.SC_OK);
