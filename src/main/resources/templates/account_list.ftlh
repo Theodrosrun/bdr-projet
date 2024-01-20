@@ -15,10 +15,31 @@
 
         table {
             width: 100%;
-            margin-top: 20px;
-            border-collapse: collapse;
+            margin-top: 100px;
+            border-collapse: separate;
+            border-spacing: 0;
             table-layout: fixed;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
         }
+
+        th:first-child {
+            border-top-left-radius: 8px;
+        }
+
+        th:last-child {
+            border-top-right-radius: 8px;
+        }
+
+        tr:last-child td:first-child {
+            border-bottom-left-radius: 8px;
+        }
+
+        tr:last-child td:last-child {
+            border-bottom-right-radius: 8px;
+        }
+
 
         th, td {
             border: 1px solid #ddd;
@@ -105,6 +126,7 @@
             .then(response => {
                 if (response.ok) {
                     alert('Compte mis à jour avec succès');
+                    window.location.reload();
                 } else {
                     alert('Erreur lors de la mise à jour');
                 }
@@ -127,6 +149,7 @@
                 .then(response => {
                     if (response.ok) {
                         alert('Compte supprimé avec succès');
+                        window.location.reload();
                     } else {
                         alert('Erreur lors de la suppression');
                     }
