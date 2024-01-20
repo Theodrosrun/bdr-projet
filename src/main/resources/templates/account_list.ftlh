@@ -76,6 +76,7 @@
                     <td><input type="text" value="${compte.moyen_paiement_pref_id!'non renseigné'}" /></td>
                     <td>
                         <div class="button-container">
+                            <input  type="hidden" value="${compte.id}" class="compte-id" />
                             <button type="button" onclick="mettreAJourCompte(this);">update</button>
                             <button type="button" class="delete-button" onclick="supprimerCompte('${compte.username}');">delete</button>
                         </div>
@@ -89,10 +90,11 @@
 <script>
     function mettreAJourCompte(button) {
         let row = button.closest("tr");
-        let data = 'username='        + encodeURIComponent(row.cells[0].querySelector("input").value) +
-                   '&nom='            + encodeURIComponent(row.cells[1].querySelector("input").value) +
-                   '&prenom='         + encodeURIComponent(row.cells[2].querySelector("input").value) +
-                   '&mode_paiement='  + encodeURIComponent(row.cells[3].querySelector("input").value);
+        let data = 'id='             + encodeURIComponent(row.querySelector(".compte-id").value) +
+                   '&username='      + encodeURIComponent(row.cells[0].querySelector("input").value) +
+                   '&nom='           + encodeURIComponent(row.cells[1].querySelector("input").value) +
+                   '&prenom='        + encodeURIComponent(row.cells[2].querySelector("input").value) +
+                   '&mode_paiement=' + encodeURIComponent(row.cells[3].querySelector("input").value);
         fetch('/adminupdate', {
             method: 'POST',
             headers: {
