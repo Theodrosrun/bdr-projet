@@ -565,7 +565,6 @@ BEGIN
         SELECT 1 FROM Cours
         WHERE salle_id = NEW.salle_id
           AND jour = NEW.jour
-          AND cours_id != NEW.cours_id
           AND ((NEW.heure < heure + (duree || ' minutes')::INTERVAL AND new_heure_fin > heure) OR
               (heure < NEW.heure + (NEW.duree || ' minutes')::INTERVAL AND heure + (duree || ' minutes')::INTERVAL > NEW.heure))
     ) THEN
