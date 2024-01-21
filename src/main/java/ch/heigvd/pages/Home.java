@@ -14,7 +14,7 @@ import java.io.IOException;
 /***
  * Page principale
  */
-@WebServlet(name = "Home", value = "/index")
+@WebServlet(name = "Home", value = "/home")
 public class Home extends HttpServlet {
 
     /***
