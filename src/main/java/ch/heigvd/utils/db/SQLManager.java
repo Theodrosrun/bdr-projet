@@ -1,21 +1,16 @@
 package ch.heigvd.utils.db;
 
-import ch.heigvd.utils.structure.Table;
 import lombok.Getter;
-
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
 
 @Getter
 public class SQLManager {
 
     private final Connection connection;
+
     private final String schema;
 
     /***
@@ -41,63 +36,72 @@ public class SQLManager {
         }
     }
 
-    /***
-     * Surchage de l'utilisation de select
-     * @param table table donnée
-     * @return résultat du SELECT
+    /**
+     * Exécution d'une requête de mise à jour (INSERT, UPDATE, DELETE)
+     * @param query string formé pour une requête de mise à jour
+     * @return le nombre de lignes affectées
      */
+    public int executeUpdate(String query, Object... params) {
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            for (int i = 0; i < params.length; i++) {
+                if (params[i] instanceof String) {
+                    statement.setString(i + 1, (String) params[i]);
+                } else if (params[i] instanceof Integer) {
+                    statement.setInt(i + 1, (Integer) params[i]);
+                } else if (params[i] instanceof Long) {
+                    statement.setLong(i + 1, (Long) params[i]);
+                } else if (params[i] instanceof java.sql.Date) {
+                    statement.setDate(i + 1, (java.sql.Date) params[i]);
+                } else if (params[i] instanceof java.sql.Time) {
+                    statement.setTime(i + 1, (java.sql.Time) params[i]);
+                }
+            }
+            System.out.println(statement.toString());
+            return statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("Erreur lors de l'exécution de la requête de mise à jour", e);
+        }
+    }
+
+    /***
+     * Exécution d'une requête
+     * @param query string formé grâce à la fonction createSelectQuery()
+     * @return un ResultSet
+     */
+    public ResultSet executeSelect(String query) {
+        try {
+            return connection.createStatement().executeQuery(query);
+        } catch (SQLException e) {
+            throw new RuntimeException("Erreur lors de l'exécution de la requête", e);
+        }
+    }
+
     public ResultSet select(String table) {
-        return executeQuery(createSelectQuery(table, List.of("*"), null, null, null));
+        return executeSelect(createSelectQuery(table, List.of("*"), null, null, null));
     }
 
     public ResultSet select(String table, String where) {
-        return executeQuery(createSelectQuery(table, List.of("*"), null, where, null));
+        return executeSelect(createSelectQuery(table, List.of("*"), null, where, null));
     }
 
     public ResultSet select(String table, String where, String orderBy) {
-        return executeQuery(createSelectQuery(table, List.of("*"), null, where, orderBy));
+        return executeSelect(createSelectQuery(table, List.of("*"), null, where, orderBy));
     }
 
     public ResultSet select(String table, String... columns) {
-        return executeQuery(createSelectQuery(table, List.of(columns), null, null, null));
+        return executeSelect(createSelectQuery(table, List.of(columns), null, null, null));
     }
 
     public ResultSet select(String table, String where, String... columns) {
-        return executeQuery(createSelectQuery(table, List.of(columns), null, where, null));
+        return executeSelect(createSelectQuery(table, List.of(columns), null, where, null));
     }
 
     public ResultSet select(String table, String where, String orderBy, String... columns) {
-        return executeQuery(createSelectQuery(table, List.of(columns), null, where, orderBy));
+        return executeSelect(createSelectQuery(table, List.of(columns), null, where, orderBy));
     }
 
     public ResultSet select(String table, List<String> columns) {
-        return executeQuery(createSelectQuery(table, columns, null, null, null));
-    }
-
-    public List<String> selectColumns(String table){
-        String query = createSelectQuery("information_schema.columns", List.of("column_name"),
-                null, "table_schema = '" + schema + "' AND table_name = '" + table + "'", null);
-        ResultSet rs = executeQuery(query);
-        return toList(rs);
-    }
-
-    public List<String> selectColumns(String table, String where){
-        String query = createSelectQuery("information_schema.columns", List.of("column_name"),
-                null, "table_schema = '" + schema + "' AND table_name = '" + table.toLowerCase() + "' AND " + where, null);
-        ResultSet rs = executeQuery(query);
-        return toList(rs);
-    }
-
-    private List<String> toList(ResultSet rs) {
-        List<String> list = new ArrayList<>();
-        try (rs) {
-            while (rs.next()) {
-                list.add(rs.getString(1));
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException("Erreur lors de la conversion du ResultSet en liste", e);
-        }
-        return list;
+        return executeSelect(createSelectQuery(table, columns, null, null, null));
     }
 
     /***
@@ -108,7 +112,7 @@ public class SQLManager {
      * @return la selection avec inner join.
      */
     public ResultSet select(String table, String inner, boolean utilisationInnerJoin) {
-        return executeQuery(createSelectQuery(table, List.of("*"), inner, null, null));
+        return executeSelect(createSelectQuery(table, List.of("*"), inner, null, null));
     }
 
     /***
@@ -155,19 +159,6 @@ public class SQLManager {
     }
 
     /***
-     * Exécution d'une requête
-     * @param query string formé grâce à la fonction createSelectQuery()
-     * @return un ResultSet
-     */
-    private ResultSet executeQuery(String query) {
-        try {
-            return connection.createStatement().executeQuery(query);
-        } catch (SQLException e) {
-            throw new RuntimeException("Erreur lors de l'exécution de la requête", e);
-        }
-    }
-
-    /***
      * Cette méthode crée une liste de HashMaps où chaque HashMap représente une ligne de données
      * avec un ensemble de colonnes (clé-valeur pour chaque colonne).
      * @param rs résultat de la requête de la fonction executeQuery()
@@ -188,50 +179,5 @@ public class SQLManager {
             throw new RuntimeException("Erreur lors de la conversion du ResultSet en liste", e);
         }
         return list;
-    }
-
-
-    /***
-     * Fonction servant à insérer des nouveaux attributs dans une table
-     * @param table table en question
-     * @param columns colonnes à renseigner
-     * @param values attributs
-     */
-    public Object insert(String table, List<String> columns, List<Object> values, String returning) {
-        StringBuilder queryBuilder = new StringBuilder("INSERT INTO ").append(table).append(" (");
-        for (String column : columns) {
-            queryBuilder.append(column).append(", ");
-        }
-        queryBuilder.delete(queryBuilder.length() - 2, queryBuilder.length());
-        queryBuilder.append(") VALUES (");
-
-        for (Object value : values) {
-            queryBuilder.append("'").append(value).append("'");
-            queryBuilder.append(", ");
-        }
-        queryBuilder.delete(queryBuilder.length() - 2, queryBuilder.length());
-        queryBuilder.append(") ");
-
-        if (returning != null) {
-            queryBuilder.append("RETURNING ").append(returning);
-        }
-
-        String query = queryBuilder.toString();
-
-        try {
-            if (returning != null) {
-                ResultSet resultSet = connection.createStatement().executeQuery(query);
-                if (resultSet.next()) {
-                    return resultSet.getObject(returning);
-                } else {
-                    throw new SQLException("La récupération de l'identifiant a échoué");
-                }
-            }else{
-                connection.createStatement().executeUpdate(query);
-                return null;
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException("Erreur lors de l'insertion des données dans la table {}".formatted(table), e);
-        }
     }
 }

@@ -4,6 +4,7 @@ import ch.heigvd.utils.db.SQLManager;
 import ch.heigvd.utils.structure.Table;
 import ch.heigvd.utils.structure.View;
 
+import java.sql.ResultSet;
 import java.util.HashMap;
 import java.util.List;
 
@@ -22,6 +23,14 @@ public class GeneralController {
 
     public GeneralController() {}
 
+    public int executeUpdate(String query, Object... params) {
+        return sqlManager.executeUpdate(query, params);
+    }
+
+    public ResultSet executeSelect(String query) {
+        return sqlManager.executeSelect(query);
+    }
+
     /***
      * Récupération des informations liées au compte d'utilisateur du pseudo renseigné (clause WHERE)
      * @param userName nom d'utilisateur renseigné
@@ -33,7 +42,6 @@ public class GeneralController {
                 "username = '" + userName + "'"));
         return accounts.isEmpty() ? null : accounts.get(0);
     }
-
 
     /***
      * Récupération des informations (columns) sur les cours relatifs à l'identifiant de l'instructeur (clause WHERE)
@@ -47,7 +55,6 @@ public class GeneralController {
                 "instructeur_id = '" + memberId + "'", columns));
     }
 
-
     public List<HashMap<String, String>> getInstructorsWithCoursesTypes() {
         return SQLManager.toHashMapList(sqlManager.select(View.IntructeurTypeCoursView.name()));
     }
@@ -56,7 +63,6 @@ public class GeneralController {
         return SQLManager.toHashMapList(sqlManager.select(View.MoyennePersonnesParHeureCeJourDeSemaineView.name(),
                 "fitness_id = '" + fitnessId + "'"));
     }
-
 
     /***
      * Fonction qui pourrait être améliorée, elle remplit son rôle
@@ -82,5 +88,9 @@ public class GeneralController {
 
     public List<HashMap<String, String>> getTypeCours() {
         return SQLManager.toHashMapList(sqlManager.select(Table.TypeCours.name()));
+    }
+
+    public List<HashMap<String, String>> getAccountView() {
+        return SQLManager.toHashMapList(sqlManager.select(View.AccountView.name()));
     }
 }

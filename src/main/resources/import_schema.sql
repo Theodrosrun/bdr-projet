@@ -195,97 +195,97 @@ CREATE TABLE ComptagePassage (
 -- Foreign key
 
 ALTER TABLE Employe
-ADD FOREIGN KEY (id) REFERENCES Personne(id);
+ADD FOREIGN KEY (id) REFERENCES Personne(id) ON DELETE CASCADE;
 
 ALTER TABLE Employe
-ADD FOREIGN KEY (fitness_id) REFERENCES MyAmazingFitness(fitness_id);
+ADD FOREIGN KEY (fitness_id) REFERENCES MyAmazingFitness(fitness_id) ON DELETE CASCADE;
 
 ALTER TABLE Employe
-ADD FOREIGN KEY (compte_id) REFERENCES Compte(username);
+ADD FOREIGN KEY (compte_id) REFERENCES Compte(username) ON DELETE CASCADE;
 
 ALTER TABLE PersonnelAdministratif
-ADD FOREIGN KEY (padministratif_id) REFERENCES Employe(id);
+ADD FOREIGN KEY (padministratif_id) REFERENCES Employe(id) ON DELETE CASCADE;
 
 ALTER TABLE Administrateur
-ADD FOREIGN KEY (administrateur_id) REFERENCES Employe(id);
+ADD FOREIGN KEY (administrateur_id) REFERENCES Employe(id) ON DELETE CASCADE;
 
 ALTER TABLE Membre
-ADD FOREIGN KEY (id) REFERENCES Personne(id);
+ADD FOREIGN KEY (id) REFERENCES Personne(id) ON DELETE CASCADE;
 
 ALTER TABLE Membre
-ADD FOREIGN KEY (compte_id) REFERENCES Compte(username);
+ADD FOREIGN KEY (compte_id) REFERENCES Compte(username) ON DELETE CASCADE;
 
 ALTER TABLE Visiteur
-ADD FOREIGN KEY (visiteur_id) REFERENCES Personne(id);
+ADD FOREIGN KEY (visiteur_id) REFERENCES Personne(id) ON DELETE CASCADE;
 
 ALTER TABLE Visiteur
-ADD FOREIGN KEY (fitness_id) REFERENCES MyAmazingFitness(fitness_id);
+ADD FOREIGN KEY (fitness_id) REFERENCES MyAmazingFitness(fitness_id) ON DELETE CASCADE;
 
 ALTER TABLE Passage
-ADD FOREIGN KEY (membre_id) REFERENCES Membre(id);
+ADD FOREIGN KEY (membre_id) REFERENCES Membre(id) ON DELETE CASCADE;
 
 ALTER TABLE Passage
-ADD FOREIGN KEY (fitness_id) REFERENCES MyAmazingFitness(fitness_id);
+ADD FOREIGN KEY (fitness_id) REFERENCES MyAmazingFitness(fitness_id) ON DELETE CASCADE;
 
 ALTER TABLE Instructeur
-ADD FOREIGN KEY (instructeur_id) REFERENCES Employe(id);
+ADD FOREIGN KEY (instructeur_id) REFERENCES Employe(id) ON DELETE CASCADE;
 
 ALTER TABLE Cours
-ADD FOREIGN KEY (typeCours) REFERENCES TypeCours(nom);
+ADD FOREIGN KEY (typeCours) REFERENCES TypeCours(nom) ON DELETE CASCADE;
 
 ALTER TABLE Cours
-ADD FOREIGN KEY (fitness_id, salle_id) REFERENCES Salle(fitness_id, salle_id);
+ADD FOREIGN KEY (fitness_id, salle_id) REFERENCES Salle(fitness_id, salle_id) ON DELETE CASCADE;
 
 ALTER TABLE Cours
-ADD FOREIGN KEY (abo_id) REFERENCES Abonnement(abo_id);
+ADD FOREIGN KEY (abo_id) REFERENCES Abonnement(abo_id) ON DELETE CASCADE;
 
 ALTER TABLE TypeCours
-ADD FOREIGN KEY (instructeur_id) REFERENCES Instructeur(instructeur_id);
+ADD FOREIGN KEY (instructeur_id) REFERENCES Instructeur(instructeur_id) ON DELETE CASCADE;
 
 ALTER TABLE Salle
-ADD FOREIGN KEY (fitness_id) REFERENCES MyAmazingFitness(fitness_id);
+ADD FOREIGN KEY (fitness_id) REFERENCES MyAmazingFitness(fitness_id) ON DELETE CASCADE;
 
 ALTER TABLE Machine
-ADD FOREIGN KEY (fitness_id, salle_id) REFERENCES Salle(fitness_id, salle_id);
+ADD FOREIGN KEY (fitness_id, salle_id) REFERENCES Salle(fitness_id, salle_id) ON DELETE CASCADE;
 
 ALTER TABLE Machine
-ADD FOREIGN KEY (type_machine) REFERENCES TypeMachine(type_machine);
+ADD FOREIGN KEY (type_machine) REFERENCES TypeMachine(type_machine) ON DELETE CASCADE;
 
 ALTER TABLE Contrat
-ADD FOREIGN KEY (membre_id) REFERENCES Membre(id);
+ADD FOREIGN KEY (membre_id) REFERENCES Membre(id) ON DELETE CASCADE;
 
 ALTER TABLE ContratAbonnement
-ADD FOREIGN KEY (contrat_id) REFERENCES Contrat(contrat_id);
+ADD FOREIGN KEY (contrat_id) REFERENCES Contrat(contrat_id) ON DELETE CASCADE;
 
 ALTER TABLE ContratAbonnement
-ADD FOREIGN KEY (abo_id) REFERENCES Abonnement(abo_id);
+ADD FOREIGN KEY (abo_id) REFERENCES Abonnement(abo_id) ON DELETE CASCADE;
 
 ALTER TABLE Abonnement
-ADD FOREIGN KEY (type_abonnement) REFERENCES TypeAbonnement(nom);
+ADD FOREIGN KEY (type_abonnement) REFERENCES TypeAbonnement(nom) ON DELETE CASCADE;
 
 ALTER TABLE Facture
-ADD FOREIGN KEY (contrat_id) REFERENCES Contrat(contrat_id);
+ADD FOREIGN KEY (contrat_id) REFERENCES Contrat(contrat_id) ON DELETE CASCADE;
 
 ALTER TABLE Payement
-ADD FOREIGN KEY (facture_id, contrat_id) REFERENCES Facture(facture_id, contrat_id);
+ADD FOREIGN KEY (facture_id, contrat_id) REFERENCES Facture(facture_id, contrat_id) ON DELETE CASCADE;
 
 ALTER TABLE Payement
-ADD FOREIGN KEY (moyen_paiement_id) REFERENCES MoyenPaiement(moyen_paiement_id);
+ADD FOREIGN KEY (moyen_paiement_id) REFERENCES MoyenPaiement(moyen_paiement_id) ON DELETE CASCADE;
 
 ALTER TABLE MoyenPaiement
-ADD FOREIGN KEY (type_moyen_paiement) REFERENCES TypeMoyenPaiement(nom);
+ADD FOREIGN KEY (type_moyen_paiement) REFERENCES TypeMoyenPaiement(nom) ON DELETE CASCADE;
 
 ALTER TABLE MoyenPaiement
-ADD FOREIGN KEY (compte_id) REFERENCES Compte(username);
+ADD FOREIGN KEY (compte_id) REFERENCES Compte(username) ON DELETE CASCADE;
 
 ALTER TABLE Progression
-ADD FOREIGN KEY (membre_id) REFERENCES Membre(id);
+ADD FOREIGN KEY (membre_id) REFERENCES Membre(id) ON DELETE CASCADE;
 
 ALTER TABLE Compte
-ADD FOREIGN KEY (moyen_paiement_pref_id) REFERENCES MoyenPaiement(moyen_paiement_id);
+ADD FOREIGN KEY (moyen_paiement_pref_id) REFERENCES MoyenPaiement(moyen_paiement_id) ON DELETE CASCADE;
 
 ALTER TABLE ComptagePassage
-ADD FOREIGN KEY (fitness_id) REFERENCES MyAmazingFitness(fitness_id);
+ADD FOREIGN KEY (fitness_id) REFERENCES MyAmazingFitness(fitness_id) ON DELETE CASCADE;
 
 ----------------------------------------------
 
@@ -496,7 +496,6 @@ CREATE TRIGGER create_factures_trigger
     FOR EACH ROW
 EXECUTE FUNCTION create_factures();
 
-
 ------------------------------------- Trigger to Increment the number of people in the fitness center
 
 CREATE OR REPLACE FUNCTION increment_comptage_passage()
@@ -521,7 +520,7 @@ CREATE TRIGGER increment_comptage_passage_trigger
     FOR EACH ROW
 EXECUTE FUNCTION increment_comptage_passage();
 
-------------------------------------- Trigger to create a contract whe
+------------------------------------- Trigger for log suppression
 
 CREATE OR REPLACE FUNCTION log_suppression()
 RETURNS TRIGGER AS
@@ -551,11 +550,36 @@ ON Employe
 FOR EACH ROW
 EXECUTE FUNCTION log_suppression();
 
---- Deletion:
--- 1. Check les cascades
---- Triggers to add:
--- A chaque fois qu'il y a une entité avec debut et fin, on doit vérifier que la date de fin est après la date de début
--- Les cours doivent pas se chevaucher dans la même salle
---- Vues:
+------------------------------------- Trigger to verify cours overlapping
 
---- TODO: Ajouter comme contrainte dans l'UML: Un employé doit avoir un moyen de paiement préféré (type et info)
+CREATE OR REPLACE FUNCTION cours_overlapping_control()
+    RETURNS TRIGGER
+    LANGUAGE plpgsql
+AS
+$$
+DECLARE
+    new_heure_fin TIME;
+BEGIN
+    new_heure_fin := NEW.heure + (NEW.duree || ' minutes')::INTERVAL;
+    IF EXISTS (
+        SELECT 1 FROM Cours
+        WHERE salle_id = NEW.salle_id
+          AND jour = NEW.jour
+          AND ((NEW.heure < heure + (duree || ' minutes')::INTERVAL AND new_heure_fin > heure) OR
+              (heure < NEW.heure + (NEW.duree || ' minutes')::INTERVAL AND heure + (duree || ' minutes')::INTERVAL > NEW.heure))
+    ) THEN
+        RAISE EXCEPTION 'Les cours ne doivent pas se chevaucher dans la même salle à la même date.';
+    END IF;
+
+    RETURN NEW;
+END;
+$$;
+
+CREATE TRIGGER cours_overlapping
+    BEFORE INSERT OR UPDATE ON Cours
+    FOR EACH ROW
+EXECUTE FUNCTION cours_overlapping_control();
+
+
+-- TODO - Ajouter l'entité TypeAbonnement, Retrirer le lien et mettre 1 et ajouter l'entité paiement et moyen de paiement et comptage passage, iban est dans moy
+-- moyen de paiement

@@ -1,0 +1,8 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="fill_tables.sql" type="DatabaseScript" editBeforeRun="true" nameIsGenerated="true">
+    <script-file value="$PROJECT_DIR$/src/main/resources/fill_tables.sql" />
+    <script-mode>FILE</script-mode>
+    <data-source id="5af853f2-f77b-40e8-92b3-a1b9ddf95b19" namespace="database/&quot;bdr&quot;/schema/&quot;my_amazing_fitness&quot;" />
+    <method v="2" />
+  </configuration>
+</component>
