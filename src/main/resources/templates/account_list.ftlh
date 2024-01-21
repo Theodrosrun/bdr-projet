@@ -8,6 +8,12 @@
             text-align: center;
         }
 
+        .accounts-section h2 {
+            color: #333;
+            margin-top: 100px;
+            text-align: center;
+        }
+
         .container {
             width: 80%;
             margin: 0 auto;
@@ -82,6 +88,7 @@
 <body>
 <section class="accounts-section">
     <div class="container">
+        <h2>Gestion des comptes utilisateurs</h2>
         <table>
             <tr>
                 <th style="background-color: #333; color: #fff;">Username</th>
