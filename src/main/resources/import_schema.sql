@@ -554,6 +554,5 @@ EXECUTE FUNCTION log_suppression();
 
 
 --- Triggers to add:
--- A chaque fois qu'il y a une entité avec debut et fin, on doit vérifier que la date de fin est après la date de début
 -- Les cours doivent pas se chevaucher dans la même salle
 --- TODO: Ajouter comme contrainte dans l'UML: Un employé doit avoir un moyen de paiement préféré (type et info)
