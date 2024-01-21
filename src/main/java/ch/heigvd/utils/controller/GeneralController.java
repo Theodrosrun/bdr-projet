@@ -18,7 +18,7 @@ public class GeneralController {
     private final SQLManager sqlManager = new SQLManager(
             "bdr",
             "bdr",
-            "jdbc:postgresql://localhost:5432/bdr",
+            "jdbc:postgresql://postgresql:5432/bdr",
             "my_amazing_fitness");
 
     public GeneralController() {}
