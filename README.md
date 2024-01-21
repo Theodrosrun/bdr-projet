@@ -61,7 +61,7 @@ Sur Windows:
 
 ---
 
-## Modélisation relationnel
+## Modélisation relationnelle
 
 ![Schéma relationnel](https://github.com/Theodrosrun/bdr-projet/blob/main/docs/modelisation_relationnel.png)
 
