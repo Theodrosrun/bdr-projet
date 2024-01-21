@@ -1,6 +1,4 @@
-# Step 1: docker build -t myamazingfitness:v1.0 .
-# Step 2: http://localhost:8080/myamazingfitness-1.0-SNAPSHOT/database
-# Sources: https://www.softwareyoga.com/docker-tomact-tutorial/
+# http://localhost:8080/home
 
 version: '3.8'
 
@@ -27,7 +25,7 @@ services:
 
   myamazingfitness:
     container_name: myamazingfitness
-    image: 'ghcr.io/massteff/my-amazing-fitness:latest'
+    image: 'ghcr.io/theodrosrun/my-amazing-fitness:latest'
     ports:
       - '8080:8080'
     networks:
