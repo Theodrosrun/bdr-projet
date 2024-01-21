@@ -7,7 +7,7 @@ import java.io.StringWriter;
 public class MachineCreation {
     public static String doGet() {
         try {
-            Template template = FreeMarkerConfig.getConfig().getTemplate("machine_creation.ftlh");
+            Template template = FreeMarkerConfig.getConfig().getTemplate("machines_creation.ftlh");
             StringWriter out = new StringWriter();
             template.process(null, out);
             return out.toString();

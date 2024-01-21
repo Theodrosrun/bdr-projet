@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
-@WebServlet(name = "MachineCreate", value = "/machinecreate")
+@WebServlet(name = "MachineCreate", value = "/machinescreate")
 public class MachineCreate extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

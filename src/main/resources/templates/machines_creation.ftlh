@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>Ajouter un cours</title>
     <style>
-        .add-course-section .container {
+        .add-machines-section .container {
             background: #fff;
             border-radius: 15px;
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
@@ -17,34 +17,34 @@
             align-items: center;
         }
 
-        .add-course-section h2 {
+        .add-machines-section h2 {
             margin-bottom: 50px;
             text-align: center;
             color: #333;
         }
 
-        .add-course-section form {
+        .add-machines-section form {
             display: grid;
             grid-template-columns: repeat(9, 1fr);
             gap: 10px;
         }
 
-        .add-course-section form .form-group {
+        .add-machines-section form .form-group {
             display: flex;
             flex-direction: column;
         }
-        .add-course-section form label {
+        .add-machines-section form label {
             margin-bottom: 5px;
         }
 
-        .add-course-section form input,
-        .add-course-section form select {
+        .add-machines-section form input,
+        .add-machines-section form select {
             padding: 10px;
             border: 1px solid #ccc;
             border-radius: 4px;
         }
 
-        .add-course-section form input[type="submit"] {
+        .add-machines-section form input[type="submit"] {
             grid-column: 1 / -1;
             padding: 10px 15px;
             border-radius: 10px;
@@ -55,27 +55,18 @@
             transition: background-color 0.2s;
         }
 
-        .add-course-section form input[type="submit"]:hover {
+        .add-machines-section form input[type="submit"]:hover {
             background-color: #323232;
         }
 
-        /* Cible spécifiquement le champ de saisie pour la durée */
-        .add-course-section form #duree {
-            max-width: 200px; /* ou toute autre valeur appropriée */
-        }
-
-        /* Cible spécifiquement le champ de saisie pour la description */
-        .add-course-section form #description {
-            max-width: 200px; /* ou toute autre valeur appropriée */
-        }
     </style>
 </head>
 <body>
 
-<section class="add-course-section">
+<section class="add-machines-section">
     <div class="container">
-        <h2>Ajouter un nouveau cours</h2>
-        <form action="/courscreate" method="post">
+        <h2>Ajouter une nouvelle machine</h2>
+        <form action="/machinescreate" method="post">
             <div class="form-group">
                 <label for="fitness_id">Fit:</label>
                 <select id="fitness_id" name="fitness_id" required>
