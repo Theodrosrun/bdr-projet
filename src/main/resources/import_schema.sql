@@ -496,7 +496,6 @@ CREATE TRIGGER create_factures_trigger
     FOR EACH ROW
 EXECUTE FUNCTION create_factures();
 
-
 ------------------------------------- Trigger to Increment the number of people in the fitness center
 
 CREATE OR REPLACE FUNCTION increment_comptage_passage()
@@ -521,7 +520,7 @@ CREATE TRIGGER increment_comptage_passage_trigger
     FOR EACH ROW
 EXECUTE FUNCTION increment_comptage_passage();
 
-------------------------------------- Trigger to create a contract whe
+------------------------------------- Trigger for log suppression
 
 CREATE OR REPLACE FUNCTION log_suppression()
 RETURNS TRIGGER AS
@@ -551,7 +550,33 @@ ON Employe
 FOR EACH ROW
 EXECUTE FUNCTION log_suppression();
 
+------------------------------------- Trigger to verify cours overlapping
 
+CREATE OR REPLACE FUNCTION cours_overlapping_control()
+    RETURNS TRIGGER
+    LANGUAGE plpgsql
+AS
+$$
+DECLARE
+    new_heure_fin TIME;
+BEGIN
+    new_heure_fin := NEW.heure + (NEW.duree || ' minutes')::INTERVAL;
+    IF EXISTS (
+        SELECT 1 FROM Cours
+        WHERE salle_id = NEW.salle_id
+          AND jour = NEW.jour
+          AND cours_id != NEW.cours_id
+          AND ((NEW.heure < heure + (duree || ' minutes')::INTERVAL AND new_heure_fin > heure) OR
+              (heure < NEW.heure + (NEW.duree || ' minutes')::INTERVAL AND heure + (duree || ' minutes')::INTERVAL > NEW.heure))
+    ) THEN
+        RAISE EXCEPTION 'Les cours ne doivent pas se chevaucher dans la même salle à la même date.';
+    END IF;
 
---- Triggers to add:
--- Les cours doivent pas se chevaucher dans la même salle
+    RETURN NEW;
+END;
+$$;
+
+CREATE TRIGGER cours_overlapping
+    BEFORE INSERT OR UPDATE ON Cours
+    FOR EACH ROW
+EXECUTE FUNCTION cours_overlapping_control();
