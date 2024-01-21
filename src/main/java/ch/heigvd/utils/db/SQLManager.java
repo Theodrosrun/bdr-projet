@@ -50,6 +50,10 @@ public class SQLManager {
                     statement.setInt(i + 1, (Integer) params[i]);
                 } else if (params[i] instanceof Long) {
                     statement.setLong(i + 1, (Long) params[i]);
+                } else if (params[i] instanceof java.sql.Date) {
+                    statement.setDate(i + 1, (java.sql.Date) params[i]);
+                } else if (params[i] instanceof java.sql.Time) {
+                    statement.setTime(i + 1, (java.sql.Time) params[i]);
                 }
             }
             System.out.println(statement.toString());
