@@ -555,4 +555,3 @@ EXECUTE FUNCTION log_suppression();
 
 --- Triggers to add:
 -- Les cours doivent pas se chevaucher dans la même salle
---- TODO: Ajouter comme contrainte dans l'UML: Un employé doit avoir un moyen de paiement préféré (type et info)
