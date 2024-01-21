@@ -4,10 +4,6 @@ Le projet consiste en le développement d'une base de données pour une salle de
 
 Le présent travail possède un [cahier des charges](https://github.com/Theodrosrun/bdr-projet/blob/main/docs/cahier_des_charges.pdf) dont le projet s'est inspiré pour modéliser la base de données.
 
-## Modélisation relationnel
-
-![Schéma relationnel](https://github.com/Theodrosrun/bdr-projet/blob/main/docs/modelisation_relationnel.png)
-
 ---
 
 ## Environnement
@@ -63,7 +59,11 @@ Sur Windows:
 **Accès à l'Application** :
 - Vous pouvez maintenant accéder au site web Amazing Fitness: http://localhost:8080/home
 
+---
 
+## Modélisation relationnel
+
+![Schéma relationnel](https://github.com/Theodrosrun/bdr-projet/blob/main/docs/modelisation_relationnel.png)
 
 
 
