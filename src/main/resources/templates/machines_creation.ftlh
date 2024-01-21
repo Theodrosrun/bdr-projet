@@ -77,30 +77,6 @@
         <h2>Ajouter un nouveau cours</h2>
         <form action="/courscreate" method="post">
             <div class="form-group">
-                <label for="jour">Jour:</label>
-                <input type="date" id="jour" name="jour" required>
-            </div>
-            <div class="form-group">
-                <label for="heure">Heure:</label>
-                <input type="time" id="heure" name="heure" required>
-            </div>
-            <div class="form-group">
-                <label for="duree">Durée (min):</label>
-                <input type="number" id="duree" name="duree" required>
-            </div>
-            <div class="form-group">
-                <label for="description">Description:</label>
-                <input type="text" id="description" name="description" required>
-            </div>
-            <div class="form-group">
-                <label for="typecours">cours:</label>
-                <select id="typecours" name="typecours" required>
-                    <option value="Yoga">Yoga</option>
-                    <option value="Pilates">Pilates</option>
-                    <option value="Cardio">Cardio</option>
-                </select>
-            </div>
-            <div class="form-group">
                 <label for="fitness_id">Fit:</label>
                 <select id="fitness_id" name="fitness_id" required>
                     <option value="1">1</option>
@@ -115,14 +91,22 @@
                 </select>
             </div>
             <div class="form-group">
-                <label for="abo_id">abo:</label>
-                <select id="abo_id" name="abo_id" required>
-                    <option value="Yoga">Yoga</option>
-                    <option value="Pilates">Pilates</option>
-                    <option value="Cardio">Cardio</option>
+                <label for="etat">Etat:</label>
+                <select id="etat" name="etat" required>
+                    <option value="Salle A">neuf</option>
+                    <option value="Salle B">usagé</option>
+                    <option value="Salle C">abîmé</option>
                 </select>
             </div>
-            <input type="submit" value="Ajouter le cours">
+            <div class="form-group">
+                <label for="type_machine">Type:</label>
+                <select id="type_machine" name="type_machine" required>
+                    <option value="Escalator">Escalator</option>
+                    <option value="Tapis de course">Tapis de course</option>
+                    <option value="Vélo elliptique">Vélo elliptique</option>
+                </select>
+            </div>
+            <input type="submit" value="Ajouter la machine">
         </form>
     </div>
 </section>

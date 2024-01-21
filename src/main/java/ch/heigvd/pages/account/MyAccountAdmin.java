@@ -37,6 +37,7 @@ public class MyAccountAdmin extends HttpServlet {
         pageBuilder.add(AccountComponent.doGet(accountView));
         pageBuilder.add(AccountList.doGet());
         pageBuilder.add(CoursCreation.doGet());
+        pageBuilder.add(MachineCreation.doGet());
         pageBuilder.close();
     }
 }
