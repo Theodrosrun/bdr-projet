@@ -1,10 +1,13 @@
 package ch.heigvd.utils.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+
 import java.math.BigDecimal;
 
 @Entity
 @Table(name = "Employe")
+@Getter
 public class Employe {
 
     @Id

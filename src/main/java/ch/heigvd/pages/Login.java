@@ -1,7 +1,13 @@
 package ch.heigvd.pages;
 
 import ch.heigvd.components.*;
-import ch.heigvd.utils.structure.Account;
+import ch.heigvd.utils.controller.MembreController;
+import ch.heigvd.utils.entity.Administrateur;
+import ch.heigvd.utils.entity.Compte;
+import ch.heigvd.utils.entity.Employe;
+import ch.heigvd.utils.entity.Membre;
+import ch.heigvd.utils.structure.UserType;
+import ch.heigvd.utils.view.AccountView;
 import ch.heigvd.utils.web.CookieManager;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -52,12 +58,31 @@ public class Login extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String username = req.getParameter("username").trim();
-        Account account = Account.from(username); // comparaison avec le compte associé
-        if (account == null) {
+        String password = req.getParameter("password").trim();
+        Compte account = MembreController.getCompte(username);
+        if (account == null || !account.getMotDePasse().equals(password)) {
             resp.sendRedirect("/login?error=1");
             return;
         }
-        CookieManager.setCookie(resp, req, "username", username);
-        resp.sendRedirect("/myaccount");
+        int personneId;
+        try {
+            personneId = MembreController.getMembre(account.getUsername()).getId();
+        } catch (Exception e) {
+            personneId = MembreController.getEmployee(account.getUsername()).getId();
+        }
+        AccountView accountView = MembreController.getAccountView(personneId);
+        if (accountView.getUserType().equals(UserType.Administrateur.name())) {
+            CookieManager.setCookie(resp, req, "username", username);
+            CookieManager.setCookie(resp, req, "userType", accountView.getUserType());
+            resp.sendRedirect("/myaccountadmin");
+            return;
+        }
+        if(accountView.getUserType().equals(UserType.Membre.name())) {
+            CookieManager.setCookie(resp, req, "username", username);
+            CookieManager.setCookie(resp, req, "userType", accountView.getUserType());
+            resp.sendRedirect("/myaccount");
+            return;
+        }
+        resp.sendRedirect("/login?error=1");
     }
 }

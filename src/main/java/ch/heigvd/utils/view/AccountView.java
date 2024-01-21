@@ -16,6 +16,7 @@ public class AccountView {
     private String ville;
     private String NPA;
     private String pays;
+    private String userType;
 
     public AccountView(Object[] obj) {
         this.username = (String) obj[0];
@@ -30,6 +31,7 @@ public class AccountView {
         this.ville = (String) obj[9];
         this.NPA = (String) obj[10];
         this.pays = (String) obj[11];
+        this.userType = (String) obj[12];
     }
 
 }

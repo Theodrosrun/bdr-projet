@@ -17,6 +17,7 @@ public class Logout extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         CookieManager.deleteCookie(resp, req, "username");
+        CookieManager.deleteCookie(resp, req, "userType");
         resp.sendRedirect("/login"); // redirection immédiate sur /home
     }
 }

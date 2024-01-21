@@ -2,7 +2,9 @@ package ch.heigvd.pages.account;
 
 import ch.heigvd.components.*;
 import ch.heigvd.utils.controller.MembreController;
+import ch.heigvd.utils.entity.Employe;
 import ch.heigvd.utils.entity.Membre;
+import ch.heigvd.utils.structure.UserType;
 import ch.heigvd.utils.view.AccountView;
 import ch.heigvd.utils.web.CookieManager;
 import jakarta.servlet.ServletException;
@@ -21,16 +23,20 @@ public class MyAccountAdmin extends HttpServlet {
             resp.sendRedirect("/login");
             return;
         }
-
         Cookie usernameCookie = CookieManager.getCookie(req, "username");
-
-        if (usernameCookie == null) {
+        Cookie userTypeCookie = CookieManager.getCookie(req, "userType");
+        if (usernameCookie == null || userTypeCookie == null) {
             resp.sendRedirect("/login");
             return;
         }
 
-        Membre membre = MembreController.getMembre(usernameCookie.getValue());
-        AccountView accountView = MembreController.getAccountView(membre.getId());
+        if (!userTypeCookie.getValue().equals(UserType.Administrateur.name())) {
+            resp.sendRedirect("/myaccount");
+            return;
+        }
+
+        Employe employe = MembreController.getEmployee(usernameCookie.getValue());
+        AccountView accountView = MembreController.getAccountView(employe.getId());
 
         PageBuilder pageBuilder = new PageBuilder(accountView.getUsername(), req, resp);
         pageBuilder.add(Title.doGet("My admin account"));

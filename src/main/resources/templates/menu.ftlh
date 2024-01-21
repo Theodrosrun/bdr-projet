@@ -27,7 +27,9 @@
             </nav>
             <#if isConnected>
                 <a href="./myaccount" class="primary-btn signup-btn">Account</a>
-                <a href="./myaccountadmin" class="primary-btn admin-btn">Admin panel</a>
+                <#if isAdmin>
+                    <a href="./myaccountadmin" class="primary-btn admin-btn">Admin panel</a>
+                </#if>
             <#else>
                 <a href="./register" class="primary-btn signup-btn">Registration</a>
             </#if>

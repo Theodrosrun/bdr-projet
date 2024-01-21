@@ -1,11 +1,9 @@
 package ch.heigvd.pages.account;
 
 import ch.heigvd.components.*;
-import ch.heigvd.utils.controller.GeneralController;
 import ch.heigvd.utils.controller.MembreController;
 import ch.heigvd.utils.entity.Membre;
 import ch.heigvd.utils.entity.MoyenPaiement;
-import ch.heigvd.utils.structure.Account;
 import ch.heigvd.utils.structure.UserType;
 import ch.heigvd.utils.view.AccountView;
 import ch.heigvd.utils.view.MemberCourseWeekView;
@@ -23,7 +21,6 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 
 /***
@@ -43,8 +40,14 @@ public class MyAccount extends HttpServlet {
             return;
         }
         Cookie usernameCookie = CookieManager.getCookie(req, "username");
-        if (usernameCookie == null) {
+        Cookie userTypeCookie = CookieManager.getCookie(req, "userType");
+        if (usernameCookie == null || userTypeCookie == null) {
             resp.sendRedirect("/login");
+            return;
+        }
+        boolean isAdmnin = userTypeCookie.getValue().equals(UserType.Administrateur.name());
+        if (isAdmnin) {
+            resp.sendRedirect("/myaccountadmin");
             return;
         }
         Membre membre = MembreController.getMembre(usernameCookie.getValue());

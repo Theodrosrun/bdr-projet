@@ -18,41 +18,13 @@ public class GeneralController {
     private final SQLManager sqlManager = new SQLManager(
             "bdr",
             "bdr",
-            "jdbc:postgresql://postgresql:5432/bdr",
+            "jdbc:postgresql://localhost:5432/bdr",
             "my_amazing_fitness");
 
     public GeneralController() {}
 
     public int executeUpdate(String query, Object... params) {
         return sqlManager.executeUpdate(query, params);
-    }
-
-    public ResultSet executeSelect(String query) {
-        return sqlManager.executeSelect(query);
-    }
-
-    /***
-     * Récupération des informations liées au compte d'utilisateur du pseudo renseigné (clause WHERE)
-     * @param userName nom d'utilisateur renseigné
-     * @return les informations liées au compte d'utilisateur
-     */
-    public HashMap<String, String> getAccount(String userName) {
-        // la liste de tous les utilisateurs visibles sur la vue AccountView
-        List<HashMap<String, String>> accounts = SQLManager.toHashMapList(sqlManager.select(View.AccountView.name(),
-                "username = '" + userName + "'"));
-        return accounts.isEmpty() ? null : accounts.get(0);
-    }
-
-    /***
-     * Récupération des informations (columns) sur les cours relatifs à l'identifiant de l'instructeur (clause WHERE)
-     * @param memberId identifiant de l'instructeur
-     * @param columns colonnes dont on souhaite connaître les informations
-     * @return les informations liées à l'identifiant
-     */
-    public List<HashMap<String, String>> getInstructorWeekCourses(int memberId, String ... columns) {
-        // la liste de tous les cours de la semaine des instructeurs sur la vue CourseWeekView
-        return SQLManager.toHashMapList(sqlManager.select(View.CourseWeekView.name(),
-                "instructeur_id = '" + memberId + "'", columns));
     }
 
     public List<HashMap<String, String>> getInstructorsWithCoursesTypes() {
@@ -62,15 +34,6 @@ public class GeneralController {
     public List<HashMap<String, String>> getTodayAverageFrequency(int fitnessId) {
         return SQLManager.toHashMapList(sqlManager.select(View.MoyennePersonnesParHeureCeJourDeSemaineView.name(),
                 "fitness_id = '" + fitnessId + "'"));
-    }
-
-    /***
-     * Fonction qui pourrait être améliorée, elle remplit son rôle
-     * @return la totalité des instructeurs avec plus que seulement leur identifiant (cf la table)
-     */
-    public List<HashMap<String, String>> getInstructors() {
-        return SQLManager.toHashMapList(sqlManager.select(Table.Instructeur.name(),
-                " INNER JOIN employe ON instructeur_id = id ", true));
     }
 
     /***

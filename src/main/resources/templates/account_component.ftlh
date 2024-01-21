@@ -30,7 +30,7 @@
                         </div>
                         <div class="col-lg-6">
                             <label>Type</label>
-                            <p>0</p>
+                            <p>${account.userType}</p>
                         </div>
                         <div class="col-lg-6">
                             <label>Adresse</label>

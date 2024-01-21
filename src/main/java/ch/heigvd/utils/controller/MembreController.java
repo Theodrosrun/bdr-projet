@@ -1,8 +1,6 @@
 package ch.heigvd.utils.controller;
 
-import ch.heigvd.utils.entity.Compte;
-import ch.heigvd.utils.entity.Membre;
-import ch.heigvd.utils.entity.MoyenPaiement;
+import ch.heigvd.utils.entity.*;
 import ch.heigvd.utils.view.AccountView;
 import ch.heigvd.utils.view.MemberCourseWeekView;
 import ch.heigvd.utils.view.MembreAbonnementView;
@@ -51,12 +49,22 @@ public class MembreController {
         return em.find(Membre.class, m_id);
     }
 
+    public static Personne getPersonne(int p_id) {
+        return em.find(Personne.class, p_id);
+    }
+
     public static Compte getCompte(String username) {
         return em.find(Compte.class, username);
     }
 
     public static Membre getMembre(String username) {
         return em.createQuery("SELECT m FROM Membre m WHERE m.compteId = :username", Membre.class)
+                .setParameter("username", username)
+                .getSingleResult();
+    }
+
+    public static Employe getEmployee(String username) {
+        return em.createQuery("SELECT e FROM Employe e WHERE e.compteId = :username", Employe.class)
                 .setParameter("username", username)
                 .getSingleResult();
     }

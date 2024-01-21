@@ -1,7 +1,6 @@
 package ch.heigvd.components;
 
 import ch.heigvd.utils.freemarker.FreeMarkerConfig;
-import ch.heigvd.utils.structure.Account;
 import ch.heigvd.utils.view.AccountView;
 import freemarker.template.Template;
 import java.io.StringWriter;
