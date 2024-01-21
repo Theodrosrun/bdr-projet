@@ -8,6 +8,7 @@ RUN mvn dependency:go-offline
 RUN mvn package
 
 FROM tomcat:10-jdk17-temurin
-COPY --from=build /app/target/myamazingfitness-1.0-SNAPSHOT.war /usr/local/tomcat/webapps/
+COPY --from=build /app/target/myamazingfitness-1.0-SNAPSHOT.war /usr/local/tomcat/webapps/ROOT.war
 EXPOSE 8080
 CMD ["catalina.sh", "run"]
+
