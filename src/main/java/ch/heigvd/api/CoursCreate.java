@@ -51,7 +51,7 @@ public class CoursCreate extends HttpServlet {
 
         if (result > 0) {
             resp.setStatus(HttpServletResponse.SC_OK);
-            resp.getWriter().write("Nouveau cours disponible !");
+            resp.sendRedirect("/myaccountadmin");
         } else {
             resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Erreur lors de l'ajout du cours");
         }
