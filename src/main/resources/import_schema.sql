@@ -579,7 +579,3 @@ CREATE TRIGGER cours_overlapping
     BEFORE INSERT OR UPDATE ON Cours
     FOR EACH ROW
 EXECUTE FUNCTION cours_overlapping_control();
-
-
--- TODO - Ajouter l'entité TypeAbonnement, Retrirer le lien et mettre 1 et ajouter l'entité paiement et moyen de paiement et comptage passage, iban est dans moy
--- moyen de paiement
