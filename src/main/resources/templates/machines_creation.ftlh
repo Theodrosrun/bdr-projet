@@ -25,7 +25,7 @@
 
         .add-machines-section form {
             display: grid;
-            grid-template-columns: repeat(9, 1fr);
+            grid-template-columns: repeat(4, 1fr);
             gap: 10px;
         }
 
@@ -35,6 +35,7 @@
         }
         .add-machines-section form label {
             margin-bottom: 5px;
+            font-weight: bold;
         }
 
         .add-machines-section form input,
@@ -42,6 +43,7 @@
             padding: 10px;
             border: 1px solid #ccc;
             border-radius: 4px;
+            width: 270px;
         }
 
         .add-machines-section form input[type="submit"] {
@@ -53,6 +55,7 @@
             color: white;
             cursor: pointer;
             transition: background-color 0.2s;
+            width: 1130px;
         }
 
         .add-machines-section form input[type="submit"]:hover {

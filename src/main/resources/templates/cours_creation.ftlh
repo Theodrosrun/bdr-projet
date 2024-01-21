@@ -35,6 +35,7 @@
         }
         .add-course-section form label {
             margin-bottom: 5px;
+            font-weight: bold;
         }
 
         .add-course-section form input,
